@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sticky Header Example</title>
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/a076d05399.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: #f8f9fb;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: auto;
+        padding: 2rem 1rem;
+      }
+
+      .section-title {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: #005aaa;
+      }
+
+      .features,
+      .services,
+      .coverage {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .card {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        padding: 1.5rem;
+        text-align: center;
+      }
+
+      .card i {
+        font-size: 2rem;
+        color: #007bff;
+        margin-bottom: 0.5rem;
+      }
+
+      .map-section {
+        text-align: center;
+        background: #fff;
+        padding: 3rem 1rem;
+      }
+
+      .map-section img {
+        width: 100%;
+        max-width: 700px;
+        border-radius: 10px;
+        margin-top: 1rem;
+      }
+
+      .booking {
+        background: #005aaa;
+        color: white;
+        padding: 3rem 1rem;
+        text-align: center;
+      }
+
+      .booking h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      .booking p {
+        margin-bottom: 1.5rem;
+      }
+
+      .booking a {
+        background: #fff;
+        color: #005aaa;
+        padding: 0.75rem 1.5rem;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: 0.3s ease;
+      }
+
+      .booking a:hover {
+        background: #ffcc00;
+        color: #000;
+      }
+
+      @media (max-width: 768px) {
+        header h1 {
+          font-size: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="header-placeholder"></div>
+
+    <section class="hero">
+      <div class="overlay">
+        <div class="hero-text">
+          <h1>
+            Discover the timeless charm of Greece<br />in unparallel luxury.
+          </h1>
+          <p>Driven by passion guided by heart!</p>
+        </div>
+        <div class="booking-form">
+          <h2>Order your vehicle</h2>
+          <form>
+            <input type="date" placeholder="Pickup Date" required />
+            <input type="time" placeholder="Pickup Time" required />
+            <input type="text" placeholder="Pickup Location" required />
+            <input type="text" placeholder="Drop-Off Location" required />
+            <select required>
+              <option value="">Transfer Type</option>
+              <option value="one-way">One Way</option>
+              <option value="round-trip">Round Trip</option>
+            </select>
+            <button type="submit">BOOK NOW</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Travel With Us -->
+    <section class="container">
+      <h2 class="section-title">Why Travel With Us?</h2>
+      <div class="features">
+        <div class="card">
+          <i class="fas fa-user-tie"></i>
+          <h3>Professional Drivers</h3>
+          <p>
+            Licensed, courteous chauffeurs with deep knowledge of South Wales
+            routes.
+          </p>
+        </div>
+        <div class="card">
+          <i class="fas fa-car-side"></i>
+          <h3>Executive Vehicles</h3>
+          <p>Travel in comfort with clean, well-maintained, premium cars.</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-clock"></i>
+          <h3>On-Time Guarantee</h3>
+          <p>
+            Flight monitoring & prompt pickups ensure you're never left waiting.
+          </p>
+        </div>
+        <div class="card">
+          <i class="fas fa-pound-sign"></i>
+          <h3>Fixed Pricing</h3>
+          <p>Transparent, competitive rates without any hidden fees.</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-calendar-alt"></i>
+          <h3>24/7 Availability</h3>
+          <p>Early morning or late night? We’re ready whenever you are.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section class="container">
+      <h2 class="section-title">Our Services</h2>
+      <div class="services">
+        <div class="card">
+          <i class="fas fa-plane-departure"></i>
+          <h3>Airport Transfers</h3>
+          <p>
+            To & from Cardiff, Bristol, Heathrow, Gatwick, Manchester & more.
+          </p>
+        </div>
+        <div class="card">
+          <i class="fas fa-briefcase"></i>
+          <h3>Corporate Travel</h3>
+          <p>Executive cars for meetings, conferences, and business events.</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-ship"></i>
+          <h3>Cruise Port Transfers</h3>
+          <p>Smooth transfers to cruise ports with luggage support.</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-route"></i>
+          <h3>Long-Distance Rides</h3>
+          <p>Reliable door-to-door travel for long journeys across the UK.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Areas Covered -->
+    <section class="container">
+      <h2 class="section-title">We Cover</h2>
+      <div class="coverage">
+        <div class="card">
+          <i class="fas fa-map-marker-alt"></i>
+          <h3>Cardiff & Vale</h3>
+        </div>
+        <div class="card">
+          <i class="fas fa-map-marker-alt"></i>
+          <h3>Newport</h3>
+        </div>
+        <div class="card">
+          <i class="fas fa-map-marker-alt"></i>
+          <h3>Bridgend</h3>
+        </div>
+        <div class="card">
+          <i class="fas fa-map-marker-alt"></i>
+          <h3>Swansea</h3>
+        </div>
+      </div>
+    </section>
+
+    <!-- Map -->
+    <section class="map-section">
+      <h2 class="section-title">Airports We Cover</h2>
+      <p>
+        We offer transfers to all major UK airports including Cardiff, Bristol,
+        Heathrow, Gatwick, Manchester, and Birmingham.
+      </p>
+     <div style="position: relative; height: 400px; margin-top:15px;">
+  <iframe
+    style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    "
+    loading="lazy"
+    allowfullscreen
+    src="https://maps.google.com/maps?q=New+River+Gorge+Bridge%2C+West+Virginia&output=embed"
+  ></iframe>
+</div>
+
+    </section>
+
+    <!-- Booking CTA -->
+    <section class="booking">
+      <h2>Book Your Transfer in Minutes</h2>
+      <p>
+        Call us, use our online form, or message us to arrange your next ride.
+        Fast, simple, and secure.
+      </p>
+      <a href="book-now.html">Book Now</a>
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
