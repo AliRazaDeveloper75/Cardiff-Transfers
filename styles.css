@@ -261,14 +261,17 @@ body {
         }
         
         .vehicle-details {
-            padding: 20px;
+            /* padding-left: 20px; */
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-bottom: 20px;
         }
         
         .price {
             font-size: 22px;
             font-weight: bold;
             color: #333;
-            margin-bottom: 10px;
+            /* margin-bottom: 10px; */
         }
         
         .vehicle-type {
@@ -288,15 +291,6 @@ body {
             color: #555;
             display: flex;
             align-items: center;
-        }
-        
-        .spec-item:before {
-            content: "•";
-            color: #007bff;
-            font-weight: bold;
-            display: inline-block;
-            width: 1em;
-            margin-left: -1em;
         }
         
         .book-btn {
@@ -332,7 +326,7 @@ body {
     }
 
     .card {
-      background-color: #2f2f7d;
+      
       /* color: white; */
       cursor: pointer;
       border-radius: 12px;
@@ -387,3 +381,17 @@ body {
         padding: 6px 10px;
       }
     }
+
+
+
+    .divider {
+  height: 2px;
+  background-color: black;
+  margin: 15px 0;
+}
+.logo img {
+  height: 80px; /* adjust size as needed */
+  width: auto;
+  object-fit: contain;
+  display: block;
+}

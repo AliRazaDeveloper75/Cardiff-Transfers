@@ -3,8 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sticky Header Example</title>
+    <title>Cardiff Transfers</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="./Assets/logo.ico" type="image/x-icon">
+
+    <!-- Icon -->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <!-- Google Font -->
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
@@ -39,10 +43,23 @@
 
       .section-title {
         text-align: center;
-        font-size: 2rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        color: #005aaa;
+        font-size: 1.5rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        color: #222;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        position: relative;
+        padding-bottom: 0.5rem;
+      }
+      .section-title::after {
+        content: "";
+        width: 60px;
+        height: 4px;
+        background: #000;
+        display: block;
+        margin: 0.5rem auto 0;
+        border-radius: 2px;
       }
 
       .features,
@@ -63,7 +80,7 @@
 
       .card i {
         font-size: 2rem;
-        color: #007bff;
+        color: black;
         margin-bottom: 0.5rem;
       }
 
@@ -179,88 +196,111 @@
       </div>
     </section>
 
-
-    
     <!-- Car -->
 
     <div class="container">
       <h2 class="section-title">Book Your Plan</h2>
-        <div class="vehicle-options">
-            <!-- Saloon -->
-            <div class="vehicle-card">
-                <img src="https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Saloon Car" class="vehicle-image">
-                <div class="vehicle-details">
-                    <div class="price">From £30</div>
-                    <div class="vehicle-type">Saloon</div>
-                    <div class="specs">
-                        <div class="spec-item">4 Passengers</div>
-                        <div class="spec-item">2 Bags</div>
-                        <div class="spec-item">2 Hand Carry</div>
-                    </div>
-                    <button class="book-btn">Book Now</button>
-                </div>
+      <div class="vehicle-options">
+        <!-- Saloon -->
+        <div class="vehicle-card">
+          <img
+            src="https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+            alt="Saloon Car"
+            class="vehicle-image"
+          />
+          <div class="vehicle-details">
+            <div class="price">From £30</div>
+            <div class="vehicle-type">Saloon</div>
+              <div class="divider"></div>
+            <div class="specs">
+              <div class="spec-item"><i class='fas fa-user-alt' style='font-size:20px; margin-right:5px' ></i>4 Passengers</div>
+              <div class="spec-item"><i class="fa-solid fa-briefcase" style='font-size:20px; margin-right:5px'></i>2 Bags</div>
+              <div class="spec-item"><i class="fa-solid fa-briefcase" style='font-size:20px; margin-right:5px'></i>2 Hand Carry</div>
             </div>
-            
-            <!-- Executive Saloon -->
-            <div class="vehicle-card">
-                <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Executive Saloon" class="vehicle-image">
-                <div class="vehicle-details">
-                    <div class="price">From £35</div>
-                    <div class="vehicle-type">Executive Saloon</div>
-                    <div class="specs">
-                        <div class="spec-item">3 Passengers</div>
-                        <div class="spec-item">2 Bags</div>
-                        <div class="spec-item">2 Hand Carry</div>
-                    </div>
-                    <button class="book-btn">Book Now</button>
-                </div>
-            </div>
-            
-            <!-- Estate Vehicle -->
-            <div class="vehicle-card">
-                <img src="https://images.unsplash.com/photo-1594611111603-1e600229b2b5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Estate Vehicle" class="vehicle-image">
-                <div class="vehicle-details">
-                    <div class="price">From £38</div>
-                    <div class="vehicle-type">Estate Vehicle</div>
-                    <div class="specs">
-                        <div class="spec-item">4 Passengers</div>
-                        <div class="spec-item">4 Bags</div>
-                        <div class="spec-item">2 Hand Carry</div>
-                    </div>
-                    <button class="book-btn">Book Now</button>
-                </div>
-            </div>
-            
-            <!-- People Carrier -->
-            <div class="vehicle-card">
-                <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="People Carrier" class="vehicle-image">
-                <div class="vehicle-details">
-                    <div class="price">From £40</div>
-                    <div class="vehicle-type">People Carrier</div>
-                    <div class="specs">
-                        <div class="spec-item">5 Passengers</div>
-                        <div class="spec-item">5 Bags</div>
-                        <div class="spec-item">2 Hand Carry</div>
-                    </div>
-                    <button class="book-btn">Book Now</button>
-                </div>
-            </div>
-            
-            <!-- 8 Seater Minibus -->
-            <div class="vehicle-card">
-                <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="8 Seater Minibus" class="vehicle-image">
-                <div class="vehicle-details">
-                    <div class="price">From £45</div>
-                    <div class="vehicle-type">8 Seater Minibus</div>
-                    <div class="specs">
-                        <div class="spec-item">8 Passengers</div>
-                        <div class="spec-item">8 Bags</div>
-                        <div class="spec-item">2 Hand Carry</div>
-                    </div>
-                    <button class="book-btn">Book Now</button>
-                </div>
-            </div>
+            <button class="book-btn">Book Now</button>
+          </div>
         </div>
+
+        <!-- Executive Saloon -->
+        <div class="vehicle-card">
+          <img
+            src="https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+            alt="Executive Saloon"
+            class="vehicle-image"
+          />
+          <div class="vehicle-details">
+            <div class="price">From £35</div>
+            <div class="vehicle-type">Executive Saloon</div>
+            <div class="divider"></div>
+            <div class="specs">
+              <div class="spec-item"><i class='fas fa-user-alt' style='font-size:20px; margin-right:5px' ></i>3 Passengers</div>
+              <div class="spec-item"><i class="fa-solid fa-briefcase" style='font-size:20px; margin-right:5px'></i>2 Bags</div>
+              <div class="spec-item"><i class="fa-solid fa-briefcase" style='font-size:20px; margin-right:5px'></i>2 Hand Carry</div>
+            </div>
+            <button class="book-btn">Book Now</button>
+          </div>
+        </div>
+
+        <!-- Estate Vehicle -->
+        <div class="vehicle-card">
+          <img
+            src="https://images.unsplash.com/photo-1594611111603-1e600229b2b5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="Estate Vehicle"
+            class="vehicle-image"
+          />
+          <div class="vehicle-details">
+            <div class="price">From £38</div>
+            <div class="vehicle-type">Estate Vehicle</div>
+            <div class="divider"></div>
+            <div class="specs">
+              <div class="spec-item"><i class='fas fa-user-alt' style='font-size:20px; margin-right:5px' ></i>4 Passengers</div>
+              <div class="spec-item"><i class="fa-solid fa-briefcase" style='font-size:20px; margin-right:5px'></i>4 Bags</div>
+              <div class="spec-item"><i class="fa-solid fa-briefcase" style='font-size:20px; margin-right:5px'></i>2 Hand Carry</div>
+            </div>
+            <button class="book-btn">Book Now</button>
+          </div>
+        </div>
+
+        <!-- People Carrier -->
+        <div class="vehicle-card">
+          <img
+            src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+            alt="People Carrier"
+            class="vehicle-image"
+          />
+          <div class="vehicle-details">
+            <div class="price">From £40</div>
+            <div class="vehicle-type">People Carrier</div>
+            <div class="divider"></div>
+            <div class="specs">
+              <div class="spec-item"><i class='fas fa-user-alt' style='font-size:20px; margin-right:5px' ></i>5 Passengers</div>
+              <div class="spec-item"><i class="fa-solid fa-briefcase" style='font-size:20px; margin-right:5px'></i>5 Bags</div>
+              <div class="spec-item"><i class="fa-solid fa-briefcase" style='font-size:20px; margin-right:5px'></i> 2 Hand Carry</div>
+            </div>
+            <button class="book-btn">Book Now</button>
+          </div>
+        </div>
+
+        <!-- 8 Seater Minibus -->
+        <div class="vehicle-card">
+          <img
+            src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="8 Seater Minibus"
+            class="vehicle-image"
+          />
+          <div class="vehicle-details">
+            <div class="price">From £45</div>
+            <div class="vehicle-type">8 Seater Minibus</div>
+            <div class="divider"></div>
+            <div class="specs">
+              <div class="spec-item"><i class='fas fa-user-alt' style='font-size:20px; margin-right:5px' ></i>8 Passengers</div>
+              <div class="spec-item"><i class="fa-solid fa-briefcase" style='font-size:20px; margin-right:5px'></i>8 Bags</div>
+              <div class="spec-item"><i class="fa-solid fa-briefcase" style='font-size:20px; margin-right:5px'></i>2 Hand Carry</div>
+            </div>
+            <button class="book-btn">Book Now</button>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- Services -->
     <section class="container">
@@ -317,61 +357,59 @@
     <!-- Airport section-->
     <div>
       <h2 class="section-title">Book Your Plan</h2>
-     <div class="grid-container">
-     
-      
-    <div class="card">
-      <div class="icon">✈️</div>
-      <h3>Birmingham Airport</h3>
-      <button class="btn">Book Online</button>
+      <div class="grid-container">
+        <div class="card">
+          <div class="icon">✈️</div>
+          <h3>Birmingham Airport</h3>
+          <button class="btn">Book Online</button>
+        </div>
+        <div class="card">
+          <div class="icon">✈️</div>
+          <h3>Bristol Airport</h3>
+          <button class="btn">Book Online</button>
+        </div>
+        <div class="card">
+          <div class="icon">✈️</div>
+          <h3>Cardiff Airport</h3>
+          <button class="btn">Book Online</button>
+        </div>
+        <div class="card">
+          <div class="icon">✈️</div>
+          <h3>Gatwick Airport</h3>
+          <button class="btn">Book Online</button>
+        </div>
+        <div class="card">
+          <div class="icon">✈️</div>
+          <h3>Heathrow Airport</h3>
+          <button class="btn">Book Online</button>
+        </div>
+        <div class="card">
+          <div class="icon">✈️</div>
+          <h3>London City Airport</h3>
+          <button class="btn">Book Online</button>
+        </div>
+        <div class="card">
+          <div class="icon">✈️</div>
+          <h3>Luton Airport</h3>
+          <button class="btn">Book Online</button>
+        </div>
+        <div class="card">
+          <div class="icon">✈️</div>
+          <h3>Stansted Airport</h3>
+          <button class="btn">Book Online</button>
+        </div>
+        <div class="card">
+          <div class="icon">🛳️</div>
+          <h3>Cruise Ports</h3>
+          <button class="btn">Book Online</button>
+        </div>
+        <div class="card">
+          <div class="icon">🚗</div>
+          <h3>Long Distance</h3>
+          <button class="btn">Book Online</button>
+        </div>
+      </div>
     </div>
-    <div class="card">
-      <div class="icon">✈️</div>
-      <h3>Bristol Airport</h3>
-      <button class="btn">Book Online</button>
-    </div>
-    <div class="card">
-      <div class="icon">✈️</div>
-      <h3>Cardiff Airport</h3>
-      <button class="btn">Book Online</button>
-    </div>
-    <div class="card">
-      <div class="icon">✈️</div>
-      <h3>Gatwick Airport</h3>
-      <button class="btn">Book Online</button>
-    </div>
-    <div class="card">
-      <div class="icon">✈️</div>
-      <h3>Heathrow Airport</h3>
-      <button class="btn">Book Online</button>
-    </div>
-    <div class="card">
-      <div class="icon">✈️</div>
-      <h3>London City Airport</h3>
-      <button class="btn">Book Online</button>
-    </div>
-    <div class="card">
-      <div class="icon">✈️</div>
-      <h3>Luton Airport</h3>
-      <button class="btn">Book Online</button>
-    </div>
-    <div class="card">
-      <div class="icon">✈️</div>
-      <h3>Stansted Airport</h3>
-      <button class="btn">Book Online</button>
-    </div>
-    <div class="card">
-      <div class="icon">🛳️</div>
-      <h3>Cruise Ports</h3>
-      <button class="btn">Book Online</button>
-    </div>
-    <div class="card">
-      <div class="icon">🚗</div>
-      <h3>Long Distance </h3>
-      <button class="btn">Book Online</button>
-    </div>
-  </div>
-  </div>
     <!-- Map section-->
     <section class="map-section">
       <h2 class="section-title">Airports We Cover</h2>
@@ -379,22 +417,21 @@
         We offer transfers to all major UK airports including Cardiff, Bristol,
         Heathrow, Gatwick, Manchester, and Birmingham.
       </p>
-     <div style="position: relative; height: 400px; margin-top:15px;">
-  <iframe
-    style="
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: 0;
-    "
-    loading="lazy"
-    allowfullscreen
-    src="https://maps.google.com/maps?q=New+River+Gorge+Bridge%2C+West+Virginia&output=embed"
-  ></iframe>
-</div>
-
+      <div style="position: relative; height: 400px; margin-top: 15px">
+        <iframe
+          style="
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+          "
+          loading="lazy"
+          allowfullscreen
+          src="https://maps.google.com/maps?q=New+River+Gorge+Bridge%2C+West+Virginia&output=embed"
+        ></iframe>
+      </div>
     </section>
 
     <!-- Booking CTA -->
