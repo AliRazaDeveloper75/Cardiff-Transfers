@@ -19,6 +19,309 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <link rel="stylesheet" href="booking.css" />
+    <link rel="stylesheet" href=".css" />
+    <style>
+      .container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 1rem;
+}
+
+.site-header {
+  position: fixed; /* changed from sticky to fixed */
+  top: 0;
+  width: 100%;
+  background: transparent;
+  color: white;
+  z-index: 1000;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+/* Make header content layout with flex */
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Adjust navigation links */
+.main-nav a {
+  margin: 0 10px;
+  color: inherit;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.site-header.scrolled {
+  background: #333;
+  color: white;
+  padding: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.site-header nav a {
+  margin: 0 15px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-footer {
+  background-color: #333;
+  color: #fff;
+  padding: 20px 0;
+  text-align: left;
+}
+
+/* Optional: Responsive styling */
+@media (max-width: 600px) {
+  .header-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .main-nav {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .main-nav a {
+    margin: 0;
+  }
+}
+
+/* home page css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+}
+
+.hero {
+  background: url("https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80")
+    no-repeat center center/cover;
+  height: 70vh;
+  position: relative;
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.4);
+  height: 100%;
+  width: 100%;
+  color: white;
+  display: flex;
+  justify-content: center;
+  padding: 50px;
+  align-items: center;
+}
+
+.hero-text {
+  max-width: 50%;
+  text-align: center;
+}
+
+.hero-text h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.hero-text p {
+  font-size: 1.2rem;
+  color: #d0d0d0;
+}
+
+.booking-form {
+  background: white;
+  color: #1a1a1a;
+  padding: 25px;
+  border-radius: 10px;
+  width: 320px;
+}
+
+.booking-form h2 {
+  margin-bottom: 20px;
+}
+
+.booking-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.booking-form input,
+.booking-form select {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.booking-form button {
+  background-color: #002b45;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .overlay {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20px;
+    text-align: left;
+  }
+
+  .hero-text {
+    margin-top: 6rem;
+    max-width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .hero-text h1 {
+    font-size: 1.2rem;
+  }
+
+  .hero-text p {
+    font-size: 1rem;
+  }
+
+  .booking-form {
+    width: 100%;
+  }
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+}
+
+.logo img {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* Burger icon default hidden */
+.burger {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: white;
+}
+
+/* Show burger icon on smaller screens */
+@media (max-width: 768px) {
+  .burger {
+    display: block;
+  }
+
+  .main-nav {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background: #333;
+    margin-top: 10px;
+    padding: 10px 0;
+  }
+
+  .main-nav.show {
+    display: flex;
+  }
+
+  .main-nav a {
+    padding: 10px 20px;
+    border-top: 1px solid #444;
+    color: white;
+  }
+
+  .header-inner {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.section {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  padding: 30px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card h2 {
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+  color: #003366;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+button {
+  background-color: #005bbb;
+  color: white;
+  padding: 12px 24px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background-color: #004699;
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 20px;
+  }
+}
+
+    </style>
   </head>
   <body>
     <div id="header-placeholder"></div>
