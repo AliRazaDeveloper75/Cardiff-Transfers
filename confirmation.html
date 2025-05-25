@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Confirmation</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .confirmation-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+    
+    .confirmation-card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      text-align: center;
+    }
+    
+    .confirmation-card h2 {
+      color: #005aaa;
+      margin-bottom: 1rem;
+    }
+    
+    .confirmation-card h2 i {
+      color: #4CAF50;
+      margin-right: 10px;
+    }
+    
+    .confirmation-details {
+      text-align: left;
+      margin: 2rem 0;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 1.5rem;
+    }
+    
+    .detail-section {
+      margin-bottom: 1.5rem;
+    }
+    
+    .detail-section h3 {
+      color: #005aaa;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .detail-row {
+      display: flex;
+      margin-bottom: 0.75rem;
+    }
+    
+    .detail-label {
+      font-weight: 600;
+      width: 40%;
+      color: #555;
+    }
+    
+    .detail-value {
+      width: 60%;
+    }
+    
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+      background: #005aaa;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: #004488;
+    }
+    
+    .btn-secondary {
+      background: #f8f9fb;
+      color: #333;
+      border: 1px solid #ddd;
+    }
+    
+    .btn-secondary:hover {
+      background: #e9ecef;
+    }
+    
+    .thank-you {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #eee;
+    }
+    
+    @media print {
+      .actions {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="header-placeholder"></div>
+
+  <section class="hero">
+    <div class="overlay">
+      <div class="hero-text">
+        <h1>Booking Confirmed!</h1>
+        <p>Thank you for choosing our service</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="confirmation-container">
+    <div class="confirmation-card" id="bookingConfirmation">
+      <h2><i class="fas fa-check-circle"></i> Your booking is confirmed</h2>
+      <p>We've sent a confirmation email to <span id="confEmail"></span></p>
+      
+      <div class="confirmation-details">
+        <div class="detail-section">
+          <h3>Booking Information</h3>
+          <div class="detail-row">
+            <div class="detail-label">Booking Reference:</div>
+            <div class="detail-value" id="confRef"></div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Booking Date:</div>
+            <div class="detail-value" id="confBookingDate"></div>
+          </div>
+        </div>
+        
+        <div class="detail-section">
+          <h3>Transfer Details</h3>
+          <div class="detail-row">
+            <div class="detail-label">Pickup Date:</div>
+            <div class="detail-value" id="confPickupDate"></div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Pickup Time:</div>
+            <div class="detail-value" id="confPickupTime"></div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Pickup Location:</div>
+            <div class="detail-value" id="confPickupLocation"></div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Drop-off Location:</div>
+            <div class="detail-value" id="confDropoffLocation"></div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Transfer Type:</div>
+            <div class="detail-value" id="confTransferType"></div>
+          </div>
+        </div>
+        
+        <div class="detail-section">
+          <h3>Vehicle Information</h3>
+          <div class="detail-row">
+            <div class="detail-label">Vehicle Type:</div>
+            <div class="detail-value" id="confVehicleType"></div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Passengers:</div>
+            <div class="detail-value" id="confPassengers"></div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Baggage:</div>
+            <div class="detail-value" id="confBags"></div>
+          </div>
+        </div>
+        
+        <div class="detail-section">
+          <h3>Customer Details</h3>
+          <div class="detail-row">
+            <div class="detail-label">Full Name:</div>
+            <div class="detail-value" id="confFullName"></div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Email:</div>
+            <div class="detail-value" id="confEmail"></div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Phone:</div>
+            <div class="detail-value" id="confPhone"></div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Special Requests:</div>
+            <div class="detail-value" id="confSpecialRequests"></div>
+          </div>
+        </div>
+        
+        <div class="detail-section">
+          <h3>Payment Information</h3>
+          <div class="detail-row">
+            <div class="detail-label">Total Amount:</div>
+            <div class="detail-value" id="confTotalAmount"></div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Payment Method:</div>
+            <div class="detail-value" id="confPaymentMethod"></div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Payment Status:</div>
+            <div class="detail-value" id="confPaymentStatus"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="thank-you">
+        <p>Thank you for booking with Cardiff Transfers. Your driver will contact you shortly before your pickup time.</p>
+        <p>For any questions, please contact us at <strong>info@cardifftransfers.com</strong> or call <strong>+44 1234 567890</strong></p>
+      </div>
+      
+      <div class="actions">
+        <button class="btn btn-primary" id="downloadPdf">
+          <i class="fas fa-file-pdf"></i> Download PDF
+        </button>
+        <a href="index.html" class="btn btn-secondary">
+          <i class="fas fa-home"></i> Back to Home
+        </a>
+        <button class="btn btn-secondary" onclick="window.print()">
+          <i class="fas fa-print"></i> Print Booking
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-placeholder"></div>
+
+  <!-- Include html2pdf library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const booking = JSON.parse(localStorage.getItem('currentBooking')) || {};
+      
+      // Generate booking reference if not exists
+      if (!booking.bookingRef) {
+        booking.bookingRef = 'CT-' + Math.floor(1000 + Math.random() * 9000);
+        localStorage.setItem('currentBooking', JSON.stringify(booking));
+      }
+      
+      // Display booking details
+      document.getElementById('confRef').textContent = booking.bookingRef;
+      document.getElementById('confBookingDate').textContent = formatDate(new Date());
+      document.getElementById('confPickupDate').textContent = formatDate(booking.pickupDate);
+      document.getElementById('confPickupTime').textContent = formatTime(booking.pickupTime);
+      document.getElementById('confPickupLocation').textContent = booking.pickupLocation || 'Not specified';
+      document.getElementById('confDropoffLocation').textContent = booking.dropoffLocation || 'Not specified';
+      document.getElementById('confTransferType').textContent = booking.transferType === 'one-way' ? 'One Way' : 'Round Trip';
+      document.getElementById('confVehicleType').textContent = booking.vehicleType || 'Not specified';
+      document.getElementById('confPassengers').textContent = booking.passengers || 'Not specified';
+      document.getElementById('confBags').textContent = booking.bags ? `${booking.bags} large bags + 2 hand carry` : 'Not specified';
+      document.getElementById('confFullName').textContent = booking.fullName || 'Not specified';
+      document.getElementById('confEmail').textContent = booking.email || 'Not specified';
+      document.getElementById('confPhone').textContent = booking.phone || 'Not specified';
+      document.getElementById('confSpecialRequests').textContent = booking.specialRequests || 'None';
+      document.getElementById('confTotalAmount').textContent = booking.price ? `£${booking.price.toFixed(2)}` : '£0.00';
+      document.getElementById('confPaymentMethod').textContent = 'Credit Card (•••• ' + (booking.cardLastFour || '****') + ')';
+      document.getElementById('confPaymentStatus').textContent = 'Paid';
+      
+      // PDF Download button
+      document.getElementById('downloadPdf').addEventListener('click', generatePdf);
+      
+      function formatDate(dateString) {
+        if (!dateString) return 'Not specified';
+        const date = new Date(dateString);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return date.toLocaleDateString('en-GB', options);
+      }
+      
+      function formatTime(timeString) {
+        if (!timeString) return 'Not specified';
+        return timeString.substring(0, 5);
+      }
+      
+      function generatePdf() {
+        const element = document.getElementById('bookingConfirmation');
+        const opt = {
+          margin: 10,
+          filename: `booking_${booking.bookingRef}.pdf`,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        
+        // Generate PDF
+        html2pdf().set(opt).from(element).save();
+      }
+    });
+  </script>
+</body>
+</html>

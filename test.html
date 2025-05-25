@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Google Sheets Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background: #f4f4f4;
+    }
+    form {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, textarea {
+      width: 100%;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 0.75rem 1.5rem;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      position: relative;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    button.loading {
+      background: #0056b3;
+    }
+    button.loading::after {
+      content: "";
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      border: 3px solid transparent;
+      border-top-color: white;
+      border-radius: 50%;
+      animation: button-loading-spinner 1s linear infinite;
+    }
+    @keyframes button-loading-spinner {
+      from { transform: rotate(0turn); }
+      to { transform: rotate(1turn); }
+    }
+    .success {
+      color: green;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <form id="contactForm">
+    <h2>Contact Us</h2>
+    <input type="text" name="name" placeholder="Your Name" required>
+    <input type="email" name="email" placeholder="Your Email" required>
+    <input type="phone no." name="phone no." placeholder="Contact No." required>
+    <textarea name="message" placeholder="Your Message" required></textarea>
+    <button type="submit" id="submitBtn">Submit</button>
+    <p class="success" id="successMsg" style="display: none;">Form submitted successfully!</p>
+  </form>
+
+  <script>
+    document.getElementById("contactForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const form = e.target;
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      const submitBtn = document.getElementById("submitBtn");
+
+      // Show loading state
+      submitBtn.classList.add("loading");
+      submitBtn.disabled = true;
+      submitBtn.textContent = ""; // Clear text while loading
+
+      fetch("https://sheetdb.io/api/v1/css16av0rx4bp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ data: data })
+      })
+      .then(res => res.json())
+      .then(response => {
+        document.getElementById("successMsg").style.display = "block";
+        form.reset();
+      })
+      .catch(error => {
+        alert("Error submitting form. Please try again.");
+        console.error(error);
+      })
+      .finally(() => {
+        // Reset button state
+        submitBtn.classList.remove("loading");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit";
+      });
+    });
+  </script>
+
+</body>
+</html>

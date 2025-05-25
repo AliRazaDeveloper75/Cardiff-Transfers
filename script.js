@@ -26,7 +26,6 @@ function initScrollEffect() {
   });
 }
 
-
  function toggleMenu() {
     document.getElementById("mainNav").classList.toggle("show");
   }
