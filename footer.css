@@ -68,7 +68,7 @@ body {
 /* Mobile responsive adjustments */
 @media (max-width: 576px) {
   .footer-container {
-    flex-direction: column;
+    
     align-items: flex-start;
     text-align: left;
     gap: 30px;
