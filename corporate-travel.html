@@ -1,26 +1,352 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sticky Header Example</title>
-  <link rel="stylesheet" href="styles.css"/>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booking Confirmation | Cardiff Transfers</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+    <style>
+      .container {
+        max-width: 1200px;
+        margin: auto;
+        padding: 1rem;
+      }
 
-  <div id="header-placeholder"></div>
+      .site-header {
+        position: fixed; /* changed from sticky to fixed */
+        top: 0;
+        width: 100%;
+        background: transparent;
+        color: white;
+        z-index: 1000;
+        transition: background 0.3s, box-shadow 0.3s;
+      }
 
-  <section class="hero">
-    <div class="overlay">
-      <div class="hero-text">
-        <h1>Corporate-Trave Page!</h1>
-        <p> Corporate-Trave Page!</p>
+      /* Make header content layout with flex */
+      .header-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      /* Adjust navigation links */
+      .main-nav a {
+        margin: 0 10px;
+        color: inherit;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .site-header.scrolled {
+        background: #333;
+        color: white;
+        padding: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .site-header nav a {
+        margin: 0 15px;
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .site-footer {
+        background-color: #333;
+        color: #fff;
+        padding: 20px 0;
+        text-align: left;
+      }
+
+      /* Optional: Responsive styling */
+      @media (max-width: 600px) {
+        .header-inner {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .main-nav {
+          margin-top: 10px;
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+        }
+
+        .main-nav a {
+          margin: 0;
+        }
+      }
+
+      /* home page css */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      .hero {
+        background: url("https://images.unsplash.com/photo-1552337223-9710a0e01fbc?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
+          no-repeat center center/cover;
+        height: 70vh;
+        position: relative;
+      }
+
+      .overlay {
+        background-color: rgba(0, 0, 0, 0.4);
+        height: 100%;
+        width: 100%;
+        color: white;
+        display: flex;
+        justify-content: center;
+        padding: 50px;
+        align-items: center;
+      }
+
+      .hero-text {
+        max-width: 50%;
+        text-align: center;
+      }
+
+      .hero-text h1 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+      }
+
+      .hero-text p {
+        font-size: 1.2rem;
+        color: #d0d0d0;
+      }
+
+      @media (max-width: 768px) {
+        .overlay {
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+          padding: 20px;
+          text-align: left;
+        }
+
+        .hero-text {
+          margin-top: 6rem;
+          max-width: 100%;
+          margin-bottom: 30px;
+        }
+
+        .hero-text h1 {
+          font-size: 1.2rem;
+        }
+
+        .hero-text p {
+          font-size: 1rem;
+        }
+
+        .booking-form {
+          width: 100%;
+        }
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: white;
+        text-decoration: none;
+      }
+
+      .logo img {
+        height: 50px;
+        width: auto;
+        object-fit: contain;
+        display: block;
+      }
+
+      /* Burger icon default hidden */
+      .burger {
+        display: none;
+        font-size: 2rem;
+        cursor: pointer;
+        color: white;
+      }
+
+      /* Show burger icon on smaller screens */
+      @media (max-width: 768px) {
+        .burger {
+          display: block;
+        }
+
+        .main-nav {
+          display: none;
+          flex-direction: column;
+          width: 100%;
+          background: #333;
+          margin-top: 10px;
+          padding: 10px 0;
+        }
+
+        .main-nav.show {
+          display: flex;
+        }
+
+        .main-nav a {
+          padding: 10px 20px;
+          border-top: 1px solid #444;
+          color: white;
+        }
+
+        .header-inner {
+          flex-direction: row;
+          align-items: flex-start;
+        }
+      }
+
+      .section {
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+
+
+
+
+      
+    .section {
+      margin-bottom: 50px;
+    }
+
+    .section h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #002b5c;
+    }
+
+    .section p {
+      font-size: 1rem;
+      color: #555;
+    }
+
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .feature-card {
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      flex: 1 1 280px;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature-card i {
+      font-size: 2.5rem;
+      color: #0077b6;
+      margin-bottom: 15px;
+    }
+
+    .feature-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+
+    .cta {
+      text-align: center;
+      margin-top: 60px;
+    }
+
+    .cta a {
+      background: #0077b6;
+      color: #fff;
+      padding: 14px 28px;
+      font-size: 1rem;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+    }
+
+    .cta a:hover {
+      background: #005f8a;
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2rem;
+      }
+
+      .section h2 {
+        font-size: 1.5rem;
+      }
+
+      .cta a {
+        font-size: 0.95rem;
+      }
+    }
+
+
+      
+    </style>
+  </head>
+  <body>
+    <div id="header-placeholder"></div>
+    <section class="hero">
+      <div class="overlay">
+        <div class="hero-text">
+          <h1>Corporate Travel</h1>
+          <p>Trust us to deliver a premium travel experience that reflects your business standards.</p>
+        </div>
       </div>
+    </section>
+
+    <div class="container">
+    <section class="section">
+      <h2>Professional, Punctual & Premium Service</h2>
+      <p>
+        At Cardiff Transfers, we specialize in corporate travel solutions that prioritize reliability, comfort, and efficiency.
+        Whether you're heading to a meeting, airport, or conference, our professional drivers and executive vehicles ensure you
+        arrive on time and in style. Our services are trusted by companies across South Wales and beyond.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Why Choose Us?</h2>
+      <div class="features">
+        <div class="feature-card">
+          <i class="fas fa-briefcase"></i>
+          <h3>Business-Class Vehicles</h3>
+          <p>Travel in premium vehicles that reflect your corporate standards.</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-user-tie"></i>
+          <h3>Professional Drivers</h3>
+          <p>Polite, punctual, and experienced chauffeurs at your service.</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-clock"></i>
+          <h3>On-Time Guarantee</h3>
+          <p>We track traffic and flight schedules to ensure timely arrivals.</p>
+        </div>
+        
+      </div>
+    </section>
+
+    <div class="cta">
+      <h2>Ready to Book Your Corporate Ride?</h2>
+      <br/>
+      <a href="book-now.html">Book Now</a>
     </div>
-  </section>
+  </div>
 
-  <div id="footer-placeholder"></div>
-
-  <script src="script.js"></script>
-</body>
+  
+    <div id="footer-placeholder"></div>
+    <script src="script.js"></script>
+  </body>
 </html>

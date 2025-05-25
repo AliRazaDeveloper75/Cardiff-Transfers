@@ -12,6 +12,11 @@ document.addEventListener("DOMContentLoaded", function () {
     .then(data => {
       document.getElementById("footer-placeholder").innerHTML = data;
     });
+  fetch("te.html")
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById("te-placeholder").innerHTML = data;
+    });
 });
 
 // Sticky header scroll effect

@@ -1,284 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Add this to your head section -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places,geometry"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sticky Header Example</title>
+    <!-- Icon -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
     <link rel="stylesheet" href="booking.css" />
-        <!-- Icon -->
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-    <style>
-      .container {
-        max-width: 1200px;
-        margin: auto;
-        padding: 1rem;
-      }
-
-      .site-header {
-        position: fixed; /* changed from sticky to fixed */
-        top: 0;
-        width: 100%;
-        background: transparent;
-        color: white;
-        z-index: 1000;
-        transition: background 0.3s, box-shadow 0.3s;
-      }
-
-      /* Make header content layout with flex */
-      .header-inner {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-      }
-
-      /* Adjust navigation links */
-      .main-nav a {
-        margin: 0 10px;
-        color: inherit;
-        text-decoration: none;
-        font-weight: 500;
-      }
-
-      .site-header.scrolled {
-        background: #333;
-        color: white;
-        padding: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      }
-
-      .site-header nav a {
-        margin: 0 15px;
-        color: inherit;
-        text-decoration: none;
-      }
-
-      .site-footer {
-        background-color: #333;
-        color: #fff;
-        padding: 20px 0;
-        text-align: left;
-      }
-
-      /* Optional: Responsive styling */
-      @media (max-width: 600px) {
-        .header-inner {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .main-nav {
-          margin-top: 10px;
-          display: flex;
-          flex-direction: column;
-          gap: 5px;
-        }
-
-        .main-nav a {
-          margin: 0;
-        }
-      }
-
-      /* home page css */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        font-family: "Segoe UI", sans-serif;
-      }
-
-      .hero {
-        background: url("https://images.unsplash.com/photo-1604239282228-6a723984962c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
-          no-repeat center center/cover;
-        height: 60vh;
-        position: relative;
-      }
-
-      .overlay {
-        background-color: rgba(0, 0, 0, 0.4);
-        height: 100%;
-        width: 100%;
-        color: white;
-        display: flex;
-        justify-content: center;
-        padding: 50px;
-        align-items: center;
-      }
-
-      .hero-text {
-        max-width: 50%;
-      }
-
-      .hero-text h1 {
-        font-size: 3rem;
-        margin-bottom: 20px;
-      }
-
-      .hero-text p {
-        font-size: 1.2rem;
-        color: #d0d0d0;
-      }
-      @media (max-width: 768px) {
-        .overlay {
-          flex-direction: column;
-          align-items: flex-start;
-          justify-content: center;
-          padding: 20px;
-          text-align: left;
-        }
-
-        .hero-text {
-          margin-top: 6rem;
-          max-width: 100%;
-          margin-bottom: 30px;
-        }
-
-        .hero-text h1 {
-          font-size: 1.2rem;
-        }
-
-        .hero-text p {
-          font-size: 1rem;
-        }
-      }
-
-      .logo {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: white;
-        text-decoration: none;
-      }
-
-      .logo img {
-        height: 80px;
-        width: auto;
-        object-fit: contain;
-        display: block;
-      }
-
-      /* Burger icon default hidden */
-      .burger {
-        display: none;
-        font-size: 2rem;
-        cursor: pointer;
-        color: white;
-      }
-
-      /* Show burger icon on smaller screens */
-      @media (max-width: 768px) {
-        .burger {
-          display: block;
-        }
-
-        .main-nav {
-          display: none;
-          flex-direction: column;
-          width: 100%;
-          background: #333;
-          margin-top: 10px;
-          padding: 10px 0;
-        }
-
-        .main-nav.show {
-          display: flex;
-        }
-
-        .main-nav a {
-          padding: 10px 20px;
-          border-top: 1px solid #444;
-          color: white;
-        }
-
-        .header-inner {
-          flex-direction: row;
-          align-items: flex-start;
-        }
-      }
-
-      .section {
-        max-width: 1100px;
-        margin: 0 auto;
-      }
-
-      .card {
-        background-color: white;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-        padding: 30px;
-        margin-top: 40px;
-        margin-bottom: 40px;
-        transition: transform 0.2s ease;
-      }
-
-      .card:hover {
-        transform: translateY(-5px);
-      }
-
-      .card h2 {
-        font-size: 1.6rem;
-        margin-bottom: 20px;
-        color: #003366;
-      }
-
-      .form-group {
-        margin-bottom: 15px;
-      }
-
-      .form-group label {
-        display: block;
-        font-weight: 600;
-        margin-bottom: 6px;
-      }
-
-      .form-group input,
-      .form-group textarea {
-        width: 100%;
-        padding: 10px 12px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        font-size: 1rem;
-      }
-
-      .form-group textarea {
-        resize: vertical;
-      }
-
-      button {
-        background-color: #005bbb;
-        color: white;
-        padding: 12px 24px;
-        font-size: 1rem;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        margin-top: 10px;
-        transition: background 0.3s;
-      }
-
-      button:hover {
-        background-color: #004699;
-      }
-
-      @media (max-width: 768px) {
-        .card {
-          padding: 20px;
-        }
-      }
-
-      .section-title {
-        text-align: center;
-        font-size: 1.5rem;
-        font-weight: 800;
-        margin-bottom: 1.5rem;
-        color: #222;
-        text-transform: uppercase;
-        letter-spacing: 1.2px;
-      }
-    </style>
   </head>
   <body>
     <div id="header-placeholder"></div>
@@ -286,18 +26,15 @@
       <div class="overlay">
         <div class="hero-text">
           <h1>Book Your Trip!</h1>
-          <p>Contact Page!</p>
+          <p>Very Qucik and Affordable Private Trip Plan!</p>
         </div>
       </div>
     </section>
 
-
-      
-
     <div class="booking-form">
-           <section class="container">
-       <h2 class="section-title">Car Booking Form </h2>
-     </section>
+      <section class="container">
+        <h2 class="section-title">Car Booking Form</h2>
+      </section>
       <!-- Progress Steps -->
       <div class="progress-steps">
         <div class="step active" data-step="1">1. Trip Details</div>
@@ -308,55 +45,195 @@
 
       <!-- Step 1: Trip Details -->
       <form id="bookingFlow" class="step-content active" data-step="1">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="pickupDate">Pickup Date</label>
-            <input type="date" id="pickupDate" required />
+        <div class="trip-details-container">
+          <div class="map-section">
+            <div id="locationMap" style="height: 200px"></div>
+            <div class="map-instructions">
+              <p>Enter addresses and click "Show Route" to view the journey</p>
+            </div>
+            <button
+              type="button"
+              id="showRouteBtn"
+              class="btn-map"
+              style="width: 100%; margin-top: 10px"
+            >
+              Show Route Between Locations
+            </button>
+            
           </div>
-          <div class="form-group">
-            <label for="pickupTime">Pickup Time</label>
-            <input type="time" id="pickupTime" required />
-          </div>
-           <div class="form-group">
-          <label for="transferType">Transfer Type</label>
-          <select id="transferType" required>
-            <option value="">Select Transfer Type</option>
-            <option value="one-way">One Way</option>
-            <option value="round-trip">Round Trip</option>
-          </select>
-        </div>
-        </div>
+          <div class="form-section">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="pickupDate">Pickup Date</label>
+                <input type="date" id="pickupDate" required />
+              </div>
+              <div class="form-group">
+                <label for="pickupTime">Pickup Time</label>
+                <input type="time" id="pickupTime" required />
+              </div>
+              <div class="form-group">
+                <label for="transferType">Transfer Type</label>
+                <select id="transferType" required>
+                  <option value="">Select Transfer Type</option>
+                  <option value="one-way">One Way</option>
+                  <option value="round-trip">Round Trip</option>
+                </select>
+              </div>
+            </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label for="pickupLocation">Pickup Location</label>
-            <input
-              type="text"
-              id="pickupLocation"
-              placeholder="Airport or Address"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="dropoffLocation">Drop-off Location</label>
-            <input
-              type="text"
-              id="dropoffLocation"
-              placeholder="Airport or Address"
-              required
-            />
+            <div class="form-row">
+              <div class="form-group">
+                <label for="pickupLocation">Pickup Location</label>
+                <input
+                  type="text"
+                  id="pickupLocation"
+                  placeholder="Enter airport or full address"
+                  required
+                />
+                <button type="button" id="pickupLocationBtn" class="btn-map">
+                  Show on Map
+                </button>
+              </div>
+              <div class="form-group">
+                <label for="dropoffLocation">Drop-off Location</label>
+                <input
+                  type="text"
+                  id="dropoffLocation"
+                  placeholder="Enter airport or full address"
+                  required
+                />
+                <button type="button" id="dropoffLocationBtn" class="btn-map">
+                  Show on Map
+                </button>
+              </div>
+            </div>
+            <button type="button" class="btn-next">
+              Continue to Vehicle Selection
+            </button>
           </div>
         </div>
-       
+        <div id="routeInfo" class="route-info"></div>
 
-        <button type="button" class="btn-next">
-          Continue to Vehicle Selection
-        </button>
       </form>
 
       <!-- Step 2: Vehicle Selection -->
       <form id="vehicleSelection" class="step-content" data-step="2">
         <h3>Select Your Vehicle</h3>
+        <div class="vehicle-options">
+          <!-- Sedan -->
+          <div
+            class="vehicle-card"
+            data-type="sedan"
+            data-price="455"
+            data-passengers="3"
+            data-bags="3"
+          >
+            <img src="./Assets/8.png" alt="Sedan" />
+            <div class="vehicle-details">
+              <div class="vehicle-type">Sedan: Octavia</div>
+              <div class="price">€455.00</div>
+              <ul class="specs">
+                <li class="spec-item">
+                  <i class="fas fa-user"></i> 3 passengers
+                </li>
+                <li class="spec-item">
+                  <i class="fas fa-snowflake"></i> Air-conditioned
+                </li>
+                <li class="spec-item">
+                  <i class="fas fa-cog"></i> Automatic transmission
+                </li>
+                <li class="spec-item">
+                  <i class="fas fa-car"></i> Full leather interior
+                </li>
+                <li class="spec-item">
+                  <i class="fas fa-wifi"></i> On Board WiFi
+                </li>
+                <li class="spec-item">
+                  <i class="fas fa-glass-whiskey"></i> Bottled water & snacks
+                </li>
+              </ul>
+              <div class="vehicle-actions">
+                <button type="button" class="btn-select">SELECT</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Van -->
+          <div
+            class="vehicle-card"
+            data-type="van"
+            data-price="555"
+            data-passengers="7"
+            data-bags="5"
+          >
+            <img src="./Assets/107.png" alt="Van" />
+            <div class="vehicle-details">
+              <div class="vehicle-type">Van: Mercedes V-Class</div>
+              <div class="price">€555.00</div>
+              <ul class="specs">
+                <li class="spec-item">
+                  <i class="fas fa-user"></i> 7 passengers
+                </li>
+                <li class="spec-item">
+                  <i class="fas fa-snowflake"></i> Air-conditioned
+                </li>
+                <li class="spec-item">
+                  <i class="fas fa-cog"></i> Automatic transmission
+                </li>
+                <li class="spec-item">
+                  <i class="fas fa-car"></i> Full leather interior
+                </li>
+                <li class="spec-item">
+                  <i class="fas fa-wifi"></i> On Board WiFi
+                </li>
+                <li class="spec-item">
+                  <i class="fas fa-glass-whiskey"></i> Bottled water & snacks
+                </li>
+              </ul>
+              <div class="vehicle-actions">
+                <button type="button" class="btn-select">SELECT</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Minibus -->
+          <div
+            class="vehicle-card"
+            data-type="minibus"
+            data-price="655"
+            data-passengers="12"
+            data-bags="8"
+          >
+            <img src="./Assets/car.png" alt="Minibus" />
+            <div class="vehicle-details">
+              <div class="vehicle-type">Minibus: Mercedes Sprinter</div>
+              <div class="price">€655.00</div>
+              <ul class="specs">
+                <li class="spec-item">
+                  <i class="fas fa-user"></i> 12 passengers
+                </li>
+                <li class="spec-item">
+                  <i class="fas fa-snowflake"></i> Air-conditioned
+                </li>
+                <li class="spec-item">
+                  <i class="fas fa-cog"></i> Automatic transmission
+                </li>
+                <li class="spec-item">
+                  <i class="fas fa-car"></i> Full leather interior
+                </li>
+                <li class="spec-item">
+                  <i class="fas fa-wifi"></i> On Board WiFi
+                </li>
+                <li class="spec-item">
+                  <i class="fas fa-glass-whiskey"></i> Bottled water & snacks
+                </li>
+              </ul>
+              <div class="vehicle-actions">
+                <button type="button" class="btn-select">SELECT</button>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="vehicle-options">
           <!-- Sedan -->
           <div

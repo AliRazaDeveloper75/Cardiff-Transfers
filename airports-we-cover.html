@@ -1,26 +1,333 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sticky Header Example</title>
-  <link rel="stylesheet" href="styles.css"/>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booking Confirmation | Cardiff Transfers</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+    <style>
+      .container {
+        max-width: 1200px;
+        margin: auto;
+        padding: 1rem;
+      }
 
-  <div id="header-placeholder"></div>
+      .site-header {
+        position: fixed; /* changed from sticky to fixed */
+        top: 0;
+        width: 100%;
+        background: transparent;
+        color: white;
+        z-index: 1000;
+        transition: background 0.3s, box-shadow 0.3s;
+      }
 
-  <section class="hero">
-    <div class="overlay">
-      <div class="hero-text">
-        <h1>Airports-We-Cover</h1>
-        <p>Airports-We-Cover Page!</p>
+      /* Make header content layout with flex */
+      .header-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      /* Adjust navigation links */
+      .main-nav a {
+        margin: 0 10px;
+        color: inherit;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .site-header.scrolled {
+        background: #333;
+        color: white;
+        padding: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .site-header nav a {
+        margin: 0 15px;
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .site-footer {
+        background-color: #333;
+        color: #fff;
+        padding: 20px 0;
+        text-align: left;
+      }
+
+      /* Optional: Responsive styling */
+      @media (max-width: 600px) {
+        .header-inner {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .main-nav {
+          margin-top: 10px;
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+        }
+
+        .main-nav a {
+          margin: 0;
+        }
+      }
+
+      /* home page css */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      .hero {
+        background: url("https://images.unsplash.com/photo-1494783367193-149034c05e8f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
+          no-repeat center center/cover;
+        height: 70vh;
+        position: relative;
+      }
+
+      .overlay {
+        background-color: rgba(0, 0, 0, 0.4);
+        height: 100%;
+        width: 100%;
+        color: white;
+        display: flex;
+        justify-content: center;
+        padding: 50px;
+        align-items: center;
+      }
+
+      .hero-text {
+        max-width: 50%;
+        text-align: center;
+      }
+
+      .hero-text h1 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+      }
+
+      .hero-text p {
+        font-size: 1.2rem;
+        color: #d0d0d0;
+      }
+
+      @media (max-width: 768px) {
+        .overlay {
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+          padding: 20px;
+          text-align: left;
+        }
+
+        .hero-text {
+          margin-top: 6rem;
+          max-width: 100%;
+          margin-bottom: 30px;
+        }
+
+        .hero-text h1 {
+          font-size: 1.2rem;
+        }
+
+        .hero-text p {
+          font-size: 1rem;
+        }
+
+        .booking-form {
+          width: 100%;
+        }
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: white;
+        text-decoration: none;
+      }
+
+      .logo img {
+        height: 50px;
+        width: auto;
+        object-fit: contain;
+        display: block;
+      }
+
+      /* Burger icon default hidden */
+      .burger {
+        display: none;
+        font-size: 2rem;
+        cursor: pointer;
+        color: white;
+      }
+
+      /* Show burger icon on smaller screens */
+      @media (max-width: 768px) {
+        .burger {
+          display: block;
+        }
+
+        .main-nav {
+          display: none;
+          flex-direction: column;
+          width: 100%;
+          background: #333;
+          margin-top: 10px;
+          padding: 10px 0;
+        }
+
+        .main-nav.show {
+          display: flex;
+        }
+
+        .main-nav a {
+          padding: 10px 20px;
+          border-top: 1px solid #444;
+          color: white;
+        }
+
+        .header-inner {
+          flex-direction: row;
+          align-items: flex-start;
+        }
+      }
+
+      .section {
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      .airports-section h1 {
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+      }
+
+      .subheading {
+        text-align: center;
+        font-size: 1.1rem;
+        margin-bottom: 40px;
+        color: #666;
+      }
+
+      .airport-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+      }
+
+      .airport-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 25px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease;
+      }
+
+      .airport-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .airport-card i {
+        font-size: 2.5rem;
+        color: #0077b6;
+        margin-bottom: 15px;
+      }
+
+      .airport-card h3 {
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+      }
+
+      .airport-card p {
+        color: #666;
+        font-size: 0.95rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="header-placeholder"></div>
+
+    <section class="hero">
+      <div class="overlay">
+        <div class="hero-text">
+          <h1>Airports We Cover</h1>
+          <p>Reliable transfers to and from major UK airports.</p>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <div id="footer-placeholder"></div>
+    <section class="airports-section">
+      <div class="container">
+        <h1>Airports We Cover</h1>
+        <p class="subheading">
+          At Cardiff Transfers, we provide reliable and comfortable transport
+          services to and from major airports across the UK. Whether you're
+          flying out for business or returning from a holiday, our licensed and
+          experienced drivers ensure a smooth journey from your doorstep to the
+          terminal. We proudly serve Heathrow, Gatwick, Bristol, Cardiff,
+          Birmingham, Luton, and more — offering punctual pickups, competitive
+          rates, and modern vehicles tailored to your travel needs. Let us take
+          the stress out of airport travel.
+        </p>
 
-  <script src="script.js"></script>
-</body>
+        <div class="airport-grid">
+          <div class="airport-card">
+            <i class="fas fa-plane-departure"></i>
+            <h3>Heathrow Airport</h3>
+            <p>All terminals covered with meet & greet option.</p>
+          </div>
+          <div class="airport-card">
+            <i class="fas fa-plane-arrival"></i>
+            <h3>Gatwick Airport</h3>
+            <p>North & South terminals included in our service.</p>
+          </div>
+          <div class="airport-card">
+            <i class="fas fa-plane"></i>
+            <h3>Bristol Airport</h3>
+            <p>Fast and safe travel to/from Bristol Airport.</p>
+          </div>
+          <div class="airport-card">
+            <i class="fas fa-helicopter"></i>
+            <h3>Cardiff Airport</h3>
+            <p>Local airport with quick booking and transfers.</p>
+          </div>
+          <div class="airport-card">
+            <i class="fas fa-plane-slash"></i>
+            <h3>Birmingham Airport</h3>
+            <p>Long-distance executive transfers available.</p>
+          </div>
+          <div class="airport-card">
+            <i class="fas fa-suitcase-rolling"></i>
+            <h3>Luton Airport</h3>
+            <p>Door-to-door service with luggage assistance.</p>
+          </div>
+          <div class="airport-card">
+            <i class="fas fa-plane-departure"></i>
+            <h3>Heathrow Airport</h3>
+            <p>All terminals covered with meet & greet option.</p>
+          </div>
+          <div class="airport-card">
+            <i class="fas fa-plane-arrival"></i>
+            <h3>Gatwick Airport</h3>
+            <p>North & South terminals included in our service.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div id="te-placeholder"></div>
+
+    <div id="footer-placeholder"></div>
+    <script src="script.js"></script>
+  </body>
 </html>
