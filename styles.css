@@ -1,3 +1,4 @@
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -388,4 +389,190 @@ body {
   width: auto;
   object-fit: contain;
   display: block;
+}
+
+
+
+
+
+      /* Autocomplete styles */
+      .autocomplete {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+      }
+
+      .autocomplete-items {
+        position: absolute;
+        border: 1px solid #d4d4d4;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+        top: 100%;
+        left: 0;
+        right: 0;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+
+      .autocomplete-items div {
+        padding: 10px;
+        cursor: pointer;
+        background-color: #fff;
+        border-bottom: 1px solid #d4d4d4;
+      }
+
+      .autocomplete-items div:hover {
+        background-color: #e9e9e9;
+      }
+
+      .autocomplete-active {
+        background-color: #005aaa !important;
+        color: #ffffff;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: #f8f9fb;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        align-items: center;
+        margin: auto;
+      }
+
+      .section-title {
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        color: #222;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        position: relative;
+        padding-bottom: 0.5rem;
+      }
+      .section-title::after {
+        content: "";
+        width: 60px;
+        height: 4px;
+        background: #000;
+        display: block;
+        margin: 0.5rem auto 0;
+        border-radius: 2px;
+      }
+
+      .features,
+      .services,
+      .coverage {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .card {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        padding: 1.5rem;
+        text-align: center;
+      }
+
+      .card i {
+        font-size: 2rem;
+        color: black;
+        margin-bottom: 0.5rem;
+      }
+
+      .map-section {
+        text-align: center;
+        background: #fff;
+        padding: 3rem 1rem;
+      }
+
+      .map-section img {
+        width: 100%;
+        max-width: 700px;
+        border-radius: 10px;
+        margin-top: 1rem;
+      }
+
+      .booking {
+        background: #005aaa;
+        color: white;
+        padding: 3rem 1rem;
+        text-align: center;
+      }
+
+      .booking h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      .booking p {
+        margin-bottom: 1.5rem;
+      }
+
+      .booking a {
+        background: #fff;
+        color: #005aaa;
+        padding: 0.75rem 1.5rem;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: 0.3s ease;
+      }
+
+      .booking a:hover {
+        background: #ffcc00;
+        color: #000;
+      }
+
+      @media (max-width: 768px) {
+        header h1 {
+          font-size: 2rem;
+        }
+      }
+    
+
+
+      .input-container {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.input-container input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.input-container .placeholder {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  color: #999;
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+/* Hide placeholder when input has value or is focused */
+.input-container input:focus + .placeholder,
+.input-container input:not(:placeholder-shown) + .placeholder {
+  top: -10px;
+  left: 10px;
+  font-size: 12px;
+  background: white;
+  padding: 0 5px;
+  color: black;
 }
