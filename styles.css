@@ -338,13 +338,6 @@ body {
 .card:hover {
   transform: translateY(-5px);
 }
-
-.icon {
-  display: inline-block;
-  font-size: 36px;
-  margin-bottom: 10px;
-}
-
 .card h3 {
   font-size: 16px;
   margin-bottom: 10px;
@@ -571,4 +564,21 @@ body {
   background: white;
   padding: 0 5px;
   color: black;
+}
+
+
+
+.input-icon {
+  position: absolute;
+  width: 17px;
+  right: 7px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.input-icon-pickup {
+  position: absolute;
+  width: 16px;
+  right: 16px;
+  top: 49%;
+  transform: translateY(-50%);
 }
