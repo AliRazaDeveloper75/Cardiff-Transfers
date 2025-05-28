@@ -290,21 +290,6 @@
       <!-- Step 1: Trip Details -->
       <form id="bookingFlow" class="step-content active" data-step="1">
         <div class="trip-details-container">
-          <div class="map-section">
-            <div id="locationMap" style="height: 200px;"></div>
-            <div class="map-instructions">
-              <p>Enter addresses and click "Show Route" to view the journey</p>
-            </div>
-            <button
-              type="button"
-              id="showRouteBtn"
-              class="btn-map"
-              style="width: 100%; margin-top: 10px"
-            >
-              Show Route Between Locations
-            </button>
-          </div>
-
           <div class="form-section">
             <div class="form-row">
               <div class="form-group">
@@ -708,183 +693,169 @@
     <script src="script.js"></script>
 
     <script>
-      // Initialize Google Map
-      let map;
-      let directionsService;
-      let directionsRenderer;
-      let pickupMarker;
-      let dropoffMarker;
-      let autocompletePickup;
-      let autocompleteDropoff;
+  // Initialize Google Map
+  let routeMap;
+  let directionsService;
+  let directionsRenderer;
+  let pickupMarker;
+  let dropoffMarker;
+  let autocompletePickup;
+  let autocompleteDropoff;
+  let mapInitialized = false;
 
-      function initMap() {
-        // Create a new map centered on a default location
-        map = new google.maps.Map(document.getElementById("locationMap"), {
-          center: { lat: 51.505, lng: -0.09 },
-          zoom: 13,
-        });
-        map = new google.maps.Map(document.getElementById("route-map"), {
-          center: { lat: 51.505, lng: -0.09 },
-          zoom: 13,
-        });
+  function initMap() {
+    // Only initialize if not already done
+    if (mapInitialized) return;
+    
+    // Create the route map container
+    const routeMapContainer = document.getElementById("route-map");
+    routeMapContainer.style.display = "none"; // Hide initially
+    
+    routeMap = new google.maps.Map(routeMapContainer, {
+      center: { lat: 51.505, lng: -0.09 },
+      zoom: 13,
+    });
 
-        // Initialize directions service and renderer
-        directionsService = new google.maps.DirectionsService();
-        directionsRenderer = new google.maps.DirectionsRenderer({
-          map: map,
-          suppressMarkers: true,
-          polylineOptions: {
-            strokeColor: "#3b82f6",
-            strokeOpacity: 0.7,
-            strokeWeight: 5,
-          },
-        });
+    // Initialize directions service and renderer
+    directionsService = new google.maps.DirectionsService();
+    directionsRenderer = new google.maps.DirectionsRenderer({
+      map: routeMap,
+      suppressMarkers: true,
+      polylineOptions: {
+        strokeColor: "#3b82f6",
+        strokeOpacity: 0.7,
+        strokeWeight: 5,
+      },
+    });
 
-        // Initialize autocomplete for pickup and dropoff locations
-        autocompletePickup = new google.maps.places.Autocomplete(
-          document.getElementById("pickupLocation"),
-          { types: ["geocode"] }
-        );
+    // Initialize autocomplete
+    autocompletePickup = new google.maps.places.Autocomplete(
+      document.getElementById("pickupLocation"),
+      { types: ["geocode"] }
+    );
 
-        autocompleteDropoff = new google.maps.places.Autocomplete(
-          document.getElementById("dropoffLocation"),
-          { types: ["geocode"] }
-        );
+    autocompleteDropoff = new google.maps.places.Autocomplete(
+      document.getElementById("dropoffLocation"),
+      { types: ["geocode"] }
+    );
 
-        // Add event listeners for the buttons
-        document
-          .getElementById("pickupLocationBtn")
-          .addEventListener("click", () => {
-            updateMap(document.getElementById("pickupLocation"), true);
-          });
+    // Add event listeners
+    document.getElementById("pickupLocationBtn").addEventListener("click", () => {
+      updateMap(document.getElementById("pickupLocation"), true);
+    });
 
-        document
-          .getElementById("dropoffLocationBtn")
-          .addEventListener("click", () => {
-            updateMap(document.getElementById("dropoffLocation"), false);
-          });
+    document.getElementById("dropoffLocationBtn").addEventListener("click", () => {
+      updateMap(document.getElementById("dropoffLocation"), false);
+    });
 
-        document
-          .getElementById("showRouteBtn")
-          .addEventListener("click", showRoute);
+    mapInitialized = true;
+  }
+
+  function updateMap(locationInput, isPickup) {
+    const place = isPickup
+      ? autocompletePickup.getPlace()
+      : autocompleteDropoff.getPlace();
+
+    if (!place || !place.geometry) {
+      alert("Please select a valid address from the suggestions.");
+      return;
+    }
+
+    // Remove existing marker
+    if (isPickup && pickupMarker) {
+      pickupMarker.setMap(null);
+    } else if (!isPickup && dropoffMarker) {
+      dropoffMarker.setMap(null);
+    }
+
+    // Create new marker
+    const marker = new google.maps.Marker({
+      position: place.geometry.location,
+      map: routeMap,
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        fillColor: isPickup ? "#4285F4" : "#EA4335",
+        fillOpacity: 1,
+        strokeColor: "#FFFFFF",
+        strokeWeight: 2,
+        scale: 10,
+      },
+      title: place.name,
+    });
+
+    if (isPickup) {
+      pickupMarker = marker;
+    } else {
+      dropoffMarker = marker;
+    }
+
+    // Show map only when both addresses are set
+    if (pickupMarker && dropoffMarker) {
+      document.getElementById("route-map").style.display = "block";
+      document.getElementById("routeInfo").style.display = "block";
+      showRoute();
+    }
+  }
+
+  function showRoute() {
+    const request = {
+      origin: pickupMarker.getPosition(),
+      destination: dropoffMarker.getPosition(),
+      travelMode: google.maps.TravelMode.DRIVING,
+    };
+
+    directionsService.route(request, (result, status) => {
+      if (status === google.maps.DirectionsStatus.OK) {
+        directionsRenderer.setDirections(result);
+
+        const route = result.routes[0].legs[0];
+        const distance = route.distance.text;
+        const duration = route.duration.text;
+
+        // Update and show route info
+        document.getElementById("routeInfo").innerHTML = `
+        <div><strong>Your Transfer:</strong></div>
+          <div class="route-detail">
+            <span class="pickup-marker"></span>
+            <strong>Pickup:</strong> ${document.getElementById("pickupLocation").value}
+          </div>
+          <div class="route-detail">
+            <span class="dropoff-marker"></span>
+            <strong>Drop-off:</strong> ${document.getElementById("dropoffLocation").value}
+          </div>
+          <div class="route-stats">
+            <div><strong>Distance:</strong> ${distance}</div>
+            <div><strong>Duration:</strong> ${duration}</div>
+          </div>
+        `;
+
+        // Fit bounds to show the entire route
+        const bounds = new google.maps.LatLngBounds();
+        bounds.extend(pickupMarker.getPosition());
+        bounds.extend(dropoffMarker.getPosition());
+        routeMap.fitBounds(bounds);
+      } else {
+        console.error("Directions request failed:", status);
+        const bounds = new google.maps.LatLngBounds();
+        bounds.extend(pickupMarker.getPosition());
+        bounds.extend(dropoffMarker.getPosition());
+        routeMap.fitBounds(bounds);
       }
+    });
+  }
 
-      // Function to update map with location
-      function updateMap(locationInput, isPickup) {
-        const place = isPickup
-          ? autocompletePickup.getPlace()
-          : autocompleteDropoff.getPlace();
-
-        if (!place || !place.geometry) {
-          alert(
-            "Location not found. Please select a valid address from the suggestions."
-          );
-          return;
-        }
-
-        // Remove existing marker
-        if (isPickup && pickupMarker) {
-          pickupMarker.setMap(null);
-        } else if (!isPickup && dropoffMarker) {
-          dropoffMarker.setMap(null);
-        }
-
-        // Create new marker
-        const marker = new google.maps.Marker({
-          position: place.geometry.location,
-          map: map,
-          icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            fillColor: isPickup ? "#4285F4" : "#EA4335",
-            fillOpacity: 1,
-            strokeColor: "#FFFFFF",
-            strokeWeight: 2,
-            scale: 10,
-          },
-          title: place.name,
-        });
-
-        // Create info window
-        const infowindow = new google.maps.InfoWindow({
-          content: `<b>${isPickup ? "Pickup" : "Drop-off"}:</b> ${
-            place.formatted_address
-          }`,
-        });
-
-        marker.addListener("click", () => {
-          infowindow.open(map, marker);
-        });
-        infowindow.open(map, marker);
-
-        if (isPickup) {
-          pickupMarker = marker;
-        } else {
-          dropoffMarker = marker;
-        }
-
-        // Center map on the marker
-        map.setCenter(place.geometry.location);
-        map.setZoom(15);
-
-        // Auto-show route if both locations are set
-        if (pickupMarker && dropoffMarker) {
-          showRoute();
-        }
-      }
-
-      // Function to show route between points
-      function showRoute() {
-        if (!pickupMarker || !dropoffMarker) {
-          console.log("Both locations not set yet");
-          return;
-        }
-
-        const request = {
-          origin: pickupMarker.getPosition(),
-          destination: dropoffMarker.getPosition(),
-          travelMode: google.maps.TravelMode.DRIVING,
-        };
-
-        directionsService.route(request, (result, status) => {
-          if (status === google.maps.DirectionsStatus.OK) {
-            directionsRenderer.setDirections(result);
-
-            // Get route information
-            const route = result.routes[0].legs[0];
-            const distance = route.distance.text;
-            const duration = route.duration.text;
-
-            // Update route info
-            document.getElementById("routeInfo").innerHTML = `
-              <p><span class="pickup-marker"></span> <strong>Pickup:</strong> ${
-                document.getElementById("pickupLocation").value
-              }</p>
-              <p><span class="dropoff-marker"></span> <strong>Drop-off:</strong> ${
-                document.getElementById("dropoffLocation").value
-              }</p>
-              <p><strong>Distance:</strong> ${distance}</p>
-              <p><strong>Estimated duration:</strong> ${duration}</p>
-            `;
-
-            // Fit bounds to show the entire route
-            const bounds = new google.maps.LatLngBounds();
-            bounds.extend(pickupMarker.getPosition());
-            bounds.extend(dropoffMarker.getPosition());
-            map.fitBounds(bounds);
-          } else {
-            console.error("Directions request failed:", status);
-            // Fallback to just showing markers if routing fails
-            const bounds = new google.maps.LatLngBounds();
-            bounds.extend(pickupMarker.getPosition());
-            bounds.extend(dropoffMarker.getPosition());
-            map.fitBounds(bounds);
-          }
-        });
-      }
-
-      // Initialize the map when the window loads
-      window.onload = initMap;
-    </script>
+  // Initialize when DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById("route-map")) {
+      // Load Google Maps API
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBh1KQfw1e4u8SRfQuDkC2G5rjhd_nxlI8&libraries=places&callback=initMap`;
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+    }
+  });
+</script>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
