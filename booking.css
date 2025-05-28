@@ -262,6 +262,7 @@
 .form-row {
   display: flex;
   gap: 1rem;
+  width: 100%;
 }
 
 .form-row .form-group {
@@ -489,3 +490,11 @@
 
 
 
+.route-info-map{
+  display: flex;
+  background-color: #f8f9fa;
+  flex-direction: row;
+  gap: 5rem;
+  padding: 2%;
+  margin-top: 2%;
+}

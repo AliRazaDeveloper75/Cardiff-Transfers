@@ -5,7 +5,8 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBh1KQfw1e4u8SRfQuDkC2G5rjhd_nxlI8&libraries=places,geometry"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sticky Header Example</title>
+    <link rel="icon" href="./Assets/logo.ico" type="image/x-icon" />
+    <title>Book Now</title>
     <!-- Icon -->
     <link
       rel="stylesheet"
@@ -19,7 +20,6 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <link rel="stylesheet" href="booking.css" />
-    <link rel="stylesheet" href=".css" />
     <style>
       /* Add these styles for the Google Map */
       #locationMap {
@@ -126,7 +126,7 @@
       }
 
       .hero {
-        background: url("https://images.unsplash.com/photo-1604239282228-6a723984962c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
+        background: url("https://i0.wp.com/cardiffyouthcouncil.com/wp-content/uploads/2020/09/cropped-cardiff-skyline.jpg?ssl=1")
           no-repeat center center/cover;
         height: 70vh;
         position: relative;
@@ -306,6 +306,7 @@
               Show Route Between Locations
             </button>
           </div>
+
           <div class="form-section">
             <div class="form-row">
               <div class="form-group">
@@ -326,6 +327,18 @@
               </div>
             </div>
 
+            <div class="form-row">
+<div class="form-row" id="returnFields" style="display: none;">
+  <div class="form-group">
+    <label for="returnDate">Return Date</label>
+    <input type="date" id="returnDate" />
+  </div>
+  <div class="form-group">
+    <label for="returnTime">Return Time</label>
+    <input type="time" id="returnTime" />
+  </div>
+</div>
+            </div>
             <div class="form-row">
               <div class="form-group">
                 <label for="pickupLocation">Pickup Location</label>
@@ -352,12 +365,21 @@
                 </button>
               </div>
             </div>
+            
             <button type="button" class="btn-next">
               Continue to Vehicle Selection
             </button>
           </div>
         </div>
-        <div id="routeInfo" class="route-info"></div>
+
+        
+          <div class="route-info-map">
+            <div class="map-section">
+              <div id="route-map" style="height: 200px"></div>
+              <div class="map-instructions"></div>
+            </div>
+            <div id="routeInfo" class="route-info"></div>
+        </div>
       </form>
 
       <!-- Step 2: Vehicle Selection -->
@@ -704,6 +726,10 @@
           center: { lat: 51.505, lng: -0.09 },
           zoom: 13,
         });
+        map = new google.maps.Map(document.getElementById("route-map"), {
+          center: { lat: 51.505, lng: -0.09 },
+          zoom: 13,
+        });
 
         // Initialize directions service and renderer
         directionsService = new google.maps.DirectionsService();
@@ -862,5 +888,21 @@
       // Initialize the map when the window loads
       window.onload = initMap;
     </script>
+
+    <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const transferType = document.getElementById("transferType");
+    const returnFields = document.getElementById("returnFields");
+
+    transferType.addEventListener("change", function () {
+      if (this.value === "round-trip") {
+        returnFields.style.display = "flex"; // Or "block", depending on your layout
+      } else {
+        returnFields.style.display = "none";
+      }
+    });
+  });
+</script>
+
   </body>
 </html>
