@@ -12,10 +12,15 @@ document.addEventListener("DOMContentLoaded", function () {
     .then(data => {
       document.getElementById("footer-placeholder").innerHTML = data;
     });
-  fetch("te.html")
+  fetch("Pages/icon.html")
     .then(res => res.text())
     .then(data => {
       document.getElementById("te-placeholder").innerHTML = data;
+    });
+  fetch("Pages/booking-detail.html")
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById("book-now-placeholder").innerHTML = data;
     });
 });
 
@@ -36,6 +41,7 @@ function initScrollEffect() {
   }
 
 
+  
 
 
   document.addEventListener('DOMContentLoaded', function() {

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <!-- Add this to your head section -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places,geometry"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBh1KQfw1e4u8SRfQuDkC2G5rjhd_nxlI8&libraries=places,geometry"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sticky Header Example</title>
@@ -21,6 +21,28 @@
     <link rel="stylesheet" href="booking.css" />
     <link rel="stylesheet" href=".css" />
     <style>
+      /* Add these styles for the Google Map */
+      #locationMap {
+        height: 400px;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .pickup-marker {
+        background-color: blue;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 2px solid white;
+      }
+
+      .dropoff-marker {
+        background-color: red;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 2px solid white;
+      }
       .container {
         max-width: 1200px;
         margin: auto;
@@ -220,8 +242,6 @@
         max-width: 1100px;
         margin: 0 auto;
       }
-
-   
 
       button {
         background-color: #005bbb;
@@ -664,7 +684,183 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="booking.js"></script>
+    <div id="book-now-placeholder"></div>
     <div id="footer-placeholder"></div>
     <script src="script.js"></script>
+
+    <script>
+      // Initialize Google Map
+      let map;
+      let directionsService;
+      let directionsRenderer;
+      let pickupMarker;
+      let dropoffMarker;
+      let autocompletePickup;
+      let autocompleteDropoff;
+
+      function initMap() {
+        // Create a new map centered on a default location
+        map = new google.maps.Map(document.getElementById("locationMap"), {
+          center: { lat: 51.505, lng: -0.09 },
+          zoom: 13,
+        });
+
+        // Initialize directions service and renderer
+        directionsService = new google.maps.DirectionsService();
+        directionsRenderer = new google.maps.DirectionsRenderer({
+          map: map,
+          suppressMarkers: true,
+          polylineOptions: {
+            strokeColor: "#3b82f6",
+            strokeOpacity: 0.7,
+            strokeWeight: 5,
+          },
+        });
+
+        // Initialize autocomplete for pickup and dropoff locations
+        autocompletePickup = new google.maps.places.Autocomplete(
+          document.getElementById("pickupLocation"),
+          { types: ["geocode"] }
+        );
+
+        autocompleteDropoff = new google.maps.places.Autocomplete(
+          document.getElementById("dropoffLocation"),
+          { types: ["geocode"] }
+        );
+
+        // Add event listeners for the buttons
+        document
+          .getElementById("pickupLocationBtn")
+          .addEventListener("click", () => {
+            updateMap(document.getElementById("pickupLocation"), true);
+          });
+
+        document
+          .getElementById("dropoffLocationBtn")
+          .addEventListener("click", () => {
+            updateMap(document.getElementById("dropoffLocation"), false);
+          });
+
+        document
+          .getElementById("showRouteBtn")
+          .addEventListener("click", showRoute);
+      }
+
+      // Function to update map with location
+      function updateMap(locationInput, isPickup) {
+        const place = isPickup
+          ? autocompletePickup.getPlace()
+          : autocompleteDropoff.getPlace();
+
+        if (!place || !place.geometry) {
+          alert(
+            "Location not found. Please select a valid address from the suggestions."
+          );
+          return;
+        }
+
+        // Remove existing marker
+        if (isPickup && pickupMarker) {
+          pickupMarker.setMap(null);
+        } else if (!isPickup && dropoffMarker) {
+          dropoffMarker.setMap(null);
+        }
+
+        // Create new marker
+        const marker = new google.maps.Marker({
+          position: place.geometry.location,
+          map: map,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: isPickup ? "#4285F4" : "#EA4335",
+            fillOpacity: 1,
+            strokeColor: "#FFFFFF",
+            strokeWeight: 2,
+            scale: 10,
+          },
+          title: place.name,
+        });
+
+        // Create info window
+        const infowindow = new google.maps.InfoWindow({
+          content: `<b>${isPickup ? "Pickup" : "Drop-off"}:</b> ${
+            place.formatted_address
+          }`,
+        });
+
+        marker.addListener("click", () => {
+          infowindow.open(map, marker);
+        });
+        infowindow.open(map, marker);
+
+        if (isPickup) {
+          pickupMarker = marker;
+        } else {
+          dropoffMarker = marker;
+        }
+
+        // Center map on the marker
+        map.setCenter(place.geometry.location);
+        map.setZoom(15);
+
+        // Auto-show route if both locations are set
+        if (pickupMarker && dropoffMarker) {
+          showRoute();
+        }
+      }
+
+      // Function to show route between points
+      function showRoute() {
+        if (!pickupMarker || !dropoffMarker) {
+          console.log("Both locations not set yet");
+          return;
+        }
+
+        const request = {
+          origin: pickupMarker.getPosition(),
+          destination: dropoffMarker.getPosition(),
+          travelMode: google.maps.TravelMode.DRIVING,
+        };
+
+        directionsService.route(request, (result, status) => {
+          if (status === google.maps.DirectionsStatus.OK) {
+            directionsRenderer.setDirections(result);
+
+            // Get route information
+            const route = result.routes[0].legs[0];
+            const distance = route.distance.text;
+            const duration = route.duration.text;
+
+            // Update route info
+            document.getElementById("routeInfo").innerHTML = `
+              <p><span class="pickup-marker"></span> <strong>Pickup:</strong> ${
+                document.getElementById("pickupLocation").value
+              }</p>
+              <p><span class="dropoff-marker"></span> <strong>Drop-off:</strong> ${
+                document.getElementById("dropoffLocation").value
+              }</p>
+              <p><strong>Distance:</strong> ${distance}</p>
+              <p><strong>Estimated duration:</strong> ${duration}</p>
+            `;
+
+            // Fit bounds to show the entire route
+            const bounds = new google.maps.LatLngBounds();
+            bounds.extend(pickupMarker.getPosition());
+            bounds.extend(dropoffMarker.getPosition());
+            map.fitBounds(bounds);
+          } else {
+            console.error("Directions request failed:", status);
+            // Fallback to just showing markers if routing fails
+            const bounds = new google.maps.LatLngBounds();
+            bounds.extend(pickupMarker.getPosition());
+            bounds.extend(dropoffMarker.getPosition());
+            map.fitBounds(bounds);
+          }
+        });
+      }
+
+      // Initialize the map when the window loads
+      window.onload = initMap;
+    </script>
   </body>
 </html>

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Airport Transfer | Cardiff Transfers</title>
+    <style>
+        :root {
+            --primary-color: #003366;
+            --secondary-color: #ffcc00;
+            --accent-color: #e63946;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --gray-color: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: var(--light-color);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .divider {
+            border-top: 2px solid var(--secondary-color);
+            margin: 1.5rem auto;
+            width: 100px;
+        }
+        
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            font-size: 1.8rem;
+        }
+        
+        .booking-methods {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .method {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .method h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .method-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+        
+        .requirements {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .requirements ul {
+            list-style-type: none;
+        }
+        
+        .requirements li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .requirements li:last-child {
+            border-bottom: none;
+        }
+        
+        .payment-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        
+        .payment-option {
+            background: var(--secondary-color);
+            color: var(--dark-color);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        
+        .expectations {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .expectation {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .expectation h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .cta {
+            text-align: center;
+            padding: 3rem 0;
+            background: linear-gradient(rgba(0, 51, 102, 0.9), rgba(0, 51, 102, 0.9)), url('https://images.unsplash.com/photo-1476900543704-4312b78632f4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+        }
+        
+        .cta h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .cta p {
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .btn:hover {
+            background-color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-large {
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .feature {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            animation: modalopen 0.5s;
+        }
+        
+        @keyframes modalopen {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .close {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            color: var(--gray-color);
+            cursor: pointer;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+        }
+        
+        .track-booking {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        .track-input {
+            display: flex;
+            max-width: 500px;
+            margin: 1rem auto;
+        }
+        
+        .track-input input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            font-size: 1rem;
+        }
+        
+        .track-input button {
+            padding: 0 1.5rem;
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .status-display {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .method {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <div class="container">
+            <h2 class="section-title">📅 How to Book</h2>
+            <div class="divider"></div>
+            <p>You can book your journey in three easy ways:</p>
+            
+            <div class="booking-methods">
+                <div class="method">
+                    <div class="method-icon">📝</div>
+                    <h3>Online Booking Form</h3>
+                    <p>Fill in your journey details, and we'll confirm your booking by phone or email within minutes.</p>
+                    <button class="btn" id="openBookingForm">Start Online Booking</button>
+                </div>
+                
+                <div class="method">
+                    <div class="method-icon">📞</div>
+                    <h3>Call Us Directly</h3>
+                    <p>Prefer to speak to someone? Give us a call for instant confirmation and any custom requests.</p>
+                    <p><strong>📞 02920 123 456</strong></p>
+                </div>
+                
+                <div class="method">
+                    <div class="method-icon">✉️</div>
+                    <h3>Email or WhatsApp</h3>
+                    <p>Quick questions or last-minute changes? Reach out via:</p>
+                    <p><strong>📧 bookings@cardifftransfers.com</strong></p>
+                    <p><strong>💬 07912 345 678</strong></p>
+                </div>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <h2 class="section-title">🚖 What We'll Need:</h2>
+            <div class="requirements">
+                <ul>
+                    <li>Pickup location & time</li>
+                    <li>Drop-off location (e.g., Cardiff Airport, Bristol Airport, etc.)</li>
+                    <li>Flight details (if applicable)</li>
+                    <li>Number of passengers & luggage</li>
+                    <li>Any special requirements (child seats, meet & greet, etc.)</li>
+                </ul>
+            </div>
+            
+            <h2 class="section-title">💳 Payment Options</h2>
+            <p>We accept:</p>
+            <div class="payment-options">
+                <span class="payment-option">Debit/Credit Cards</span>
+                <span class="payment-option">Contactless Payments</span>
+                <span class="payment-option">Bank Transfer</span>
+                <span class="payment-option">Cash</span>
+            </div>
+            
+            <h2 class="section-title">✅ What to Expect After Booking</h2>
+            <div class="expectations">
+                <div class="expectation">
+                    <h3>Instant Confirmation</h3>
+                    <p>You'll receive confirmation immediately (or within a few minutes for online forms).</p>
+                </div>
+                <div class="expectation">
+                    <h3>Reminder Message</h3>
+                    <p>We'll send you a reminder text or email before your trip.</p>
+                </div>
+                <div class="expectation">
+                    <h3>Live Driver Tracking</h3>
+                    <p>Where available, track your driver in real-time.</p>
+                </div>
+                <div class="expectation">
+                    <h3>No Hidden Charges</h3>
+                    <p>The price you see is the price you pay.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="cta">
+        <div class="container">
+            <h2>Let's Get You There</h2>
+            <p>Avoid delays, missed connections, or stressful travel. Book with Cardiff Transfers today and travel with total peace of mind.</p>
+            <button class="btn btn-large" id="ctaBookingBtn">Start Your Booking Now</button>
+        </div>
+    </section>
+    
+    <script>
+        // Modal functionality
+        const bookingModal = document.getElementById('bookingModal');
+        const quoteModal = document.getElementById('quoteModal');
+        const openBookingForm = document.getElementById('openBookingForm');
+        const ctaBookingBtn = document.getElementById('ctaBookingBtn');
+        const emailQuoteBtn = document.getElementById('emailQuoteBtn');
+        const closeButtons = document.querySelectorAll('.close');
+        const trackBtn = document.getElementById('trackBtn');
+        const statusDisplay = document.getElementById('statusDisplay');
+        
+        // Open booking modal
+        openBookingForm.addEventListener('click', () => {
+            bookingModal.style.display = 'block';
+        });
+        
+        ctaBookingBtn.addEventListener('click', () => {
+            bookingModal.style.display = 'block';
+        });
+        
+        // Open quote modal
+        emailQuoteBtn.addEventListener('click', () => {
+            quoteModal.style.display = 'block';
+        });
+        
+        // Close modals
+        closeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                bookingModal.style.display = 'none';
+                quoteModal.style.display = 'none';
+            });
+        });
+        
+        // Close when clicking outside modal
+        window.addEventListener('click', (e) => {
+            if (e.target === bookingModal) {
+                bookingModal.style.display = 'none';
+            }
+            if (e.target === quoteModal) {
+                quoteModal.style.display = 'none';
+            }
+        });
+        
+        // Form submissions
+        document.getElementById('bookingForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for your booking! We will confirm your reservation shortly.');
+            bookingModal.style.display = 'none';
+            // Here you would typically send the form data to your server
+        });
+        
+        document.getElementById('quoteForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Your quote request has been received. We will email you shortly with pricing details.');
+            quoteModal.style.display = 'none';
+            // Here you would typically send the form data to your server
+        });
+        
+        // Track booking functionality
+        trackBtn.addEventListener('click', () => {
+            const bookingRef = document.getElementById('bookingRef').value.trim();
+            
+            if (!bookingRef) {
+                alert('Please enter a booking reference');
+                return;
+            }
+            
+            // Simulate different statuses based on input
+            let statusText = '';
+            let statusClass = '';
+            
+            if (bookingRef.toLowerCase().includes('test')) {
+                statusText = 'Driver has arrived at pickup location';
+                statusClass = 'arrived';
+            } else if (bookingRef.toLowerCase().includes('wait')) {
+                statusText = 'Driver waiting at pickup location';
+                statusClass = 'waiting';
+            } else if (bookingRef.toLowerCase().includes('onway')) {
+                statusText = 'Driver on route to pickup location - ETA 15 minutes';
+                statusClass = 'onway';
+            } else if (bookingRef.toLowerCase().includes('left')) {
+                statusText = 'Driver has left for pickup location - ETA 30 minutes';
+                statusClass = 'left';
+            } else {
+                statusText = 'Booking not found. Please check your reference number.';
+                statusClass = 'notfound';
+            }
+            
+            statusDisplay.textContent = statusText;
+            statusDisplay.style.display = 'block';
+            
+            // Reset class and add appropriate one
+            statusDisplay.className = 'status-display';
+            statusDisplay.classList.add(statusClass);
+        });
+    </script>
+</body>
+</html>

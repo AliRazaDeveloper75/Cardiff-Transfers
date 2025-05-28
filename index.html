@@ -55,23 +55,13 @@
               </svg>
             </div>
 
-            <div class="autocomplete">
-              <input
-                id="pickupInput"
-                type="text"
-                placeholder="Pickup Location"
-                required
-              />
-            </div>
-
-            <div class="autocomplete">
-              <input
-                id="dropoffInput"
-                type="text"
-                placeholder="Drop-Off Location"
-                required
-              />
-            </div>
+            <div class="input-container">
+      <input id="pickup" type="text" placeholder="Enter Pickup Address" />
+      
+    </div>
+          <div class="input-container">
+      <input id="dropoff" type="text" placeholder="Enter Dropoff Address" />
+    </div>
 
             <select required>
               <option value="">Transfer Type</option>
@@ -83,10 +73,6 @@
         </div>
       </div>
     </section>
-
-    <!-- icon page -->
-    <div id="te-placeholder"></div>
-
     <!-- Why Travel With Us -->
     <section class="container">
       <h2 class="section-title">Why Travel With Us?</h2>
@@ -456,401 +442,24 @@
     <div id="footer-placeholder"></div>
 
     <script src="script.js"></script>
-    <script>
-      // Sample locations data - replace with your actual locations
-      const locations = [
-        "A",
-        "Aberdeen (Scotland)",
-        "Aberystwyth (Wales)",
-        "Accrington (England)",
-        "Airdrie (Scotland)",
-        "Aldershot (England)",
-        "Altrincham (England)",
-        "Amersham (England)",
-        "Andover (England)",
-        "Antrim (Northern Ireland)",
-        "Arbroath (Scotland)",
-        "Armagh (Northern Ireland)",
-        "Arundel (England)",
-        "Ashford (England)",
-        "AshtonunderLyne (England)",
-        "Aylesbury (England)",
-        "Ayr (Scotland)",
-        "",
-        "B",
-        "Bangor (Wales)",
-        "Barnsley (England)",
-        "Barnstaple (England)",
-        "Barry (Wales)",
-        "Basildon (England)",
-        "Bath (England)",
-        "Batley (England)",
-        "Bedford (England)",
-        "Belfast (Northern Ireland)",
-        "Birkenhead (England)",
-        "Birmingham (England)",
-        "Blackburn (England)",
-        "Blackpool (England)",
-        "Bognor Regis (England)",
-        "Bolton (England)",
-        "Bootle (England)",
-        "Bournemouth (England)",
-        "Bradford (England)",
-        "Bridgend (Wales)",
-        "Bridgwater (England)",
-        "Brighton (England)",
-        "Bristol (England)",
-        "Brixham (England)",
-        "Bromley (England)",
-        "Bury (England)",
-        "Bury St Edmunds (England)",
-        "",
-        "C",
-        "Caernarfon (Wales)",
-        "Cambridge (England)",
-        "Canterbury (England)",
-        "Cardiff (Wales)",
-        "Carlisle (England)",
-        "Carmarthen (Wales)",
-        "Chatham (England)",
-        "Chelmsford (England)",
-        "Cheltenham (England)",
-        "Chester (England)",
-        "Chesterfield (England)",
-        "Chichester (England)",
-        "Coatbridge (Scotland)",
-        "Colchester (England)",
-        "Coleraine (Northern Ireland)",
-        "Coventry (England)",
-        "Crawley (England)",
-        "Crewe (England)",
-        "Cumbernauld (Scotland)",
-        "",
-        "D",
-        "Darlington (England)",
-        "Dartford (England)",
-        "Derby (England)",
-        "Derry (Northern Ireland)",
-        "Dewsbury (England)",
-        "Doncaster (England)",
-        "Dorchester (England)",
-        "Dover (England)",
-        "Dudley (England)",
-        "Dundee (Scotland)",
-        "Dunfermline (Scotland)",
-        "Durham (England)",
-        "Dumbarton (Scotland)",
-        "Dumfries (Scotland)",
-        "Dunstable (England)",
-        "",
-        "E",
-        "Eastbourne (England)",
-        "East Kilbride (Scotland)",
-        "Edinburgh (Scotland)",
-        "Ellesmere Port (England)",
-        "Ely (England)",
-        "Enniskillen (Northern Ireland)",
-        "Exeter (England)",
-        "",
-        "F",
-        "Falkirk (Scotland)",
-        "Falmouth (England)",
-        "Fareham (England)",
-        "Faversham (England)",
-        "Felixstowe (England)",
-        "Folkestone (England)",
-        "Forfar (Scotland)",
-        "Fort William (Scotland)",
-        "Fraserburgh (Scotland)",
-        "Frome (England)",
-        "",
-        "G",
-        "Gateshead (England)",
-        "Gillingham (England)",
-        "Glasgow (Scotland)",
-        "Glastonbury (England)",
-        "Gloucester (England)",
-        "Goole (England)",
-        "Grantham (England)",
-        "Gravesend (England)",
-        "Grays (England)",
-        "Great Yarmouth (England)",
-        "Greenock (Scotland)",
-        "Grimsby (England)",
-        "Guildford (England)",
-        "",
-        "H",
-        "Halifax (England)",
-        "Hamilton (Scotland)",
-        "Harlow (England)",
-        "Harrogate (England)",
-        "Hartlepool (England)",
-        "Hastings (England)",
-        "Hatfield (England)",
-        "Havant (England)",
-        "Hereford (England)",
-        "Hertford (England)",
-        "High Wycombe (England)",
-        "Hinckley (England)",
-        "Horsham (England)",
-        "Huddersfield (England)",
-        "Hull (England) [Kingston upon Hull]",
-        "",
-        "I",
-        "Ilford (England)",
-        "Inverness (Scotland)",
-        "Ipswich (England)",
-        "",
-        "J",
-        "Jarrow (England)",
-        "",
-        "K",
-        "Keighley (England)",
-        "Kidderminster (England)",
-        "Kilmarnock (Scotland)",
-        "Kings Lynn (England)",
-        "Kingston upon Hull (England) [Hull]",
-        "Kingston upon Thames (England)",
-        "Kirkcaldy (Scotland)",
-        "Knowsley (England)",
-        "",
-        "L",
-        "Lancaster (England)",
-        "Leeds (England)",
-        "Leicester (England)",
-        "Leigh (England)",
-        "Leominster (England)",
-        "Lerwick (Scotland)",
-        "Lewes (England)",
-        "Lichfield (England)",
-        "Lincoln (England)",
-        "Lisburn (Northern Ireland)",
-        "Liverpool (England)",
-        "Livingston (Scotland)",
-        "Llanelli (Wales)",
-        "London (England)",
-        "Londonderry (Northern Ireland) [Derry]",
-        "Lowestoft (England)",
-        "Luton (England)",
-        "",
-        "M",
-        "Macclesfield (England)",
-        "Maidenhead (England)",
-        "Maidstone (England)",
-        "Manchester (England)",
-        "Mansfield (England)",
-        "Margate (England)",
-        "Middlesbrough (England)",
-        "Milton Keynes (England)",
-        "Mold (Wales)",
-        "Morecambe (England)",
-        "Motherwell (Scotland)",
-        "Newport (Wales)",
-        "Newry (Northern Ireland)",
-        "Newcastle upon Tyne (England)",
-        "Newtown (Wales)",
-        "Northampton (England)",
-        "Norwich (England)",
-        "Nottingham (England)",
-        "",
-        "O",
-        "Oldham (England)",
-        "Omagh (Northern Ireland)",
-        "Orkney (Scotland) [Kirkwall]",
-        "Oxford (England)",
-        "",
-        "P",
-        "Paisley (Scotland)",
-        "Perth (Scotland)",
-        "Peterborough (England)",
-        "Plymouth (England)",
-        "Pontypridd (Wales)",
-        "Poole (England)",
-        "Portsmouth (England)",
-        "Preston (England)",
-        "Prestonpans (Scotland)",
-        "Pwllheli (Wales)",
-        "",
-        "R",
-        "Reading (England)",
-        "Redcar (England)",
-        "Redditch (England)",
-        "Reigate (England)",
-        "Rhyl (Wales)",
-        "Ripon (England)",
-        "Rochdale (England)",
-        "Rochester (England)",
-        "Rotherham (England)",
-        "Rugby (England)",
-        "",
-        "S",
-        "Salisbury (England)",
-        "Scarborough (England)",
-        "Scunthorpe (England)",
-        "Sheffield (England)",
-        "Shrewsbury (England)",
-        "Slough (England)",
-        "Solihull (England)",
-        "Southampton (England)",
-        "SouthendonSea (England)",
-        "Southport (England)",
-        "St Albans (England)",
-        "St Andrews (Scotland)",
-        "Stafford (England)",
-        "Stirling (Scotland)",
-        "Stockport (England)",
-        "StocktononTees (England)",
-        "StokeonTrent (England)",
-        "Stourbridge (England)",
-        "StratforduponAvon (England)",
-        "St Helens (England)",
-        "Sunderland (England)",
-        "Swansea (Wales)",
-        "Swindon (England)",
-        "",
-        "T",
-        "Taunton (England)",
-        "Telford (England)",
-        "Thanet (England)",
-        "Tonbridge (England)",
-        "Torquay (England)",
-        "Truro (England)",
-        "Tunbridge Wells (England)",
-        "",
-        "U",
-        "Uxbridge (England)",
-        "",
-        "V",
-        "Wakefield (England)",
-        "Wallasey (England)",
-        "Walsall (England)",
-        "Warrington (England)",
-        "Warwick (England)",
-        "Washington (England)",
-        "Watford (England)",
-        "Wellingborough (England)",
-        "Wembley (England)",
-        "WestonsuperMare (England)",
-        "Weymouth (England)",
-        "Wigan (England)",
-        "Winchester (England)",
-        "Wolverhampton (England)",
-        "Worcester (England)",
-        "Workington (England)",
-        "Worthing (England)",
-        "Wrexham (Wales)",
-        "Yeovil (England)",
-        "York (England)",
-        "Cardiff Airport",
-        "Cardiff City Centre",
-        "Cardiff Bay",
-        "Cardiff University",
-        "Cardiff Castle",
-        "Cardiff Central Station",
-        "Bristol Airport",
-        "Bristol City Centre",
-        "Bristol Temple Meads Station",
-        "Heathrow Airport",
-        "Gatwick Airport",
-        "Manchester Airport",
-        "Birmingham Airport",
-        "Newport City Centre",
-        "Newport Station",
-        "Swansea City Centre",
-        "Swansea Station",
-        "Bridgend Town Centre",
-        "Bridgend Station",
-      ];
+     <script>
+      let pickupAutocomplete, dropoffAutocomplete;
 
-      function autocomplete(inp, arr) {
-        let currentFocus;
+      function initAutocomplete() {
+        const pickupInput = document.getElementById("pickup");
+        const dropoffInput = document.getElementById("dropoff");
 
-        inp.addEventListener("input", function (e) {
-          let val = this.value;
-          closeAllLists();
-          if (!val) {
-            return false;
-          }
-          currentFocus = -1;
-
-          const list = document.createElement("DIV");
-          list.setAttribute("id", this.id + "autocomplete-list");
-          list.setAttribute("class", "autocomplete-items");
-          this.parentNode.appendChild(list);
-
-          for (let i = 0; i < arr.length; i++) {
-            if (
-              arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()
-            ) {
-              const item = document.createElement("DIV");
-              item.innerHTML =
-                "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-              item.innerHTML += arr[i].substr(val.length);
-              item.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-
-              item.addEventListener("click", function (e) {
-                inp.value = this.getElementsByTagName("input")[0].value;
-                closeAllLists();
-              });
-              list.appendChild(item);
-            }
-          }
-        });
-
-        inp.addEventListener("keydown", function (e) {
-          let items = document.getElementById(this.id + "autocomplete-list");
-          if (items) items = items.getElementsByTagName("div");
-
-          if (e.keyCode == 40) {
-            // Down arrow
-            currentFocus++;
-            addActive(items);
-          } else if (e.keyCode == 38) {
-            // Up arrow
-            currentFocus--;
-            addActive(items);
-          } else if (e.keyCode == 13) {
-            // Enter
-            e.preventDefault();
-            if (currentFocus > -1) {
-              if (items) items[currentFocus].click();
-            }
-          }
-        });
-
-        function addActive(items) {
-          if (!items) return false;
-          removeActive(items);
-          if (currentFocus >= items.length) currentFocus = 0;
-          if (currentFocus < 0) currentFocus = items.length - 1;
-          items[currentFocus].classList.add("autocomplete-active");
-        }
-
-        function removeActive(items) {
-          for (let i = 0; i < items.length; i++) {
-            items[i].classList.remove("autocomplete-active");
-          }
-        }
-
-        function closeAllLists(elmnt) {
-          const items = document.getElementsByClassName("autocomplete-items");
-          for (let i = 0; i < items.length; i++) {
-            if (elmnt != items[i] && elmnt != inp) {
-              items[i].parentNode.removeChild(items[i]);
-            }
-          }
-        }
-
-        document.addEventListener("click", function (e) {
-          closeAllLists(e.target);
-        });
+        // Initialize the autocomplete services without a map
+        pickupAutocomplete = new google.maps.places.Autocomplete(pickupInput);
+        dropoffAutocomplete = new google.maps.places.Autocomplete(dropoffInput);
       }
-
-      // Initialize autocomplete for both inputs
-      document.addEventListener("DOMContentLoaded", function () {
-        autocomplete(document.getElementById("pickupInput"), locations);
-        autocomplete(document.getElementById("dropoffInput"), locations);
-      });
     </script>
+
+    <!-- Load the Google Maps API with the Places library -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBh1KQfw1e4u8SRfQuDkC2G5rjhd_nxlI8&libraries=places&callback=initAutocomplete"
+      async
+      defer
+    ></script>
   </body>
 </html>

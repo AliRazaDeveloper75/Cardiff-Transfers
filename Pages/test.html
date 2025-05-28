@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Address Autocomplete</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      .container {
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+      }
+      input {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <input id="pickup" type="text" placeholder="Enter Pickup Address" />
+      <input id="dropoff" type="text" placeholder="Enter Dropoff Address" />
+    </div>
+
+    <script>
+      let pickupAutocomplete, dropoffAutocomplete;
+
+      function initAutocomplete() {
+        const pickupInput = document.getElementById("pickup");
+        const dropoffInput = document.getElementById("dropoff");
+
+        // Initialize the autocomplete services without a map
+        pickupAutocomplete = new google.maps.places.Autocomplete(pickupInput);
+        dropoffAutocomplete = new google.maps.places.Autocomplete(dropoffInput);
+      }
+    </script>
+
+    <!-- Load the Google Maps API with the Places library -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBh1KQfw1e4u8SRfQuDkC2G5rjhd_nxlI8&libraries=places&callback=initAutocomplete"
+      async
+      defer
+    ></script>
+  </body>
+</html>
