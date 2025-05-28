@@ -23,95 +23,63 @@
           <p>Driven by passion guided by heart!</p>
         </div>
 
-        <div class="booking-form">
-          <h2>Order your vehicle</h2>
-          <form>
-            <div class="input-container">
-              <input type="date" id="pickupDate" required />
-              <span class="input-icon">
-                <svg
-                  class="input-icon"
-                  viewBox="0 0 24 24"
-                  width="20"
-                  height="20"
-                >
-                  <path
-                    d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"
-                  /></svg
-              ></span>
-            </div>
+      <div class="booking-form">
+  <h2>Order your vehicle</h2>
+  <form>
+    <div class="input-row">
+      <div class="input-container">
+        <label for="pickupDate">Pickup Date</label>
+        <input type="date" id="pickupDate" required />
+      </div>
 
-            <div class="input-container">
-              <input type="time" id="pickupTime" required />
-              <svg
-                class="input-icon-pickup"
-                viewBox="0 0 24 24"
-                width="20"
-                height="20"
-              >
-                <path
-                  d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"
-                />
-              </svg>
-            </div>
+      <div class="input-container">
+        <label for="pickupTime">Pickup Time</label>
+        <input type="time" id="pickupTime" required />
+          
+      </div>
+    </div>
 
+    <div class="input-container">
+      <label for="pickup">Pickup Address</label>
+      <input id="pickup" type="text" placeholder="Enter Pickup Address" />
+    </div>
 
-            <div class="input-container">
-              <input
-                id="pickup"
-                type="text"
-                placeholder="Enter Pickup Address"
-              />
-            </div>
+    <div class="input-container">
+      <label for="dropoff">Dropoff Address</label>
+      <input id="dropoff" type="text" placeholder="Enter Dropoff Address" />
+    </div>
 
-            <div class="input-container">
-              <input
-                id="dropoff"
-                type="text"
-                placeholder="Enter Dropoff Address"
-              />
-            </div>
+    <div class="input-container">
+      <label for="transferType">Transfer Type</label>
+      <select id="transferType" required>
+        <option value="">Transfer Type</option>
+        <option value="one-way">One Way</option>
+        <option value="round-trip">Round Trip</option>
+      </select>
+    </div>
 
-            <!-- Transfer Type -->
-            <select id="transferType" required>
-              <option value="">Transfer Type</option>
-              <option value="one-way">One Way</option>
-              <option value="round-trip">Round Trip</option>
-            </select>
+    <!-- Return Date & Time -->
+    <div id="return-fields" style="display: none;">
+      <div class="input-row">
+        <div class="input-container">
+          <label for="returnDate">Return Date</label>
+          <input type="date" id="returnDate" />
+        </div>
 
-            <!-- Return Date & Time - Hidden by default -->
-            <div id="return-fields" style="display: none">
-              <div class="input-container">
-                <input type="date" id="returnDate" />
-           <!--     <span class="input-icon">
-                  <svg viewBox="0 0 28 24" width="20" height="20">
-                    <path
-                      d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"
-                    />
-                  </svg> -->
-                </span>
-              </div>
-
-              <div class="input-container">
-                <input type="time" id="returnTime" />
-               <!-- <svg
-                  class="input-icon-pickup"
-                  viewBox="0 0 24 24"
-                  width="20"
-                  height="20"
-                >
-                  <path
-                    d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"
-                  />
-                </svg> -->
-              </div>
-            </div>
-
-            <button type="submit">BOOK NOW</button>
-          </form>
+        <div class="input-container">
+          <label for="returnTime">Return Time</label>
+          <input type="time" id="returnTime" />
         </div>
       </div>
+    </div>
+
+    <button type="submit">BOOK NOW</button>
+  </form>
+</div>
+
+      </div>
     </section>
+    
     <!-- Why Travel With Us -->
     <section class="container">
       <h2 class="section-title">Why Travel With Us?</h2>
@@ -414,7 +382,7 @@
         </div>
         <div class="card">
           <div class="icon">✈️</div>
-          <h3>Heathrow Airport</h3>
+          <h3>Manchester Airport</h3>
           <button class="btn">Book Online</button>
         </div>
         <div class="card">
@@ -444,7 +412,7 @@
         </div>
       </div>
     </div>
-    <!-- Map section-->
+    <!-- Map section
     <section class="map-section">
       <h2 class="section-title">Airports We Cover</h2>
       <p>
@@ -466,8 +434,10 @@
           src="https://maps.google.com/maps?q=New+River+Gorge+Bridge%2C+West+Virginia&output=embed"
         ></iframe>
       </div>
-    </section>
+    </section>-->
 
+    <div id="grapihc-map-placeholder"></div>
+    <div id="te-placeholder"></div>
     <!-- Booking CTA -->
     <section class="booking">
       <h2>Book Your Transfer in Minutes</h2>

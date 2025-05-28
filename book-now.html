@@ -126,14 +126,12 @@
       }
 
       .hero {
-        background: url("https://i0.wp.com/cardiffyouthcouncil.com/wp-content/uploads/2020/09/cropped-cardiff-skyline.jpg?ssl=1")
-          no-repeat center center/cover;
-        height: 70vh;
+        height: 60vh;
         position: relative;
       }
 
       .overlay {
-        background-color: rgba(0, 0, 0, 0.4);
+        background-color: #003366;
         height: 100%;
         width: 100%;
         color: white;
@@ -293,7 +291,7 @@
       <form id="bookingFlow" class="step-content active" data-step="1">
         <div class="trip-details-container">
           <div class="map-section">
-            <div id="locationMap" style="height: 200px"></div>
+            <div id="locationMap" style="height: 200px;"></div>
             <div class="map-instructions">
               <p>Enter addresses and click "Show Route" to view the journey</p>
             </div>
@@ -328,16 +326,16 @@
             </div>
 
             <div class="form-row">
-<div class="form-row" id="returnFields" style="display: none;">
-  <div class="form-group">
-    <label for="returnDate">Return Date</label>
-    <input type="date" id="returnDate" />
-  </div>
-  <div class="form-group">
-    <label for="returnTime">Return Time</label>
-    <input type="time" id="returnTime" />
-  </div>
-</div>
+              <div class="form-row" id="returnFields" style="display: none">
+                <div class="form-group">
+                  <label for="returnDate">Return Date</label>
+                  <input type="date" id="returnDate" />
+                </div>
+                <div class="form-group">
+                  <label for="returnTime">Return Time</label>
+                  <input type="time" id="returnTime" />
+                </div>
+              </div>
             </div>
             <div class="form-row">
               <div class="form-group">
@@ -365,20 +363,19 @@
                 </button>
               </div>
             </div>
-            
+
             <button type="button" class="btn-next">
               Continue to Vehicle Selection
             </button>
           </div>
         </div>
 
-        
-          <div class="route-info-map">
-            <div class="map-section">
-              <div id="route-map" style="height: 200px"></div>
-              <div class="map-instructions"></div>
-            </div>
-            <div id="routeInfo" class="route-info"></div>
+        <div class="route-info-map">
+          <div class="map-section">
+            <div id="route-map" style="height: 200px"></div>
+            <div class="map-instructions"></div>
+          </div>
+          <div id="routeInfo" class="route-info"></div>
         </div>
       </form>
 
@@ -890,19 +887,18 @@
     </script>
 
     <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const transferType = document.getElementById("transferType");
-    const returnFields = document.getElementById("returnFields");
+      document.addEventListener("DOMContentLoaded", function () {
+        const transferType = document.getElementById("transferType");
+        const returnFields = document.getElementById("returnFields");
 
-    transferType.addEventListener("change", function () {
-      if (this.value === "round-trip") {
-        returnFields.style.display = "flex"; // Or "block", depending on your layout
-      } else {
-        returnFields.style.display = "none";
-      }
-    });
-  });
-</script>
-
+        transferType.addEventListener("change", function () {
+          if (this.value === "round-trip") {
+            returnFields.style.display = "flex"; // Or "block", depending on your layout
+          } else {
+            returnFields.style.display = "none";
+          }
+        });
+      });
+    </script>
   </body>
 </html>

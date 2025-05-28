@@ -22,6 +22,11 @@ document.addEventListener("DOMContentLoaded", function () {
     .then(data => {
       document.getElementById("book-now-placeholder").innerHTML = data;
     });
+  fetch("Pages/animatedmap.html")
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById("grapihc-map-placeholder").innerHTML = data;
+    });
 });
 
 // Sticky header scroll effect

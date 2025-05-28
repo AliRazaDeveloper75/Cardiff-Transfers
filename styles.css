@@ -78,7 +78,7 @@ body {
 }
 
 .hero {
-  background: url("https://images.unsplash.com/photo-1484910292437-025e5d13ce87?q=80&w=2114&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
+  background: url("https://i0.wp.com/cardiffyouthcouncil.com/wp-content/uploads/2020/09/cropped-cardiff-skyline.jpg?ssl=1")
     no-repeat center center/cover;
   height: 100vh;
   position: relative;
@@ -110,17 +110,17 @@ body {
 }
 
 .booking-form {
-  margin-top: 5rem;
+  margin-top: 2rem;
   background: white;
   color: #1a1a1a;
-  padding: 25px;
+  padding: 20px;
   border-radius: 10px;
   width: 320px;
   text-align: center;
 }
 
 .booking-form h2 {
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
 .booking-form form {
@@ -543,7 +543,7 @@ body {
   padding: 12px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: 10px;
 }
 
 .input-container .placeholder {
@@ -570,15 +570,49 @@ body {
 
 .input-icon {
   position: absolute;
-  width: 17px;
+  width: 12px;
   right: 7px;
-  top: 50%;
+  top: 56%;
   transform: translateY(-50%);
+  background-color: white;
 }
 .input-icon-pickup {
   position: absolute;
-  width: 16px;
-  right: 16px;
-  top: 49%;
+  width: 12px;
+  right: 15px;
+  top: 64%;
   transform: translateY(-50%);
+  background-color: white;
+}
+
+.input-row {
+  display: flex;
+  gap: 10px;
+}
+
+.input-row .input-container {
+  flex: 1;
+}
+.input-container label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 1px;
+  font-size: 10px;
+  text-align: left;
+  color: #333;
+}
+
+
+.icon-label{
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+}
+.icon-label-title{
+  position: absolute;
+ font-size: 12px;
+  right: 55px;
+  top: 64%;
+  transform: translateY(-50%);
+  background-color: white;
 }
