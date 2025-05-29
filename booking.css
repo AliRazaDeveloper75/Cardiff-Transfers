@@ -97,6 +97,7 @@
 .vehicle-actions {
   margin-top: auto;
   display: flex;
+  gap: 5px;
   justify-content: space-between;
 }
 
@@ -553,3 +554,5 @@
   margin: 0;
   white-space: nowrap;
 }
+
+
