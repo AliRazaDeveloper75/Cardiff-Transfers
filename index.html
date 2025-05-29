@@ -49,29 +49,33 @@
       <input id="dropoff" type="text" placeholder="Enter Dropoff Address" />
     </div>
 
+   <div class="input-container">
+  <label>Transfer Type</label>
+  <div class="input-row">
+    <div class="column">
+      <input type="checkbox" id="oneWay" name="transferType" value="one-way">
+      <label for="oneWay">One Way</label>
+    </div>
+    <div class="column">
+      <input type="checkbox" id="roundTrip" name="transferType" value="round-trip">
+      <label for="roundTrip">Round Trip</label>
+    </div>
+  </div>
+</div>
+
+<!-- Return Date & Time -->
+<div id="return-fields" style="display: none;">
+  <div class="input-row">
     <div class="input-container">
-      <label for="transferType">Transfer Type</label>
-      <select id="transferType" required>
-        <option value="">Transfer Type</option>
-        <option value="one-way">One Way</option>
-        <option value="round-trip">Round Trip</option>
-      </select>
+      <label for="returnDate">Return Date</label>
+      <input type="date" id="returnDate" />
     </div>
-
-    <!-- Return Date & Time -->
-    <div id="return-fields" style="display: none;">
-      <div class="input-row">
-        <div class="input-container">
-          <label for="returnDate">Return Date</label>
-          <input type="date" id="returnDate" />
-        </div>
-
-        <div class="input-container">
-          <label for="returnTime">Return Time</label>
-          <input type="time" id="returnTime" />
-        </div>
-      </div>
+    <div class="input-container">
+      <label for="returnTime">Return Time</label>
+      <input type="time" id="returnTime" />
     </div>
+  </div>
+</div>
 
     <button type="submit">BOOK NOW</button>
   </form>
@@ -472,30 +476,28 @@
     ></script>
 
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const transferType = document.getElementById("transferType");
-        const returnFields = document.getElementById("returnFields");
+      document.addEventListener("DOMContentLoaded", function() {
+  const oneWayCheckbox = document.getElementById("oneWay");
+  const roundTripCheckbox = document.getElementById("roundTrip");
+  const returnFields = document.getElementById("return-fields");
 
-        transferType.addEventListener("change", function () {
-          if (this.value === "round-trip") {
-            returnFields.style.display = "flex"; // Or "block", depending on your layout
-          } else {
-            returnFields.style.display = "none";
-          }
-        });
-      });
-    </script>
-    <script>
-      document
-        .getElementById("transferType")
-        .addEventListener("change", function () {
-          const returnFields = document.getElementById("return-fields");
-          if (this.value === "round-trip") {
-            returnFields.style.display = "block";
-          } else {
-            returnFields.style.display = "none";
-          }
-        });
+  // Ensure only one checkbox can be selected at a time
+  oneWayCheckbox.addEventListener("change", function() {
+    if (this.checked) {
+      roundTripCheckbox.checked = false;
+      returnFields.style.display = "none";
+    }
+  });
+
+  roundTripCheckbox.addEventListener("change", function() {
+    if (this.checked) {
+      oneWayCheckbox.checked = false;
+      returnFields.style.display = "block";
+    } else {
+      returnFields.style.display = "none";
+    }
+  });
+});
     </script>
   </body>
 </html>

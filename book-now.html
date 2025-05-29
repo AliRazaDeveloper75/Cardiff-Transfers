@@ -262,6 +262,23 @@
           padding: 20px;
         }
       }
+
+      .transfer-type .checkbox-group {
+        display: flex;
+        gap: 15px;
+        margin-top: 8px;
+      }
+
+      .transfer-type label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        cursor: pointer;
+      }
+
+      .transfer-type input[type="checkbox"] {
+        margin: 0;
+      }
     </style>
   </head>
   <body>
@@ -300,13 +317,29 @@
                 <label for="pickupTime">Pickup Time</label>
                 <input type="time" id="pickupTime" required />
               </div>
-              <div class="form-group">
-                <label for="transferType">Transfer Type</label>
-                <select id="transferType" required>
-                  <option value="">Select Transfer Type</option>
-                  <option value="one-way">One Way</option>
-                  <option value="round-trip">Round Trip</option>
-                </select>
+              <!-- With these checkboxes -->
+              <div class="form-group transfer-type">
+                <label>Transfer Type</label>
+                <div class="input-row">
+                  <div class="column">
+                    <input
+                      type="checkbox"
+                      id="oneWay"
+                      name="transferType"
+                      value="one-way"
+                    />
+                    <label for="oneWay">One Way</label>
+                  </div>
+                  <div class="column">
+                    <input
+                      type="checkbox"
+                      id="roundTrip"
+                      name="transferType"
+                      value="round-trip"
+                    />
+                    <label for="roundTrip">Round Trip</label>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -331,9 +364,6 @@
                   placeholder="Enter airport or full address"
                   required
                 />
-                <button type="button" id="pickupLocationBtn" class="btn-map">
-                  Show on Map
-                </button>
               </div>
               <div class="form-group">
                 <label for="dropoffLocation">Drop-off Location</label>
@@ -343,9 +373,6 @@
                   placeholder="Enter airport or full address"
                   required
                 />
-                <button type="button" id="dropoffLocationBtn" class="btn-map">
-                  Show on Map
-                </button>
               </div>
             </div>
 
@@ -691,184 +718,291 @@
     <div id="book-now-placeholder"></div>
     <div id="footer-placeholder"></div>
     <script src="script.js"></script>
-
     <script>
-  // Initialize Google Map
-  let routeMap;
-  let directionsService;
-  let directionsRenderer;
-  let pickupMarker;
-  let dropoffMarker;
-  let autocompletePickup;
-  let autocompleteDropoff;
-  let mapInitialized = false;
+      // Initialize Google Map variables
+      let routeMap;
+      let directionsService;
+      let directionsRenderer;
+      let pickupMarker;
+      let dropoffMarker;
+      let autocompletePickup;
+      let autocompleteDropoff;
+      let mapInitialized = false;
 
-  function initMap() {
-    // Only initialize if not already done
-    if (mapInitialized) return;
-    
-    // Create the route map container
-    const routeMapContainer = document.getElementById("route-map");
-    routeMapContainer.style.display = "none"; // Hide initially
-    
-    routeMap = new google.maps.Map(routeMapContainer, {
-      center: { lat: 51.505, lng: -0.09 },
-      zoom: 13,
-    });
+      // Initialize the map and autocomplete functionality
+      function initMap() {
+        if (mapInitialized) return;
 
-    // Initialize directions service and renderer
-    directionsService = new google.maps.DirectionsService();
-    directionsRenderer = new google.maps.DirectionsRenderer({
-      map: routeMap,
-      suppressMarkers: true,
-      polylineOptions: {
-        strokeColor: "#3b82f6",
-        strokeOpacity: 0.7,
-        strokeWeight: 5,
-      },
-    });
+        const routeMapContainer = document.getElementById("route-map");
+        routeMapContainer.style.display = "none"; // Hide initially
 
-    // Initialize autocomplete
-    autocompletePickup = new google.maps.places.Autocomplete(
-      document.getElementById("pickupLocation"),
-      { types: ["geocode"] }
-    );
+        routeMap = new google.maps.Map(routeMapContainer, {
+          center: { lat: 51.505, lng: -0.09 },
+          zoom: 13,
+        });
 
-    autocompleteDropoff = new google.maps.places.Autocomplete(
-      document.getElementById("dropoffLocation"),
-      { types: ["geocode"] }
-    );
+        directionsService = new google.maps.DirectionsService();
+        directionsRenderer = new google.maps.DirectionsRenderer({
+          map: routeMap,
+          suppressMarkers: true,
+          polylineOptions: {
+            strokeColor: "#3b82f6",
+            strokeOpacity: 0.7,
+            strokeWeight: 5,
+          },
+        });
 
-    // Add event listeners
-    document.getElementById("pickupLocationBtn").addEventListener("click", () => {
-      updateMap(document.getElementById("pickupLocation"), true);
-    });
+        // Initialize autocomplete
+        autocompletePickup = new google.maps.places.Autocomplete(
+          document.getElementById("pickupLocation"),
+          { types: ["geocode"] }
+        );
 
-    document.getElementById("dropoffLocationBtn").addEventListener("click", () => {
-      updateMap(document.getElementById("dropoffLocation"), false);
-    });
+        autocompleteDropoff = new google.maps.places.Autocomplete(
+          document.getElementById("dropoffLocation"),
+          { types: ["geocode"] }
+        );
 
-    mapInitialized = true;
-  }
+        // Add place_changed listeners for automatic map updates
+        autocompletePickup.addListener("place_changed", () => {
+          updateMap(document.getElementById("pickupLocation"), true);
+        });
 
-  function updateMap(locationInput, isPickup) {
-    const place = isPickup
-      ? autocompletePickup.getPlace()
-      : autocompleteDropoff.getPlace();
+        autocompleteDropoff.addListener("place_changed", () => {
+          updateMap(document.getElementById("dropoffLocation"), false);
+        });
 
-    if (!place || !place.geometry) {
-      alert("Please select a valid address from the suggestions.");
-      return;
-    }
-
-    // Remove existing marker
-    if (isPickup && pickupMarker) {
-      pickupMarker.setMap(null);
-    } else if (!isPickup && dropoffMarker) {
-      dropoffMarker.setMap(null);
-    }
-
-    // Create new marker
-    const marker = new google.maps.Marker({
-      position: place.geometry.location,
-      map: routeMap,
-      icon: {
-        path: google.maps.SymbolPath.CIRCLE,
-        fillColor: isPickup ? "#4285F4" : "#EA4335",
-        fillOpacity: 1,
-        strokeColor: "#FFFFFF",
-        strokeWeight: 2,
-        scale: 10,
-      },
-      title: place.name,
-    });
-
-    if (isPickup) {
-      pickupMarker = marker;
-    } else {
-      dropoffMarker = marker;
-    }
-
-    // Show map only when both addresses are set
-    if (pickupMarker && dropoffMarker) {
-      document.getElementById("route-map").style.display = "block";
-      document.getElementById("routeInfo").style.display = "block";
-      showRoute();
-    }
-  }
-
-  function showRoute() {
-    const request = {
-      origin: pickupMarker.getPosition(),
-      destination: dropoffMarker.getPosition(),
-      travelMode: google.maps.TravelMode.DRIVING,
-    };
-
-    directionsService.route(request, (result, status) => {
-      if (status === google.maps.DirectionsStatus.OK) {
-        directionsRenderer.setDirections(result);
-
-        const route = result.routes[0].legs[0];
-        const distance = route.distance.text;
-        const duration = route.duration.text;
-
-        // Update and show route info
-        document.getElementById("routeInfo").innerHTML = `
-        <div><strong>Your Transfer:</strong></div>
-          <div class="route-detail">
-            <span class="pickup-marker"></span>
-            <strong>Pickup:</strong> ${document.getElementById("pickupLocation").value}
-          </div>
-          <div class="route-detail">
-            <span class="dropoff-marker"></span>
-            <strong>Drop-off:</strong> ${document.getElementById("dropoffLocation").value}
-          </div>
-          <div class="route-stats">
-            <div><strong>Distance:</strong> ${distance}</div>
-            <div><strong>Duration:</strong> ${duration}</div>
-          </div>
-        `;
-
-        // Fit bounds to show the entire route
-        const bounds = new google.maps.LatLngBounds();
-        bounds.extend(pickupMarker.getPosition());
-        bounds.extend(dropoffMarker.getPosition());
-        routeMap.fitBounds(bounds);
-      } else {
-        console.error("Directions request failed:", status);
-        const bounds = new google.maps.LatLngBounds();
-        bounds.extend(pickupMarker.getPosition());
-        bounds.extend(dropoffMarker.getPosition());
-        routeMap.fitBounds(bounds);
-      }
-    });
-  }
-
-  // Initialize when DOM is ready
-  document.addEventListener('DOMContentLoaded', () => {
-    if (document.getElementById("route-map")) {
-      // Load Google Maps API
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBh1KQfw1e4u8SRfQuDkC2G5rjhd_nxlI8&libraries=places&callback=initMap`;
-      script.async = true;
-      script.defer = true;
-      document.head.appendChild(script);
-    }
-  });
-</script>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const transferType = document.getElementById("transferType");
+        // Initialize transfer type checkboxes
         const returnFields = document.getElementById("returnFields");
+        document
+          .querySelectorAll('input[name="transferType"]')
+          .forEach((checkbox) => {
+            checkbox.addEventListener("change", function () {
+              if (this.value === "round-trip" && this.checked) {
+                returnFields.style.display = "flex";
+                document.querySelector(
+                  'input[name="transferType"][value="one-way"]'
+                ).checked = false;
+              } else if (this.value === "one-way" && this.checked) {
+                returnFields.style.display = "none";
+                document.querySelector(
+                  'input[name="transferType"][value="round-trip"]'
+                ).checked = false;
+              }
+            });
+          });
 
-        transferType.addEventListener("change", function () {
-          if (this.value === "round-trip") {
-            returnFields.style.display = "flex"; // Or "block", depending on your layout
+        mapInitialized = true;
+      }
+
+      // Update the map with new location
+      function updateMap(locationInput, isPickup) {
+        const place = isPickup
+          ? autocompletePickup.getPlace()
+          : autocompleteDropoff.getPlace();
+
+        if (!place || !place.geometry) {
+          return; // Don't show alert, just return
+        }
+
+        // Remove existing marker
+        if (isPickup && pickupMarker) {
+          pickupMarker.setMap(null);
+        } else if (!isPickup && dropoffMarker) {
+          dropoffMarker.setMap(null);
+        }
+
+        // Create new marker
+        const marker = new google.maps.Marker({
+          position: place.geometry.location,
+          map: routeMap,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: isPickup ? "#4285F4" : "#EA4335",
+            fillOpacity: 1,
+            strokeColor: "#FFFFFF",
+            strokeWeight: 2,
+            scale: 10,
+          },
+          title: place.name,
+        });
+
+        if (isPickup) {
+          pickupMarker = marker;
+        } else {
+          dropoffMarker = marker;
+        }
+
+        // Show map only when both addresses are set
+        if (pickupMarker && dropoffMarker) {
+          document.getElementById("route-map").style.display = "block";
+          document.getElementById("routeInfo").style.display = "block";
+          showRoute();
+        }
+      }
+
+      // Show the route between pickup and dropoff locations
+      function showRoute() {
+        const request = {
+          origin: pickupMarker.getPosition(),
+          destination: dropoffMarker.getPosition(),
+          travelMode: google.maps.TravelMode.DRIVING,
+        };
+
+        directionsService.route(request, (result, status) => {
+          if (status === google.maps.DirectionsStatus.OK) {
+            directionsRenderer.setDirections(result);
+
+            const route = result.routes[0].legs[0];
+            const distance = route.distance.text;
+            const duration = route.duration.text;
+
+            // Update route info
+            document.getElementById("routeInfo").innerHTML = `
+        <div><strong>Your Transfer:</strong></div>
+        <div class="route-detail">
+          <span class="pickup-marker"></span>
+          <strong>Pickup:</strong> ${
+            document.getElementById("pickupLocation").value
+          }
+        </div>
+        
+        <div class="route-stats" style="padding-left: 2%;border-left:2px solid black;  margin-left:25px">
+          <div><strong>Distance:</strong> ${distance}</div>
+          <div><strong>Duration:</strong> ${duration}</div>
+        </div>
+        <div class="route-detail">
+          <span class="dropoff-marker"></span>
+          <strong>Drop-off:</strong> ${
+            document.getElementById("dropoffLocation").value
+          }
+        </div>
+      `;
+
+            // Fit bounds to show the entire route
+            const bounds = new google.maps.LatLngBounds();
+            bounds.extend(pickupMarker.getPosition());
+            bounds.extend(dropoffMarker.getPosition());
+            routeMap.fitBounds(bounds);
           } else {
-            returnFields.style.display = "none";
+            console.error("Directions request failed:", status);
+            const bounds = new google.maps.LatLngBounds();
+            bounds.extend(pickupMarker.getPosition());
+            bounds.extend(dropoffMarker.getPosition());
+            routeMap.fitBounds(bounds);
           }
         });
+      }
+
+      // Initialize when DOM is ready
+      document.addEventListener("DOMContentLoaded", () => {
+        if (document.getElementById("route-map")) {
+          // Load Google Maps API
+          const script = document.createElement("script");
+          script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBh1KQfw1e4u8SRfQuDkC2G5rjhd_nxlI8&libraries=places&callback=initMap`;
+          script.async = true;
+          script.defer = true;
+          document.head.appendChild(script);
+        }
+
+        // Initialize form navigation
+        const steps = document.querySelectorAll(".step-content");
+        const stepButtons = document.querySelectorAll(".step");
+        let currentStep = 1;
+
+        function showStep(stepNumber) {
+          steps.forEach((step) => step.classList.remove("active"));
+          stepButtons.forEach((button) => button.classList.remove("active"));
+
+          document
+            .querySelector(`.step-content[data-step="${stepNumber}"]`)
+            .classList.add("active");
+          document
+            .querySelector(`.step[data-step="${stepNumber}"]`)
+            .classList.add("active");
+          currentStep = stepNumber;
+        }
+
+        document.querySelectorAll(".btn-next").forEach((button) => {
+          button.addEventListener("click", () => {
+            if (currentStep < 4) showStep(currentStep + 1);
+          });
+        });
+
+        document.querySelectorAll(".btn-prev").forEach((button) => {
+          button.addEventListener("click", () => {
+            if (currentStep > 1) showStep(currentStep - 1);
+          });
+        });
+
+        // Initialize vehicle selection
+        document.querySelectorAll(".btn-select").forEach((button) => {
+          button.addEventListener("click", function () {
+            const vehicleCard = this.closest(".vehicle-card");
+            document.querySelectorAll(".vehicle-card").forEach((card) => {
+              card.classList.remove("selected");
+            });
+            vehicleCard.classList.add("selected");
+
+            // Update summary
+            document.getElementById("summaryVehicle").textContent =
+              vehicleCard.querySelector(".vehicle-type").textContent;
+            document.getElementById("summaryTotal").textContent =
+              vehicleCard.querySelector(".price").textContent;
+          });
+        });
+
+        // Update booking summary
+        document
+          .getElementById("pickupLocation")
+          .addEventListener("change", function () {
+            document.getElementById("summaryPickup").textContent = this.value;
+          });
+
+        document
+          .getElementById("pickupDate")
+          .addEventListener("change", function () {
+            document.getElementById("summaryPickupDate").textContent =
+              this.value;
+          });
+
+        document
+          .querySelectorAll('input[name="transferType"]')
+          .forEach((checkbox) => {
+            checkbox.addEventListener("change", function () {
+              if (this.checked) {
+                document.getElementById("summaryTransferType").textContent =
+                  this.value;
+              }
+            });
+          });
+      });
+      // Replace the transferType event listener with this
+      document
+        .querySelectorAll('input[name="transferType"]')
+        .forEach((checkbox) => {
+          checkbox.addEventListener("change", function () {
+            if (this.value === "round-trip" && this.checked) {
+              returnFields.style.display = "flex";
+              document.querySelector(
+                'input[name="transferType"][value="one-way"]'
+              ).checked = false;
+            } else if (this.value === "one-way" && this.checked) {
+              returnFields.style.display = "none";
+              document.querySelector(
+                'input[name="transferType"][value="round-trip"]'
+              ).checked = false;
+            }
+          });
+        });
+
+      // Add place_changed listeners to automatically update the map
+      autocompletePickup.addListener("place_changed", () => {
+        updateMap(document.getElementById("pickupLocation"), true);
+      });
+
+      autocompleteDropoff.addListener("place_changed", () => {
+        updateMap(document.getElementById("dropoffLocation"), false);
       });
     </script>
   </body>
