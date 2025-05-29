@@ -455,6 +455,12 @@
   .trip-details-container {
     flex-direction: column;
   }
+  .route-info-map{
+  gap: 5rem;
+  padding: 2%;
+  width: 100%;
+  margin-top: 2%;
+}
 }
 
 .route-info {
@@ -487,11 +493,9 @@
 
 
 
-
-
-
 .route-info-map{
   gap: 5rem;
   padding: 2%;
   margin-top: 2%;
+  width: 50%;
 }

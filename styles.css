@@ -218,6 +218,11 @@ body {
     flex-direction: row;
     align-items: flex-start;
   }
+  .container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 10px;
+}
 }
 
 /* car */
