@@ -126,7 +126,7 @@ body {
 .booking-form form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 5px;
 }
 
 .booking-form input,
@@ -219,10 +219,10 @@ body {
     align-items: flex-start;
   }
   .container {
-  max-width: 1200px;
-  margin: auto;
-  padding: 10px;
-}
+    max-width: 1200px;
+    margin: auto;
+    padding: 10px;
+  }
 }
 
 /* car */
@@ -571,8 +571,6 @@ body {
   color: black;
 }
 
-
-
 .input-icon {
   position: absolute;
   width: 12px;
@@ -607,28 +605,26 @@ body {
   color: #333;
 }
 
-
-.icon-label{
+.icon-label {
   display: flex;
   justify-content: space-around;
   flex-direction: column;
 }
-.icon-label-title{
+.icon-label-title {
   position: absolute;
- font-size: 12px;
+  font-size: 12px;
   right: 55px;
   top: 64%;
   transform: translateY(-50%);
   background-color: white;
 }
 
-
 .input-row {
   display: flex;
   gap: 20px;
 }
 
-.column { 
+.column {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -646,8 +642,8 @@ body {
   margin: 0 15px;
   color: inherit;
   text-decoration: none;
-    background: #ffcc00;
-  color: white;
+  background: white;
+  color: black;
   padding: 0.75rem 1.5rem;
   text-decoration: none;
   border-radius: 5px;
@@ -656,8 +652,8 @@ body {
   cursor: pointer;
 }
 .site-header nav button:hover {
-  background: white;
-  color: #000;
-  transition: 1000ms;
+  background: #ffcc00;
+  color: white;
+  transition: 400ms;
   cursor: pointer;
 }

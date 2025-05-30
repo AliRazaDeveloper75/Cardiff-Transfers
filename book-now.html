@@ -20,266 +20,6 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <link rel="stylesheet" href="booking.css" />
-    <style>
-      /* Add these styles for the Google Map */
-      #locationMap {
-        height: 400px;
-        width: 100%;
-        margin-bottom: 20px;
-      }
-
-      .pickup-marker {
-        background-color: blue;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        border: 2px solid white;
-      }
-
-      .dropoff-marker {
-        background-color: red;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        border: 2px solid white;
-      }
-      .container {
-        max-width: 1200px;
-        margin: auto;
-        padding: 1rem;
-      }
-
-      .site-header {
-        position: fixed; /* changed from sticky to fixed */
-        top: 0;
-        width: 100%;
-        background: transparent;
-        color: white;
-        z-index: 1000;
-        transition: background 0.3s, box-shadow 0.3s;
-      }
-
-      /* Make header content layout with flex */
-      .header-inner {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-      }
-
-      /* Adjust navigation links */
-      .main-nav a {
-        margin: 0 10px;
-        color: inherit;
-        text-decoration: none;
-        font-weight: 500;
-      }
-
-      .site-header.scrolled {
-        background: #333;
-        color: white;
-        padding: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      }
-
-      .site-header nav a {
-        margin: 0 15px;
-        color: inherit;
-        text-decoration: none;
-      }
-
-      .site-footer {
-        background-color: #333;
-        color: #fff;
-        padding: 20px 0;
-        text-align: left;
-      }
-
-      /* Optional: Responsive styling */
-      @media (max-width: 600px) {
-        .header-inner {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .main-nav {
-          margin-top: 10px;
-          display: flex;
-          flex-direction: column;
-          gap: 5px;
-        }
-
-        .main-nav a {
-          margin: 0;
-        }
-      }
-
-      /* home page css */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        font-family: "Segoe UI", sans-serif;
-      }
-
-      .hero {
-        height: 60vh;
-        position: relative;
-      }
-
-      .overlay {
-        background-color: #003366;
-        height: 100%;
-        width: 100%;
-        color: white;
-        display: flex;
-        justify-content: center;
-        padding: 50px;
-        align-items: center;
-      }
-
-      .hero-text {
-        max-width: 50%;
-        text-align: center;
-      }
-
-      .hero-text h1 {
-        font-size: 3rem;
-        margin-bottom: 20px;
-      }
-
-      .hero-text p {
-        font-size: 1.2rem;
-        color: #d0d0d0;
-      }
-
-      @media (max-width: 768px) {
-        .overlay {
-          flex-direction: column;
-          justify-content: center;
-          padding: 20px;
-          text-align: left;
-        }
-
-        .hero-text {
-          margin-top: 6rem;
-          max-width: 100%;
-          margin-bottom: 30px;
-        }
-
-        .hero-text h1 {
-          font-size: 1.2rem;
-        }
-
-        .hero-text p {
-          font-size: 1rem;
-        }
-
-        .booking-form {
-          width: 90%;
-        }
-      }
-
-      .logo {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: white;
-        text-decoration: none;
-      }
-
-      .logo img {
-        height: 50px;
-        width: auto;
-        object-fit: contain;
-        display: block;
-      }
-
-      /* Burger icon default hidden */
-      .burger {
-        display: none;
-        font-size: 2rem;
-        cursor: pointer;
-        color: white;
-      }
-
-      /* Show burger icon on smaller screens */
-      @media (max-width: 768px) {
-        .burger {
-          display: block;
-        }
-
-        .main-nav {
-          display: none;
-          flex-direction: column;
-          width: 100%;
-          background: #333;
-          margin-top: 10px;
-          padding: 10px 0;
-        }
-
-        .main-nav.show {
-          display: flex;
-        }
-
-        .main-nav a {
-          padding: 10px 20px;
-          border-top: 1px solid #444;
-          color: white;
-        }
-
-        .header-inner {
-          flex-direction: row;
-          align-items: flex-start;
-        }
-      }
-
-      .section {
-        max-width: 1100px;
-        margin: 0 auto;
-      }
-
-      button {
-        background-color: #005bbb;
-        color: white;
-        padding: 12px 24px;
-        font-size: 1rem;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        margin-top: 10px;
-        transition: background 0.3s;
-      }
-
-      button:hover {
-        background-color: #004699;
-      }
-
-      @media (max-width: 768px) {
-        .card {
-          padding: 20px;
-        }
-      }
-
-      .transfer-type .checkbox-group {
-        display: flex;
-        gap: 15px;
-        margin-top: 8px;
-      }
-
-      .transfer-type label {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        cursor: pointer;
-      }
-
-      .transfer-type input[type="checkbox"] {
-        margin: 0;
-      }
-    </style>
   </head>
   <body>
     <div id="header-placeholder"></div>
@@ -317,28 +57,25 @@
                 <label for="pickupTime">Pickup Time</label>
                 <input type="time" id="pickupTime" required />
               </div>
-              <!-- With these checkboxes -->
+
               <div class="form-group transfer-type">
                 <label>Transfer Type</label>
-                <div class="input-row">
-                  <div class="column">
-                    <input
-                      type="checkbox"
-                      id="oneWay"
-                      name="transferType"
-                      value="one-way"
-                    />
-                    <label for="oneWay">One Way</label>
-                  </div>
-                  <div class="column">
-                    <input
-                      type="checkbox"
-                      id="roundTrip"
-                      name="transferType"
-                      value="round-trip"
-                    />
-                    <label for="roundTrip">Round Trip</label>
-                  </div>
+                <div class="transfer-options">
+                  <input
+                    type="checkbox"
+                    id="oneWay"
+                    name="transferType"
+                    value="one-way"
+                  />
+                  <label for="oneWay">One Way</label>
+
+                  <input
+                    type="checkbox"
+                    id="roundTrip"
+                    name="transferType"
+                    value="round-trip"
+                  />
+                  <label for="roundTrip">Round Trip</label>
                 </div>
               </div>
             </div>
@@ -399,14 +136,17 @@
           <div
             class="vehicle-card"
             data-type="sedan"
-            data-price="455"
+            data-price="1110"
             data-passengers="3"
             data-bags="3"
           >
-            <img src="./Assets/8.png" alt="Sedan" />
+            <img src="./Assets/4.png" alt="Sedan" />
             <div class="vehicle-details">
               <div class="vehicle-type">Sedan: Octavia</div>
-              <div class="price">€455.00</div>
+              <div class="vehicle-actions">
+                <div class="price">€555.00</div>
+                <div class="price">€1110.00</div>
+              </div>
               <ul class="specs">
                 <li class="spec-item">
                   <i class="fas fa-user"></i> 3 passengers
@@ -428,8 +168,20 @@
                 </li>
               </ul>
               <div class="vehicle-actions">
-                <button type="button" class="btn-select">One Way</button>
-<button type="button" class="btn-select">Round Trip</button>
+                <button
+                  type="button"
+                  class="btn-select"
+                  data-trip-type="one-way"
+                >
+                  One Way
+                </button>
+                <button
+                  type="button"
+                  class="btn-select"
+                  data-trip-type="round-trip"
+                >
+                  Round Trip
+                </button>
               </div>
             </div>
           </div>
@@ -442,13 +194,17 @@
             data-passengers="7"
             data-bags="5"
           >
-            <img src="./Assets/107.png" alt="Van" />
+            <img src="./Assets/108.png" alt="Van" />
             <div class="vehicle-details">
               <div class="vehicle-type">Van: Mercedes V-Class</div>
-              <div class="price">€555.00</div>
+
+              <div class="vehicle-actions">
+                <div class="price">€600.00</div>
+                <div class="price">€1200.00</div>
+              </div>
               <ul class="specs">
                 <li class="spec-item">
-                  <i class="fas fa-user"></i> 7 passengers
+                  <i class="fas fa-user"></i> 5 passengers
                 </li>
                 <li class="spec-item">
                   <i class="fas fa-snowflake"></i> Air-conditioned
@@ -467,8 +223,20 @@
                 </li>
               </ul>
               <div class="vehicle-actions">
-                <button type="button" class="btn-select">One Way</button>
-<button type="button" class="btn-select">Round Trip</button>
+                <button
+                  type="button"
+                  class="btn-select"
+                  data-trip-type="one-way"
+                >
+                  One Way
+                </button>
+                <button
+                  type="button"
+                  class="btn-select"
+                  data-trip-type="round-trip"
+                >
+                  Round Trip
+                </button>
               </div>
             </div>
           </div>
@@ -484,10 +252,13 @@
             <img src="./Assets/car.png" alt="Minibus" />
             <div class="vehicle-details">
               <div class="vehicle-type">Minibus: Mercedes Sprinter</div>
-              <div class="price">€655.00</div>
+              <div class="vehicle-actions">
+                <div class="price">€750.00</div>
+                <div class="price">€1500.00</div>
+              </div>
               <ul class="specs">
                 <li class="spec-item">
-                  <i class="fas fa-user"></i> 12 passengers
+                  <i class="fas fa-user"></i> 8 passengers
                 </li>
                 <li class="spec-item">
                   <i class="fas fa-snowflake"></i> Air-conditioned
@@ -506,8 +277,20 @@
                 </li>
               </ul>
               <div class="vehicle-actions">
-                <button type="button" class="btn-select">One Way</button>
-<button type="button" class="btn-select">Round Trip</button>
+                <button
+                  type="button"
+                  class="btn-select"
+                  data-trip-type="one-way"
+                >
+                  One Way
+                </button>
+                <button
+                  type="button"
+                  class="btn-select"
+                  data-trip-type="round-trip"
+                >
+                  Round Trip
+                </button>
               </div>
             </div>
           </div>
@@ -521,13 +304,16 @@
             data-passengers="3"
             data-bags="3"
           >
-            <img src="./Assets/8.png" alt="Sedan" />
+            <img src="./Assets/4.png" alt="Sedan" />
             <div class="vehicle-details">
               <div class="vehicle-type">Sedan: Octavia</div>
-              <div class="price">€455.00</div>
+              <div class="vehicle-actions">
+                <div class="price">€850.00</div>
+                <div class="price">€1700.00</div>
+              </div>
               <ul class="specs">
                 <li class="spec-item">
-                  <i class="fas fa-user"></i> 3 passengers
+                  <i class="fas fa-user"></i> 10 passengers
                 </li>
                 <li class="spec-item">
                   <i class="fas fa-snowflake"></i> Air-conditioned
@@ -546,8 +332,20 @@
                 </li>
               </ul>
               <div class="vehicle-actions">
-                <button type="button" class="btn-select">One Way</button>
-<button type="button" class="btn-select">Round Trip</button>
+                <button
+                  type="button"
+                  class="btn-select"
+                  data-trip-type="one-way"
+                >
+                  One Way
+                </button>
+                <button
+                  type="button"
+                  class="btn-select"
+                  data-trip-type="round-trip"
+                >
+                  Round Trip
+                </button>
               </div>
             </div>
           </div>
@@ -563,46 +361,11 @@
             <img src="./Assets/107.png" alt="Van" />
             <div class="vehicle-details">
               <div class="vehicle-type">Van: Mercedes V-Class</div>
-              <div class="price">€555.00</div>
-              <ul class="specs">
-                <li class="spec-item">
-                  <i class="fas fa-user"></i> 7 passengers
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-snowflake"></i> Air-conditioned
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-cog"></i> Automatic transmission
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-car"></i> Full leather interior
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-wifi"></i> On Board WiFi
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-glass-whiskey"></i> Bottled water & snacks
-                </li>
-              </ul>
-              <div class="vehicle-actions">
-                <button type="button" class="btn-select">One Way</button>
-<button type="button" class="btn-select">Round Trip</button>
-              </div>
-            </div>
-          </div>
 
-          <!-- Minibus -->
-          <div
-            class="vehicle-card"
-            data-type="minibus"
-            data-price="655"
-            data-passengers="12"
-            data-bags="8"
-          >
-            <img src="./Assets/car.png" alt="Minibus" />
-            <div class="vehicle-details">
-              <div class="vehicle-type">Minibus: Mercedes Sprinter</div>
-              <div class="price">€655.00</div>
+              <div class="vehicle-actions">
+                <div class="price">€950.00</div>
+                <div class="price">€1900.00</div>
+              </div>
               <ul class="specs">
                 <li class="spec-item">
                   <i class="fas fa-user"></i> 12 passengers
@@ -624,8 +387,74 @@
                 </li>
               </ul>
               <div class="vehicle-actions">
-                <button type="button" class="btn-select">One Way</button>
-<button type="button" class="btn-select">Round Trip</button>
+                <button
+                  type="button"
+                  class="btn-select"
+                  data-trip-type="one-way"
+                >
+                  One Way
+                </button>
+                <button
+                  type="button"
+                  class="btn-select"
+                  data-trip-type="round-trip"
+                >
+                  Round Trip
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Minibus -->
+          <div
+            class="vehicle-card"
+            data-type="minibus"
+            data-price="655"
+            data-passengers="12"
+            data-bags="8"
+          >
+            <img src="./Assets/8.png" alt="Minibus" />
+            <div class="vehicle-details">
+              <div class="vehicle-type">Minibus: Mercedes Sprinter</div>
+              <div class="vehicle-actions">
+                <div class="price">€1050.00</div>
+                <div class="price">€2100.00</div>
+              </div>
+              <ul class="specs">
+                <li class="spec-item">
+                  <i class="fas fa-user"></i> 14 passengers
+                </li>
+                <li class="spec-item">
+                  <i class="fas fa-snowflake"></i> Air-conditioned
+                </li>
+                <li class="spec-item">
+                  <i class="fas fa-cog"></i> Automatic transmission
+                </li>
+                <li class="spec-item">
+                  <i class="fas fa-car"></i> Full leather interior
+                </li>
+                <li class="spec-item">
+                  <i class="fas fa-wifi"></i> On Board WiFi
+                </li>
+                <li class="spec-item">
+                  <i class="fas fa-glass-whiskey"></i> Bottled water & snacks
+                </li>
+              </ul>
+              <div class="vehicle-actions">
+                <button
+                  type="button"
+                  class="btn-select"
+                  data-trip-type="one-way"
+                >
+                  One Way
+                </button>
+                <button
+                  type="button"
+                  class="btn-select"
+                  data-trip-type="round-trip"
+                >
+                  Round Trip
+                </button>
               </div>
             </div>
           </div>
@@ -687,7 +516,6 @@
             <input type="text" id="cvv" placeholder="123" required />
           </div>
         </div>
-
         <div class="booking-summary">
           <h4>Booking Summary</h4>
           <div class="summary-item">
@@ -718,298 +546,10 @@
         </div>
       </form>
     </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="booking.js"></script>
     <div id="book-now-placeholder"></div>
     <div id="footer-placeholder"></div>
-    <script src="script.js"></script>
-    <script>
-      // Initialize Google Map variables
-      let routeMap;
-      let directionsService;
-      let directionsRenderer;
-      let pickupMarker;
-      let dropoffMarker;
-      let autocompletePickup;
-      let autocompleteDropoff;
-      let mapInitialized = false;
-
-      // Initialize the map and autocomplete functionality
-      function initMap() {
-        if (mapInitialized) return;
-
-        const routeMapContainer = document.getElementById("route-map");
-        routeMapContainer.style.display = "none"; // Hide initially
-
-        routeMap = new google.maps.Map(routeMapContainer, {
-          center: { lat: 51.505, lng: -0.09 },
-          zoom: 13,
-        });
-
-        directionsService = new google.maps.DirectionsService();
-        directionsRenderer = new google.maps.DirectionsRenderer({
-          map: routeMap,
-          suppressMarkers: true,
-          polylineOptions: {
-            strokeColor: "#3b82f6",
-            strokeOpacity: 0.7,
-            strokeWeight: 5,
-          },
-        });
-
-        // Initialize autocomplete
-        autocompletePickup = new google.maps.places.Autocomplete(
-          document.getElementById("pickupLocation"),
-          { types: ["geocode"] }
-        );
-
-        autocompleteDropoff = new google.maps.places.Autocomplete(
-          document.getElementById("dropoffLocation"),
-          { types: ["geocode"] }
-        );
-
-        // Add place_changed listeners for automatic map updates
-        autocompletePickup.addListener("place_changed", () => {
-          updateMap(document.getElementById("pickupLocation"), true);
-        });
-
-        autocompleteDropoff.addListener("place_changed", () => {
-          updateMap(document.getElementById("dropoffLocation"), false);
-        });
-
-        // Initialize transfer type checkboxes
-        const returnFields = document.getElementById("returnFields");
-        document
-          .querySelectorAll('input[name="transferType"]')
-          .forEach((checkbox) => {
-            checkbox.addEventListener("change", function () {
-              if (this.value === "round-trip" && this.checked) {
-                returnFields.style.display = "flex";
-                document.querySelector(
-                  'input[name="transferType"][value="one-way"]'
-                ).checked = false;
-              } else if (this.value === "one-way" && this.checked) {
-                returnFields.style.display = "none";
-                document.querySelector(
-                  'input[name="transferType"][value="round-trip"]'
-                ).checked = false;
-              }
-            });
-          });
-
-        mapInitialized = true;
-      }
-
-      // Update the map with new location
-      function updateMap(locationInput, isPickup) {
-        const place = isPickup
-          ? autocompletePickup.getPlace()
-          : autocompleteDropoff.getPlace();
-
-        if (!place || !place.geometry) {
-          return; // Don't show alert, just return
-        }
-
-        // Remove existing marker
-        if (isPickup && pickupMarker) {
-          pickupMarker.setMap(null);
-        } else if (!isPickup && dropoffMarker) {
-          dropoffMarker.setMap(null);
-        }
-
-        // Create new marker
-        const marker = new google.maps.Marker({
-          position: place.geometry.location,
-          map: routeMap,
-          icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            fillColor: isPickup ? "#4285F4" : "#EA4335",
-            fillOpacity: 1,
-            strokeColor: "#FFFFFF",
-            strokeWeight: 2,
-            scale: 10,
-          },
-          title: place.name,
-        });
-
-        if (isPickup) {
-          pickupMarker = marker;
-        } else {
-          dropoffMarker = marker;
-        }
-
-        // Show map only when both addresses are set
-        if (pickupMarker && dropoffMarker) {
-          document.getElementById("route-map").style.display = "block";
-          document.getElementById("routeInfo").style.display = "block";
-          showRoute();
-        }
-      }
-
-      // Show the route between pickup and dropoff locations
-      function showRoute() {
-        const request = {
-          origin: pickupMarker.getPosition(),
-          destination: dropoffMarker.getPosition(),
-          travelMode: google.maps.TravelMode.DRIVING,
-        };
-
-        directionsService.route(request, (result, status) => {
-          if (status === google.maps.DirectionsStatus.OK) {
-            directionsRenderer.setDirections(result);
-
-            const route = result.routes[0].legs[0];
-            const distance = route.distance.text;
-            const duration = route.duration.text;
-
-            // Update route info
-            document.getElementById("routeInfo").innerHTML = `
-        <div><strong>Your Transfer:</strong></div>
-        <div class="route-detail">
-          <span class="pickup-marker"></span>
-          <strong>Pickup:</strong> ${
-            document.getElementById("pickupLocation").value
-          }
-        </div>
-        
-        <div class="route-stats" style="padding-left: 4%;margin-left:8px; border-left:2px solid black;  ">
-          <div><strong>Distance:</strong> ${distance}</div>
-          <div><strong>Duration:</strong> ${duration}</div>
-        </div>
-        <div class="route-detail">
-          <span class="dropoff-marker"></span>
-          <strong>Drop-off:</strong> ${
-            document.getElementById("dropoffLocation").value
-          }
-        </div>
-      `;
-
-            // Fit bounds to show the entire route
-            const bounds = new google.maps.LatLngBounds();
-            bounds.extend(pickupMarker.getPosition());
-            bounds.extend(dropoffMarker.getPosition());
-            routeMap.fitBounds(bounds);
-          } else {
-            console.error("Directions request failed:", status);
-            const bounds = new google.maps.LatLngBounds();
-            bounds.extend(pickupMarker.getPosition());
-            bounds.extend(dropoffMarker.getPosition());
-            routeMap.fitBounds(bounds);
-          }
-        });
-      }
-
-      // Initialize when DOM is ready
-      document.addEventListener("DOMContentLoaded", () => {
-        if (document.getElementById("route-map")) {
-          // Load Google Maps API
-          const script = document.createElement("script");
-          script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBh1KQfw1e4u8SRfQuDkC2G5rjhd_nxlI8&libraries=places&callback=initMap`;
-          script.async = true;
-          script.defer = true;
-          document.head.appendChild(script);
-        }
-
-        // Initialize form navigation
-        const steps = document.querySelectorAll(".step-content");
-        const stepButtons = document.querySelectorAll(".step");
-        let currentStep = 1;
-
-        function showStep(stepNumber) {
-          steps.forEach((step) => step.classList.remove("active"));
-          stepButtons.forEach((button) => button.classList.remove("active"));
-
-          document
-            .querySelector(`.step-content[data-step="${stepNumber}"]`)
-            .classList.add("active");
-          document
-            .querySelector(`.step[data-step="${stepNumber}"]`)
-            .classList.add("active");
-          currentStep = stepNumber;
-        }
-
-        document.querySelectorAll(".btn-next").forEach((button) => {
-          button.addEventListener("click", () => {
-            if (currentStep < 4) showStep(currentStep + 1);
-          });
-        });
-
-        document.querySelectorAll(".btn-prev").forEach((button) => {
-          button.addEventListener("click", () => {
-            if (currentStep > 1) showStep(currentStep - 1);
-          });
-        });
-
-        // Initialize vehicle selection
-        document.querySelectorAll(".btn-select").forEach((button) => {
-          button.addEventListener("click", function () {
-            const vehicleCard = this.closest(".vehicle-card");
-            document.querySelectorAll(".vehicle-card").forEach((card) => {
-              card.classList.remove("selected");
-            });
-            vehicleCard.classList.add("selected");
-
-            // Update summary
-            document.getElementById("summaryVehicle").textContent =
-              vehicleCard.querySelector(".vehicle-type").textContent;
-            document.getElementById("summaryTotal").textContent =
-              vehicleCard.querySelector(".price").textContent;
-          });
-        });
-
-        // Update booking summary
-        document
-          .getElementById("pickupLocation")
-          .addEventListener("change", function () {
-            document.getElementById("summaryPickup").textContent = this.value;
-          });
-
-        document
-          .getElementById("pickupDate")
-          .addEventListener("change", function () {
-            document.getElementById("summaryPickupDate").textContent =
-              this.value;
-          });
-
-        document
-          .querySelectorAll('input[name="transferType"]')
-          .forEach((checkbox) => {
-            checkbox.addEventListener("change", function () {
-              if (this.checked) {
-                document.getElementById("summaryTransferType").textContent =
-                  this.value;
-              }
-            });
-          });
-      });
-      // Replace the transferType event listener with this
-      document
-        .querySelectorAll('input[name="transferType"]')
-        .forEach((checkbox) => {
-          checkbox.addEventListener("change", function () {
-            if (this.value === "round-trip" && this.checked) {
-              returnFields.style.display = "flex";
-              document.querySelector(
-                'input[name="transferType"][value="one-way"]'
-              ).checked = false;
-            } else if (this.value === "one-way" && this.checked) {
-              returnFields.style.display = "none";
-              document.querySelector(
-                'input[name="transferType"][value="round-trip"]'
-              ).checked = false;
-            }
-          });
-        });
-
-      // Add place_changed listeners to automatically update the map
-      autocompletePickup.addListener("place_changed", () => {
-        updateMap(document.getElementById("pickupLocation"), true);
-      });
-
-      autocompleteDropoff.addListener("place_changed", () => {
-        updateMap(document.getElementById("dropoffLocation"), false);
-      });
-    </script>
+    <script src="script.js"></script> 
   </body>
 </html>

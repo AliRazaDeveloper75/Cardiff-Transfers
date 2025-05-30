@@ -23,67 +23,124 @@
           <p>Driven by passion guided by heart!</p>
         </div>
 
-      <div class="booking-form">
-  <h2>Order your vehicle</h2>
-  <form>
-    <div class="input-row">
-      <div class="input-container">
-        <label for="pickupDate">Pickup Date</label>
-        <input type="date" id="pickupDate" required />
-      </div>
+        <div class="booking-form">
+          <h2>Order your vehicle</h2>
+          <form>
+            <div class="input-row">
+              <div class="input-container">
+                <label for="pickupDate">Pickup Date</label>
+                <input type="date" id="pickupDate" required />
+              </div>
 
-      <div class="input-container">
-        <label for="pickupTime">Pickup Time</label>
-        <input type="time" id="pickupTime" required />
-          
-      </div>
-    </div>
+              <div class="input-container">
+                <label for="pickupTime">Pickup Time</label>
+                <input type="time" id="pickupTime" required />
+              </div>
+            </div>
 
-    <div class="input-container">
-      <label for="pickup">Pickup Address</label>
-      <input id="pickup" type="text" placeholder="Enter Pickup Address" />
-    </div>
+            <div class="input-container">
+              <label for="pickup">Pickup Address</label>
+              <input
+                id="pickup"
+                type="text"
+                placeholder="Enter Pickup Address"
+              />
+            </div>
 
-    <div class="input-container">
-      <label for="dropoff">Dropoff Address</label>
-      <input id="dropoff" type="text" placeholder="Enter Dropoff Address" />
-    </div>
+            <div class="input-container">
+              <label for="dropoff">Dropoff Address</label>
+              <input
+                id="dropoff"
+                type="text"
+                placeholder="Enter Dropoff Address"
+              />
+            </div>
 
-   <div class="input-container">
+           <style>
+  
+
+  .input-container > label {
+    display: block;
+    margin-bottom: 0.5em;
+    color: #333;
+  }
+
+ 
+
+  .column input[type="checkbox"] {
+    display: none; /* hide checkboxes */
+  }
+
+  .column label {
+    padding: 10px 20px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    color: #333;
+    background-color: #f9f9f9;
+    display: inline-block;
+    text-align: center;
+  }
+
+  .column input[type="checkbox"]:checked + label {
+    background-color: #2563eb;
+    color: white;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+  }
+
+  .column label:hover {
+    background-color: #e0e7ff;
+  }
+</style>
+
+<div class="input-container">
   <label>Transfer Type</label>
   <div class="input-row">
     <div class="column">
-      <input type="checkbox" id="oneWay" name="transferType" value="one-way">
+      <input
+        type="checkbox"
+        id="oneWay"
+        name="transferType"
+        value="one-way"
+      />
       <label for="oneWay">One Way</label>
     </div>
     <div class="column">
-      <input type="checkbox" id="roundTrip" name="transferType" value="round-trip">
+      <input
+        type="checkbox"
+        id="roundTrip"
+        name="transferType"
+        value="round-trip"
+      />
       <label for="roundTrip">Round Trip</label>
     </div>
   </div>
 </div>
 
-<!-- Return Date & Time -->
-<div id="return-fields" style="display: none;">
-  <div class="input-row">
-    <div class="input-container">
-      <label for="returnDate">Return Date</label>
-      <input type="date" id="returnDate" />
-    </div>
-    <div class="input-container">
-      <label for="returnTime">Return Time</label>
-      <input type="time" id="returnTime" />
-    </div>
-  </div>
-</div>
 
-    <button type="submit">BOOK NOW</button>
-  </form>
-</div>
+            <!-- Return Date & Time -->
+            <div id="return-fields" style="display: none">
+              <div class="input-row">
+                <div class="input-container">
+                  <label for="returnDate">Return Date</label>
+                  <input type="date" id="returnDate" />
+                </div>
+                <div class="input-container">
+                  <label for="returnTime">Return Time</label>
+                  <input type="time" id="returnTime" />
+                </div>
+              </div>
+            </div>
 
+            <button type="submit">BOOK NOW</button>
+          </form>
+        </div>
       </div>
     </section>
-    
+
     <!-- Why Travel With Us -->
     <section class="container">
       <h2 class="section-title">Why Travel With Us?</h2>
@@ -476,28 +533,28 @@
     ></script>
 
     <script>
-      document.addEventListener("DOMContentLoaded", function() {
-  const oneWayCheckbox = document.getElementById("oneWay");
-  const roundTripCheckbox = document.getElementById("roundTrip");
-  const returnFields = document.getElementById("return-fields");
+      document.addEventListener("DOMContentLoaded", function () {
+        const oneWayCheckbox = document.getElementById("oneWay");
+        const roundTripCheckbox = document.getElementById("roundTrip");
+        const returnFields = document.getElementById("return-fields");
 
-  // Ensure only one checkbox can be selected at a time
-  oneWayCheckbox.addEventListener("change", function() {
-    if (this.checked) {
-      roundTripCheckbox.checked = false;
-      returnFields.style.display = "none";
-    }
-  });
+        // Ensure only one checkbox can be selected at a time
+        oneWayCheckbox.addEventListener("change", function () {
+          if (this.checked) {
+            roundTripCheckbox.checked = false;
+            returnFields.style.display = "none";
+          }
+        });
 
-  roundTripCheckbox.addEventListener("change", function() {
-    if (this.checked) {
-      oneWayCheckbox.checked = false;
-      returnFields.style.display = "block";
-    } else {
-      returnFields.style.display = "none";
-    }
-  });
-});
+        roundTripCheckbox.addEventListener("change", function () {
+          if (this.checked) {
+            oneWayCheckbox.checked = false;
+            returnFields.style.display = "block";
+          } else {
+            returnFields.style.display = "none";
+          }
+        });
+      });
     </script>
   </body>
 </html>
