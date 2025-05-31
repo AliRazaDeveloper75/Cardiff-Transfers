@@ -300,6 +300,10 @@ body {
   font-size: 16px;
   transition: background-color 0.3s;
 }
+.book-btn a{
+  color: white;
+  text-decoration: none;
+}
 
 .book-btn:hover {
   background-color: #0069d9;
@@ -354,6 +358,11 @@ body {
   border: none;
   border-radius: 8px;
   font-size: 14px;
+ 
+}
+.btn a{
+  text-decoration: none;
+  color: white;
   cursor: pointer;
 }
 
