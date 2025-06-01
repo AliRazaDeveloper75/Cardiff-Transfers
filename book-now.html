@@ -51,7 +51,7 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="pickupDate">Pickup Date</label>
-                <input type="date" id="pickupDate" required />
+                <input type="date" id="pickupDate" required min="" />
               </div>
               <div class="form-group">
                 <label for="pickupTime">Pickup Time</label>
@@ -84,7 +84,7 @@
               <div class="form-row" id="returnFields" style="display: none">
                 <div class="form-group">
                   <label for="returnDate">Return Date</label>
-                  <input type="date" id="returnDate" />
+                  <input type="date" id="returnDate" required min=""/>
                 </div>
                 <div class="form-group">
                   <label for="returnTime">Return Time</label>
@@ -550,6 +550,6 @@
     <script src="booking.js"></script>
     <div id="book-now-placeholder"></div>
     <div id="footer-placeholder"></div>
-    <script src="script.js"></script> 
+    <script src="script.js"></script>
   </body>
 </html>

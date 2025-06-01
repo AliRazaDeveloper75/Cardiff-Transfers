@@ -56,70 +56,65 @@
               />
             </div>
 
-           <style>
-  
+            <style>
+              .input-container > label {
+                display: block;
+                margin-bottom: 0.5em;
+                color: #333;
+              }
 
-  .input-container > label {
-    display: block;
-    margin-bottom: 0.5em;
-    color: #333;
-  }
+              .column input[type="checkbox"] {
+                display: none; /* hide checkboxes */
+              }
 
- 
+              .column label {
+                padding: 10px 20px;
+                border: 2px solid #ccc;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                color: #333;
+                background-color: #f9f9f9;
+                display: inline-block;
+                text-align: center;
+              }
 
-  .column input[type="checkbox"] {
-    display: none; /* hide checkboxes */
-  }
+              .column input[type="checkbox"]:checked + label {
+                background-color: #2563eb;
+                color: white;
+                border-color: #2563eb;
+                box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+              }
 
-  .column label {
-    padding: 10px 20px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    color: #333;
-    background-color: #f9f9f9;
-    display: inline-block;
-    text-align: center;
-  }
+              .column label:hover {
+                background-color: #e0e7ff;
+              }
+            </style>
 
-  .column input[type="checkbox"]:checked + label {
-    background-color: #2563eb;
-    color: white;
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
-  }
-
-  .column label:hover {
-    background-color: #e0e7ff;
-  }
-</style>
-
-<div class="input-container">
-  <label>Transfer Type</label>
-  <div class="input-row">
-    <div class="column">
-      <input
-        type="checkbox"
-        id="oneWay"
-        name="transferType"
-        value="one-way"
-      />
-      <label for="oneWay">One Way</label>
-    </div>
-    <div class="column">
-      <input
-        type="checkbox"
-        id="roundTrip"
-        name="transferType"
-        value="round-trip"
-      />
-      <label for="roundTrip">Round Trip</label>
-    </div>
-  </div>
-</div>
-
+            <div class="input-container">
+              <label>Transfer Type</label>
+              <div class="input-row">
+                <div class="column">
+                  <input
+                    type="checkbox"
+                    id="oneWay"
+                    name="transferType"
+                    value="one-way"
+                  />
+                  <label for="oneWay">One Way</label>
+                </div>
+                <div class="column">
+                  <input
+                    type="checkbox"
+                    id="roundTrip"
+                    name="transferType"
+                    value="round-trip"
+                  />
+                  <label for="roundTrip">Round Trip</label>
+                </div>
+              </div>
+            </div>
 
             <!-- Return Date & Time -->
             <div id="return-fields" style="display: none">
@@ -208,7 +203,9 @@
                 >2 Hand Carry
               </div>
             </div>
-            <button class="book-btn"><a href="book-now.html">Book Now</a></button>
+            <button class="book-btn">
+              <a href="book-now.html">Book Now</a>
+            </button>
           </div>
         </div>
 
@@ -246,7 +243,9 @@
                 >2 Hand Carry
               </div>
             </div>
-            <button class="book-btn"><a href="book-now.html">Book Now</a></button>
+            <button class="book-btn">
+              <a href="book-now.html">Book Now</a>
+            </button>
           </div>
         </div>
 
@@ -284,7 +283,9 @@
                 >2 Hand Carry
               </div>
             </div>
-            <button class="book-btn"><a href="book-now.html">Book Now</a></button>
+            <button class="book-btn">
+              <a href="book-now.html">Book Now</a>
+            </button>
           </div>
         </div>
 
@@ -322,7 +323,9 @@
                 2 Hand Carry
               </div>
             </div>
-            <button class="book-btn"><a href="book-now.html">Book Now</a></button>
+            <button class="book-btn">
+              <a href="book-now.html">Book Now</a>
+            </button>
           </div>
         </div>
 
@@ -360,7 +363,9 @@
                 >2 Hand Carry
               </div>
             </div>
-            <button class="book-btn"><a href="book-now.html">Book Now</a></button>
+            <button class="book-btn">
+              <a href="book-now.html">Book Now</a>
+            </button>
           </div>
         </div>
       </div>
@@ -552,6 +557,37 @@
             returnFields.style.display = "block";
           } else {
             returnFields.style.display = "none";
+          }
+        });
+      });
+
+      // user select future date not previous date
+      document.addEventListener("DOMContentLoaded", function () {
+        const pickupDateInput = document.getElementById("pickupDate");
+        const returnDateInput = document.getElementById("returnDate");
+
+        // Set min date to today (YYYY-MM-DD format)
+        const returnDatetoday = new Date().toISOString().split("T")[0];
+        returnDateInput.min = returnDatetoday;
+        // Set min date to today (YYYY-MM-DD format)
+        const today = new Date().toISOString().split("T")[0];
+        pickupDateInput.min = today;
+
+        // Optional: If you want to prevent manual entry of past dates
+        returnDateInput.addEventListener("input", function () {
+          const selectedDate = this.value;
+          if (selectedDate < returnDatetoday) {
+            this.value = returnDatetoday; // Reset to today if past date is entered
+            alert("Please select today or a future date");
+          }
+        });
+
+        // Optional: If you want to prevent manual entry of past dates
+        pickupDateInput.addEventListener("input", function () {
+          const selectedDate = this.value;
+          if (selectedDate < today) {
+            this.value = today; // Reset to today if past date is entered
+            alert("Please select today or a future date");
           }
         });
       });

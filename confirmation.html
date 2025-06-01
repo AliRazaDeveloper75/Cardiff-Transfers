@@ -346,7 +346,7 @@
       </div>
 
       <div class="actions">
-        <!--<a href="#" class="btn" id="printBtn">Print Confirmation</a>-->
+        <a href="#" class="btn" id="downloadPdfBtn">Download PDF</a>
         <a href="index.html" class="btn">Return to Home</a>
       </div>
     </div>
@@ -497,8 +497,196 @@
         if (!timeString) return "Not specified";
         return timeString.substring(0, 5);
       }
+
+      // pdf functionality
+      // PDF Generation Functionality
+      document
+        .getElementById("downloadPdfBtn")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+          generatePdf();
+        });
+
+      function generatePdf() {
+        // Get booking data
+        const bookingData = JSON.parse(localStorage.getItem("currentBooking"));
+
+        // Create PDF document
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({
+          orientation: "portrait",
+          unit: "mm",
+          format: "a4",
+        });
+
+        // Add logo or header
+        doc.setFontSize(22);
+        doc.setTextColor(0, 51, 102); // Dark blue
+        doc.setFont("helvetica", "bold");
+        doc.text("Booking Confirmation", 105, 20, { align: "center" });
+
+        // Add reference number
+        doc.setFontSize(12);
+        doc.setTextColor(100);
+        doc.text(`Reference: ${bookingData.bookingRef}`, 105, 30, {
+          align: "center",
+        });
+
+        // Add divider line
+        doc.setDrawColor(0, 90, 170); // Blue
+        doc.setLineWidth(0.5);
+        doc.line(20, 35, 190, 35);
+
+        // Add booking details section
+        doc.setFontSize(14);
+        doc.setTextColor(0, 51, 102);
+        doc.text("Transfer Details", 20, 45);
+
+        doc.setFontSize(10);
+        doc.setTextColor(0);
+
+        let yPosition = 50;
+
+        // Transfer details
+        doc.text(`Vehicle: ${bookingData.vehicleType}`, 20, yPosition);
+        yPosition += 7;
+
+        doc.text(
+          `Pickup Date/Time: ${formatDate(
+            bookingData.pickupDate
+          )} at ${formatTime(bookingData.pickupTime)}`,
+          20,
+          yPosition
+        );
+        yPosition += 7;
+
+        if (bookingData.returnDate) {
+          doc.text(
+            `Return Date/Time: ${formatDate(
+              bookingData.returnDate
+            )} at ${formatTime(bookingData.returnTime)}`,
+            20,
+            yPosition
+          );
+          yPosition += 7;
+        }
+
+        doc.text(
+          `Pickup Location: ${bookingData.pickupLocation}`,
+          20,
+          yPosition
+        );
+        yPosition += 7;
+
+        doc.text(
+          `Drop-off Location: ${bookingData.dropoffLocation}`,
+          20,
+          yPosition
+        );
+        yPosition += 7;
+
+        doc.text(
+          `Transfer Type: ${
+            bookingData.transferType === "one-way" ? "One Way" : "Round Trip"
+          }`,
+          20,
+          yPosition
+        );
+        yPosition += 7;
+
+        doc.text(`Distance: ${bookingData.distance || "N/A"}`, 20, yPosition);
+        yPosition += 7;
+
+        doc.text(`Duration: ${bookingData.duration || "N/A"}`, 20, yPosition);
+        yPosition += 12;
+
+        // Customer details
+        doc.setFontSize(14);
+        doc.setTextColor(0, 51, 102);
+        doc.text("Customer Details", 20, yPosition);
+        yPosition += 7;
+
+        doc.setFontSize(10);
+        doc.setTextColor(0);
+
+        doc.text(`Name: ${bookingData.fullName}`, 20, yPosition);
+        yPosition += 7;
+
+        doc.text(`Email: ${bookingData.email}`, 20, yPosition);
+        yPosition += 7;
+
+        doc.text(`Phone: ${bookingData.phone}`, 20, yPosition);
+        yPosition += 7;
+
+        doc.text(
+          `Special Requests: ${bookingData.specialRequests || "None"}`,
+          20,
+          yPosition
+        );
+        yPosition += 12;
+
+        // Payment summary
+        doc.setFontSize(14);
+        doc.setTextColor(0, 51, 102);
+        doc.text("Payment Summary", 20, yPosition);
+        yPosition += 7;
+
+        doc.setFontSize(10);
+        doc.setTextColor(0);
+
+        doc.text(
+          `Vehicle Price: €${(
+            bookingData.basePrice || bookingData.price
+          ).toFixed(2)}`,
+          20,
+          yPosition
+        );
+        yPosition += 7;
+
+        if (bookingData.transferType === "round-trip") {
+          doc.text(
+            `Round Trip Surcharge: €${(
+              bookingData.price - bookingData.basePrice
+            ).toFixed(2)}`,
+            20,
+            yPosition
+          );
+          yPosition += 7;
+        }
+
+        doc.setFont("helvetica", "bold");
+        doc.text(
+          `Total Amount: €${bookingData.price.toFixed(2)}`,
+          20,
+          yPosition
+        );
+        yPosition += 7;
+
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(0, 128, 0); // Green
+        doc.text("Status: Paid", 20, yPosition);
+        yPosition += 15;
+
+        // Footer
+        doc.setFontSize(8);
+        doc.setTextColor(100);
+        doc.text("Thank you for your booking!", 105, yPosition, {
+          align: "center",
+        });
+        yPosition += 5;
+        doc.text(
+          "For any questions, please contact our customer service.",
+          105,
+          yPosition,
+          { align: "center" }
+        );
+
+        // Save the PDF
+        doc.save(`booking_confirmation_${bookingData.bookingRef}.pdf`);
+      }
     </script>
     <div id="footer-placeholder"></div>
     <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   </body>
 </html>

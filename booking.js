@@ -838,3 +838,34 @@ function generateBookingPdf() {
       document.body.removeChild(pdfContent);
     });
 }
+
+// user select future date not previous date 
+document.addEventListener("DOMContentLoaded", function() {
+  const pickupDateInput = document.getElementById("pickupDate");
+  const returnDateInput = document.getElementById("returnDate");
+  
+  // Set min date to today (YYYY-MM-DD format)
+  const returnDatetoday = new Date().toISOString().split('T')[0];
+  returnDateInput.min = returnDatetoday;
+  // Set min date to today (YYYY-MM-DD format)
+  const today = new Date().toISOString().split('T')[0];
+  pickupDateInput.min = today;
+  
+  // Optional: If you want to prevent manual entry of past dates
+  returnDateInput.addEventListener("input", function() {
+    const selectedDate = this.value;
+    if (selectedDate < returnDatetoday) {
+      this.value = returnDatetoday; // Reset to today if past date is entered
+      alert("Please select today or a future date");
+    }
+  });
+
+  // Optional: If you want to prevent manual entry of past dates
+  pickupDateInput.addEventListener("input", function() {
+    const selectedDate = this.value;
+    if (selectedDate < today) {
+      this.value = today; // Reset to today if past date is entered
+      alert("Please select today or a future date");
+    }
+  });
+});
