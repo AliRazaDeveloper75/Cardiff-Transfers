@@ -297,6 +297,9 @@ function debounce(func, wait) {
 
 // Initialize when DOM is ready
 document.addEventListener("DOMContentLoaded", function () {
+    localStorage.removeItem("currentBooking");
+    
+  
   // Load the map automatically if the container exists
   if (document.getElementById("route-map")) {
     initMap();
