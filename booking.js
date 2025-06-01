@@ -19,7 +19,7 @@ function initMap() {
 
   const routeMapContainer = document.getElementById("route-map");
   if (!routeMapContainer) return;
-  
+
   routeMapContainer.style.display = "none";
 
   // Create map instance
@@ -31,9 +31,9 @@ function initMap() {
       {
         featureType: "poi",
         elementType: "labels",
-        stylers: [{ visibility: "off" }]
-      }
-    ]
+        stylers: [{ visibility: "off" }],
+      },
+    ],
   });
 
   // Initialize directions service and renderer
@@ -76,12 +76,12 @@ function initAutocomplete() {
   // Create autocomplete instances
   autocompletePickup = new google.maps.places.Autocomplete(pickupInput, {
     types: ["geocode"],
-    fields: ["geometry", "name", "formatted_address"]
+    fields: ["geometry", "name", "formatted_address"],
   });
 
   autocompleteDropoff = new google.maps.places.Autocomplete(dropoffInput, {
     types: ["geocode"],
-    fields: ["geometry", "name", "formatted_address"]
+    fields: ["geometry", "name", "formatted_address"],
   });
 
   // Add place_changed listeners
@@ -94,21 +94,27 @@ function initAutocomplete() {
   });
 
   // Also listen to manual input changes with debounce
-  pickupInput.addEventListener("input", debounce(() => {
-    if (!pickupInput.value && pickupMarker) {
-      pickupMarker.setMap(null);
-      pickupMarker = null;
-      updateMapVisibility();
-    }
-  }, 500));
+  pickupInput.addEventListener(
+    "input",
+    debounce(() => {
+      if (!pickupInput.value && pickupMarker) {
+        pickupMarker.setMap(null);
+        pickupMarker = null;
+        updateMapVisibility();
+      }
+    }, 500)
+  );
 
-  dropoffInput.addEventListener("input", debounce(() => {
-    if (!dropoffInput.value && dropoffMarker) {
-      dropoffMarker.setMap(null);
-      dropoffMarker = null;
-      updateMapVisibility();
-    }
-  }, 500));
+  dropoffInput.addEventListener(
+    "input",
+    debounce(() => {
+      if (!dropoffInput.value && dropoffMarker) {
+        dropoffMarker.setMap(null);
+        dropoffMarker = null;
+        updateMapVisibility();
+      }
+    }, 500)
+  );
 }
 
 // Handle place selection from autocomplete
@@ -152,16 +158,20 @@ function updateMapWithPlace(place, isPickup) {
       scale: 10,
     },
     title: place.name || place.formatted_address,
-    zIndex: isPickup ? 1 : 2
+    zIndex: isPickup ? 1 : 2,
   });
 
   // Store reference to marker
   if (isPickup) {
     pickupMarker = marker;
-    bookingData.pickupLocation = place.formatted_address || document.getElementById("pickupLocation").value;
+    bookingData.pickupLocation =
+      place.formatted_address ||
+      document.getElementById("pickupLocation").value;
   } else {
     dropoffMarker = marker;
-    bookingData.dropoffLocation = place.formatted_address || document.getElementById("dropoffLocation").value;
+    bookingData.dropoffLocation =
+      place.formatted_address ||
+      document.getElementById("dropoffLocation").value;
   }
 
   // Update map visibility and route
@@ -202,21 +212,21 @@ function showRoute() {
     provideRouteAlternatives: false,
     avoidHighways: false,
     avoidTolls: false,
-    unitSystem: google.maps.UnitSystem.METRIC
+    unitSystem: google.maps.UnitSystem.METRIC,
   };
 
   directionsService.route(request, (result, status) => {
     if (status === google.maps.DirectionsStatus.OK) {
       directionsRenderer.setDirections(result);
       const route = result.routes[0].legs[0];
-      
+
       // Store route data
       bookingData.distance = route.distance.text;
       bookingData.duration = route.duration.text;
       bookingData.routePolyline = result.routes[0].overview_polyline;
 
       updateRouteInfo();
-      
+
       // Fit bounds to show the entire route
       const bounds = new google.maps.LatLngBounds();
       bounds.extend(pickupMarker.getPosition());
@@ -229,7 +239,7 @@ function showRoute() {
       bounds.extend(pickupMarker.getPosition());
       bounds.extend(dropoffMarker.getPosition());
       routeMap.fitBounds(bounds, { top: 50, bottom: 50, left: 50, right: 50 });
-      
+
       // Show basic info
       bookingData.distance = "Calculating...";
       bookingData.duration = "Calculating...";
@@ -249,18 +259,26 @@ function updateRouteInfo() {
       <span class="marker-icon pickup-marker"></span>
       <div>
         <strong>Pickup:</strong> 
-        <span class="location-text">${bookingData.pickupLocation || "Not specified"}</span>
+        <span class="location-text">${
+          bookingData.pickupLocation || "Not specified"
+        }</span>
       </div>
     </div>
     <div class="route-stats">
-      <div><strong>Distance:</strong> ${bookingData.distance || "Calculating..."}</div>
-      <div><strong>Duration:</strong> ${bookingData.duration || "Calculating..."}</div>
+      <div><strong>Distance:</strong> ${
+        bookingData.distance || "Calculating..."
+      }</div>
+      <div><strong>Duration:</strong> ${
+        bookingData.duration || "Calculating..."
+      }</div>
     </div>
     <div class="route-detail">
       <span class="marker-icon dropoff-marker"></span>
       <div>
         <strong>Drop-off:</strong> 
-        <span class="location-text">${bookingData.dropoffLocation || "Not specified"}</span>
+        <span class="location-text">${
+          bookingData.dropoffLocation || "Not specified"
+        }</span>
       </div>
     </div>
   `;
@@ -269,15 +287,16 @@ function updateRouteInfo() {
 // Simple debounce function
 function debounce(func, wait) {
   let timeout;
-  return function() {
-    const context = this, args = arguments;
+  return function () {
+    const context = this,
+      args = arguments;
     clearTimeout(timeout);
     timeout = setTimeout(() => func.apply(context, args), wait);
   };
 }
 
 // Initialize when DOM is ready
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   // Load the map automatically if the container exists
   if (document.getElementById("route-map")) {
     initMap();
@@ -510,7 +529,7 @@ document.addEventListener("DOMContentLoaded", function () {
       bookingData.transferType = tripType;
       bookingData.price =
         tripType === "round-trip"
-          ? bookingData.basePrice * 1.8
+          ? bookingData.basePrice * 2
           : bookingData.basePrice;
     });
   });
@@ -520,29 +539,36 @@ document.addEventListener("DOMContentLoaded", function () {
   const steps = document.querySelectorAll(".step");
 
   function showStep(step) {
-    steps.forEach((s) => {
-      if (parseInt(s.dataset.step) <= step) {
-        s.classList.add("active");
-      } else {
-        s.classList.remove("active");
-      }
-    });
-
-    forms.forEach((form) => {
-      if (parseInt(form.dataset.step) === step) {
-        form.classList.add("active");
-      } else {
-        form.classList.remove("active");
-      }
-    });
-
-    bookingData.step = step;
-
-    // Update summary before showing payment step
-    if (step === 4) {
-      updateSummary();
+  steps.forEach((s) => {
+    if (parseInt(s.dataset.step) <= step) {
+      s.classList.add("active");
+    } else {
+      s.classList.remove("active");
     }
+  });
+
+  forms.forEach((form) => {
+    if (parseInt(form.dataset.step) === step) {
+      form.classList.add("active");
+    } else {
+      form.classList.remove("active");
+    }
+  });
+
+  bookingData.step = step;
+
+  // Update summary before showing payment step
+  if (step === 4) {
+    updateSummary();
   }
+
+  // Scroll to top of the form container
+  const formContainer = document.querySelector('.booking-form-container') || document.body;
+  formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  
+  // Alternative if you want instant scroll:
+  // window.scrollTo(0, 0);
+}
 
   // Next button
   document.querySelectorAll(".btn-next").forEach((btn) => {
