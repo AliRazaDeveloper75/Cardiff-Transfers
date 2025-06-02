@@ -35,7 +35,7 @@ body {
 }
 
 .site-header.scrolled {
-  background: #333;
+  background: #002b45;
   color: white;
   padding: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -599,7 +599,9 @@ body {
 
 .input-row {
   display: flex;
+  justify-content: center;
   gap: 10px;
+  padding: 5px;
 }
 
 .input-row .input-container {
@@ -628,10 +630,7 @@ body {
   background-color: white;
 }
 
-.input-row {
-  display: flex;
-  gap: 20px;
-}
+
 
 .column {
   display: flex;
@@ -651,8 +650,8 @@ body {
   margin: 0 15px;
   color: inherit;
   text-decoration: none;
-  background: white;
-  color: black;
+  background: orange;
+  color: white;
   padding: 0.75rem 1.5rem;
   text-decoration: none;
   border-radius: 5px;
@@ -661,7 +660,7 @@ body {
   cursor: pointer;
 }
 .site-header nav button:hover {
-  background: #ffcc00;
+  background: black;
   color: white;
   transition: 400ms;
   cursor: pointer;

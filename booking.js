@@ -1,4 +1,264 @@
 // Global variables
+
+// Booking data structure
+const bookingData = {
+  step: 1,
+  vehicleType: "",
+  basePrice: 0,
+  price: 0,
+  passengers: 0,
+  bags: 0,
+  transferType: "one-way",
+  pickupDate: "",
+  pickupTime: "",
+  pickupLocation: "",
+  dropoffLocation: "",
+  returnDate: "",
+  returnTime: "",
+  fullName: "",
+  email: "",
+  phone: "",
+  specialRequests: "",
+  bookingRef: generateBookingRef(),
+  distance: "",
+  duration: "",
+  routePolyline: "",
+};
+
+// Initialize the booking form
+document.addEventListener("DOMContentLoaded", function () {
+  // Load from localStorage if available
+  const savedBooking = localStorage.getItem("currentBooking");
+  if (savedBooking) {
+    Object.assign(bookingData, JSON.parse(savedBooking));
+    restoreFormData();
+  }
+
+  // Initialize map
+  initMap();
+
+  // Transfer type toggle
+  const returnFields = document.getElementById("returnFields");
+  document.querySelectorAll('input[name="transferType"]').forEach((checkbox) => {
+    checkbox.addEventListener("change", function () {
+      if (this.value === "round-trip" && this.checked) {
+        returnFields.style.display = "flex";
+        bookingData.transferType = "round-trip";
+        document.querySelector('input[name="transferType"][value="one-way"]').checked = false;
+      } else if (this.value === "one-way" && this.checked) {
+        returnFields.style.display = "";
+        bookingData.transferType = "one-way";
+        document.querySelector('input[name="transferType"][value="round-trip"]').checked = false;
+      }
+    });
+  });
+
+  // Initialize vehicle selection in Step 1
+  initVehicleSelection();
+
+  // Form navigation
+  const forms = document.querySelectorAll(".step-content");
+  const steps = document.querySelectorAll(".step");
+
+  function showStep(step) {
+    steps.forEach((s) => {
+      if (parseInt(s.dataset.step) <= step) {
+        s.classList.add("active");
+      } else {
+        s.classList.remove("active");
+      }
+    });
+
+    forms.forEach((form) => {
+      if (parseInt(form.dataset.step) === step) {
+        form.classList.add("active");
+      } else {
+        form.classList.remove("active");
+      }
+    });
+
+    bookingData.step = step;
+
+    // Update summary before showing payment step
+    if (step === 3) {
+      updateSummary();
+    }
+
+    // Scroll to top of the form container
+    const formContainer = document.querySelector('.booking-form-container') || document.body;
+    formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Next button
+  document.querySelectorAll(".btn-next").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const currentStep = parseInt(this.closest(".step-content").dataset.step);
+      if (validateStep(currentStep)) {
+        saveStepData(currentStep);
+        showStep(currentStep + 1);
+      }
+    });
+  });
+
+  // Previous button
+  document.querySelectorAll(".btn-prev").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const currentStep = parseInt(this.closest(".step-content").dataset.step);
+      showStep(currentStep - 1);
+    });
+  });
+
+  // Form submission
+  document.getElementById("paymentForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    saveStepData(3);
+
+    // Save complete booking
+    localStorage.setItem("currentBooking", JSON.stringify(bookingData));
+
+    // Generate and download PDF
+    generateBookingPdf();
+
+    // Redirect to confirmation
+    window.location.href = "confirmation.html";
+  });
+
+  // Initialize with first step
+  showStep(1);
+});
+
+// Initialize vehicle selection in Step 1
+function initVehicleSelection() {
+  const vehicleOptions = [
+    {
+      type: "sedan",
+      name: "Sedan: Octavia",
+      price: 555,
+      passengers: 3,
+      bags: 2,
+      image: "./Assets/4.png"
+    },
+    {
+      type: "van",
+      name: "Van: Mercedes V-Class",
+      price: 600,
+      passengers: 5,
+      bags: 3,
+      image: "./Assets/108.png"
+    },
+    {
+      type: "minibus",
+      name: "Minibus: Mercedes Sprinter",
+      price: 750,
+      passengers: 8,
+      bags: 5,
+      image: "./Assets/car.png"
+    },
+    {
+      type: "large-sedan",
+      name: "Sedan: Octavia (Large)",
+      price: 850,
+      passengers: 10,
+      bags: 7,
+      image: "./Assets/4.png"
+    },
+    {
+      type: "large-van",
+      name: "Van: Mercedes V-Class (Large)",
+      price: 950,
+      passengers: 12,
+      bags: 8,
+      image: "./Assets/107.png"
+    },
+    {
+      type: "large-minibus",
+      name: "Minibus: Mercedes Sprinter (Large)",
+      price: 1050,
+      passengers: 14,
+      bags: 10,
+      image: "./Assets/8.png"
+    }
+  ];
+
+  const vehicleContainer = document.querySelector("#vehicleSelectionStep1 .vehicle-options");
+  
+  vehicleOptions.forEach(vehicle => {
+    const vehicleCard = document.createElement("div");
+    vehicleCard.className = "vehicle-card";
+    vehicleCard.dataset.type = vehicle.type;
+    vehicleCard.dataset.price = vehicle.price;
+    vehicleCard.dataset.passengers = vehicle.passengers;
+    vehicleCard.dataset.bags = vehicle.bags;
+
+    vehicleCard.innerHTML = `
+      <img src="${vehicle.image}" alt="${vehicle.type}" />
+      <div class="vehicle-details">
+        <div class="vehicle-type">${vehicle.name}</div>
+        <div class="vehicle-actions">
+          <div class="price">€${vehicle.price.toFixed(2)}</div>
+          <div class="price">€${(vehicle.price * 2).toFixed(2)}</div>
+        </div>
+        <ul class="specs">
+          <li class="spec-item"><i class="fas fa-user"></i> ${vehicle.passengers} passengers</li>
+          <li class="spec-item"><i class="fas fa-glass-whiskey"></i> ${vehicle.bags}</li>
+        </ul>
+        <div class="vehicle-actions">
+          <button type="button" class="btn-select" data-trip-type="one-way">
+            One Way
+          </button>
+          <button type="button" class="btn-select" data-trip-type="round-trip">
+            Round Trip
+          </button>
+        </div>
+      </div>
+    `;
+
+    vehicleContainer.appendChild(vehicleCard);
+  });
+
+  // Vehicle selection
+  document.querySelectorAll(".btn-select").forEach((button) => {
+    button.addEventListener("click", function () {
+      const vehicleCard = this.closest(".vehicle-card");
+      const tripType = this.dataset.tripType;
+
+      // Update UI
+      document.querySelectorAll(".vehicle-card").forEach((card) => {
+        card.classList.remove("selected");
+        card.querySelectorAll(".btn-select").forEach((btn) => {
+          btn.textContent =
+            btn.dataset.tripType === "one-way" ? "One Way" : "Round Trip";
+        });
+      });
+
+      vehicleCard.classList.add("selected");
+      this.textContent = tripType === "one-way" ? "One Way ✓" : "Round Trip ✓";
+
+      // Update booking data
+      bookingData.vehicleType = vehicleCard.querySelector(".vehicle-type").textContent;
+      bookingData.basePrice = parseFloat(vehicleCard.dataset.price);
+      bookingData.passengers = vehicleCard.dataset.passengers;
+      bookingData.bags = vehicleCard.dataset.bags;
+      bookingData.transferType = tripType;
+      bookingData.price = tripType === "round-trip" ? bookingData.basePrice * 2 : bookingData.basePrice;
+    });
+  });
+}
+
+// Rest of your existing functions (validateStep, saveStepData, restoreFormData, etc.) remain the same
+// ...
+
+
+
+
+
+
+
+
+
+
+
+// Global variables
 let routeMap;
 let directionsService;
 let directionsRenderer;
@@ -8,7 +268,6 @@ let autocompletePickup;
 let autocompleteDropoff;
 let mapInitialized = false;
 
-// Initialize the map
 function initMap() {
   // Check if already initialized or if Google Maps API isn't loaded yet
   if (mapInitialized) return;
@@ -18,14 +277,11 @@ function initMap() {
   }
 
   const routeMapContainer = document.getElementById("route-map");
-  if (!routeMapContainer) return;
 
-  routeMapContainer.style.display = "none";
-
-  // Create map instance
+  // Create map instance with default center (choose a location relevant to your business)
   routeMap = new google.maps.Map(routeMapContainer, {
     center: { lat: 51.505, lng: -0.09 }, // Default center (London)
-    zoom: 13,
+    zoom: 10, // Slightly zoomed out
     gestureHandling: "greedy",
     styles: [
       {
@@ -48,10 +304,43 @@ function initMap() {
     },
   });
 
+  // Add a welcome message to the route info
+  updateRouteInfoWithWelcome();
+
   // Initialize autocomplete for location inputs
   initAutocomplete();
 
   mapInitialized = true;
+}
+
+function updateRouteInfoWithWelcome() {
+  const routeInfo = document.getElementById("routeInfo");
+  if (!routeInfo) return;
+
+  routeInfo.innerHTML = `
+    <div class="route-header"><strong>Your Transfer Route</strong></div>
+    <div class="route-detail">
+      <span class="marker-icon pickup-marker"></span>
+      <div>
+        <strong>Pickup:</strong> 
+        <span class="location-text">Enter pickup location above</span>
+      </div>
+    </div>
+    <div class="route-stats">
+      <div><strong>Distance:</strong> Will calculate when locations entered</div>
+      <div><strong>Duration:</strong> Will calculate when locations entered</div>
+    </div>
+    <div class="route-detail">
+      <span class="marker-icon dropoff-marker"></span>
+      <div>
+        <strong>Drop-off:</strong> 
+        <span class="location-text">Enter drop-off location above</span>
+      </div>
+    </div>
+    <div class="map-instructions">
+      <p><i class="fas fa-info-circle"></i> Enter locations to see the route and pricing</p>
+    </div>
+  `;
 }
 
 // Load Google Maps API if not already loaded
@@ -196,8 +485,8 @@ function updateMapVisibility() {
     routeMapContainer.style.display = "block";
     routeInfo.style.display = "block";
   } else {
-    routeMapContainer.style.display = "none";
-    routeInfo.style.display = "none";
+    routeMapContainer.style.display = "";
+    routeInfo.style.display = "";
   }
 }
 
@@ -297,9 +586,8 @@ function debounce(func, wait) {
 
 // Initialize when DOM is ready
 document.addEventListener("DOMContentLoaded", function () {
-    localStorage.removeItem("currentBooking");
-    
-  
+  localStorage.removeItem("currentBooking");
+
   // Load the map automatically if the container exists
   if (document.getElementById("route-map")) {
     initMap();
@@ -309,37 +597,14 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("showMapBtn")?.addEventListener("click", initMap);
 });
 
-// Booking data structure
-const bookingData = {
-  step: 1,
-  vehicleType: "",
-  basePrice: 0,
-  price: 0,
-  passengers: 0,
-  bags: 0,
-  transferType: "one-way",
-  pickupDate: "",
-  pickupTime: "",
-  pickupLocation: "",
-  dropoffLocation: "",
-  returnDate: "",
-  returnTime: "",
-  fullName: "",
-  email: "",
-  phone: "",
-  specialRequests: "",
-  bookingRef: generateBookingRef(),
-  distance: "",
-  duration: "",
-  routePolyline: "",
-};
+
 
 // Initialize the map
 function initMap() {
   if (mapInitialized) return;
 
   const routeMapContainer = document.getElementById("route-map");
-  routeMapContainer.style.display = "none";
+  routeMapContainer.style.display = "";
 
   routeMap = new google.maps.Map(routeMapContainer, {
     center: { lat: 51.505, lng: -0.09 },
@@ -496,7 +761,7 @@ document.addEventListener("DOMContentLoaded", function () {
             'input[name="transferType"][value="one-way"]'
           ).checked = false;
         } else if (this.value === "one-way" && this.checked) {
-          returnFields.style.display = "none";
+          returnFields.style.display = "";
           bookingData.transferType = "one-way";
           document.querySelector(
             'input[name="transferType"][value="round-trip"]'
@@ -542,36 +807,37 @@ document.addEventListener("DOMContentLoaded", function () {
   const steps = document.querySelectorAll(".step");
 
   function showStep(step) {
-  steps.forEach((s) => {
-    if (parseInt(s.dataset.step) <= step) {
-      s.classList.add("active");
-    } else {
-      s.classList.remove("active");
+    steps.forEach((s) => {
+      if (parseInt(s.dataset.step) <= step) {
+        s.classList.add("active");
+      } else {
+        s.classList.remove("active");
+      }
+    });
+
+    forms.forEach((form) => {
+      if (parseInt(form.dataset.step) === step) {
+        form.classList.add("active");
+      } else {
+        form.classList.remove("active");
+      }
+    });
+
+    bookingData.step = step;
+
+    // Update summary before showing payment step
+    if (step === 4) {
+      updateSummary();
     }
-  });
 
-  forms.forEach((form) => {
-    if (parseInt(form.dataset.step) === step) {
-      form.classList.add("active");
-    } else {
-      form.classList.remove("active");
-    }
-  });
+    // Scroll to top of the form container
+    const formContainer =
+      document.querySelector(".booking-form-container") || document.body;
+    formContainer.scrollIntoView({ behavior: "smooth", block: "start" });
 
-  bookingData.step = step;
-
-  // Update summary before showing payment step
-  if (step === 4) {
-    updateSummary();
+    // Alternative if you want instant scroll:
+    // window.scrollTo(0, 0);
   }
-
-  // Scroll to top of the form container
-  const formContainer = document.querySelector('.booking-form-container') || document.body;
-  formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  
-  // Alternative if you want instant scroll:
-  // window.scrollTo(0, 0);
-}
 
   // Next button
   document.querySelectorAll(".btn-next").forEach((btn) => {
@@ -839,20 +1105,20 @@ function generateBookingPdf() {
     });
 }
 
-// user select future date not previous date 
-document.addEventListener("DOMContentLoaded", function() {
+// user select future date not previous date
+document.addEventListener("DOMContentLoaded", function () {
   const pickupDateInput = document.getElementById("pickupDate");
   const returnDateInput = document.getElementById("returnDate");
-  
+
   // Set min date to today (YYYY-MM-DD format)
-  const returnDatetoday = new Date().toISOString().split('T')[0];
+  const returnDatetoday = new Date().toISOString().split("T")[0];
   returnDateInput.min = returnDatetoday;
   // Set min date to today (YYYY-MM-DD format)
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split("T")[0];
   pickupDateInput.min = today;
-  
+
   // Optional: If you want to prevent manual entry of past dates
-  returnDateInput.addEventListener("input", function() {
+  returnDateInput.addEventListener("input", function () {
     const selectedDate = this.value;
     if (selectedDate < returnDatetoday) {
       this.value = returnDatetoday; // Reset to today if past date is entered
@@ -861,7 +1127,7 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   // Optional: If you want to prevent manual entry of past dates
-  pickupDateInput.addEventListener("input", function() {
+  pickupDateInput.addEventListener("input", function () {
     const selectedDate = this.value;
     if (selectedDate < today) {
       this.value = today; // Reset to today if past date is entered

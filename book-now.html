@@ -26,8 +26,10 @@
     <section class="hero">
       <div class="overlay">
         <div class="hero-text">
-          <h1>Book Your Trip!</h1>
+          <!--
+            <h1>Book Your Trip!</h1>
           <p>Very Qucik and Affordable Private Trip Plan!</p>
+          --> 
         </div>
       </div>
     </section>
@@ -45,428 +47,117 @@
       </div>
 
       <!-- Step 1: Trip Details -->
-      <form id="bookingFlow" class="step-content active" data-step="1">
-        <div class="trip-details-container">
-          <div class="form-section">
-            <div class="form-row">
-              <div class="form-group">
-                <label for="pickupDate">Pickup Date</label>
-                <input type="date" id="pickupDate" required min="" />
+      <div class="booking-form-container">
+        <!-- side bar map -->
+        <div class="map-sidebar">
+          <div id="route-map"></div>
+          <div id="routeInfo" class="route-info">
+            <div class="route-header"><strong>Your Transfer Route</strong></div>
+            <div class="route-detail">
+              <span class="marker-icon pickup-marker"></span>
+              <div>
+                <strong>Pickup:</strong>
+                <span class="location-text">Enter pickup location</span>
               </div>
-              <div class="form-group">
-                <label for="pickupTime">Pickup Time</label>
-                <input type="time" id="pickupTime" required />
+            </div>
+            <div class="route-stats">
+              <div><strong>Distance:</strong> Enter locations to calculate</div>
+              <div><strong>Duration:</strong> Enter locations to calculate</div>
+            </div>
+            <div class="route-detail">
+              <span class="marker-icon dropoff-marker"></span>
+              <div>
+                <strong>Drop-off:</strong>
+                <span class="location-text">Enter drop-off location</span>
               </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-content">
+          <form id="bookingFlow" class="step-content active" data-step="1">
+            <div class="trip-details-container">
+              <div class="form-section">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="pickupDate">Pickup Date</label>
+                    <input type="date" id="pickupDate" required min="" />
+                  </div>
+                  <div class="form-group">
+                    <label for="pickupTime">Pickup Time</label>
+                    <input type="time" id="pickupTime" required />
+                  </div>
 
-              <div class="form-group transfer-type">
-                <label>Transfer Type</label>
-                <div class="transfer-options">
-                  <input
-                    type="checkbox"
-                    id="oneWay"
-                    name="transferType"
-                    value="one-way"
-                  />
-                  <label for="oneWay">One Way</label>
+                  <div class="form-group transfer-type">
+                    <label>Transfer Type</label>
+                    <div class="transfer-options">
+                      <input
+                        type="checkbox"
+                        id="oneWay"
+                        name="transferType"
+                        value="one-way"
+                      />
+                      <label for="oneWay">One Way</label>
 
-                  <input
-                    type="checkbox"
-                    id="roundTrip"
-                    name="transferType"
-                    value="round-trip"
-                  />
-                  <label for="roundTrip">Round Trip</label>
+                      <input
+                        type="checkbox"
+                        id="roundTrip"
+                        name="transferType"
+                        value="round-trip"
+                      />
+                      <label for="roundTrip">Round Trip</label>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
 
-            <div class="form-row">
-              <div class="form-row" id="returnFields" style="display: none">
-                <div class="form-group">
-                  <label for="returnDate">Return Date</label>
-                  <input type="date" id="returnDate" required min=""/>
+                <div class="form-row">
+                  <div class="form-row" id="returnFields" style="display: none">
+                    <div class="form-group">
+                      <label for="returnDate">Return Date</label>
+                      <input type="date" id="returnDate" required min="" />
+                    </div>
+                    <div class="form-group">
+                      <label for="returnTime">Return Time</label>
+                      <input type="time" id="returnTime" />
+                    </div>
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label for="returnTime">Return Time</label>
-                  <input type="time" id="returnTime" />
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="pickupLocation">Pickup Location</label>
+                    <input
+                      type="text"
+                      id="pickupLocation"
+                      placeholder="Enter airport or full address"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="dropoffLocation">Drop-off Location</label>
+                    <input
+                      type="text"
+                      id="dropoffLocation"
+                      placeholder="Enter airport or full address"
+                      required
+                    />
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="pickupLocation">Pickup Location</label>
-                <input
-                  type="text"
-                  id="pickupLocation"
-                  placeholder="Enter airport or full address"
-                  required
-                />
-              </div>
-              <div class="form-group">
-                <label for="dropoffLocation">Drop-off Location</label>
-                <input
-                  type="text"
-                  id="dropoffLocation"
-                  placeholder="Enter airport or full address"
-                  required
-                />
-              </div>
-            </div>
 
-            <button type="button" class="btn-next">
-              Continue to Vehicle Selection
-            </button>
-          </div>
+                <!-- Vehicle Selection in Step 1 -->
+                <div
+                  class="vehicle-selection-container"
+                  id="vehicleSelectionStep1"
+                >
+                  <h3>Select Your Vehicle</h3>
+                  <div class="vehicle-options"></div>
+                </div>
+                <button type="button" class="btn-next">
+                  Continue to Contact Details
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
-
-        <div class="route-info-map">
-          <div class="map-section">
-            <div id="route-map" style="height: 200px"></div>
-            <div class="map-instructions"></div>
-          </div>
-          <div id="routeInfo" class="route-info"></div>
-        </div>
-      </form>
-
-      <!-- Step 2: Vehicle Selection -->
-      <form id="vehicleSelection" class="step-content" data-step="2">
-        <h3>Select Your Vehicle</h3>
-        <div class="vehicle-options">
-          <!-- Sedan -->
-          <div
-            class="vehicle-card"
-            data-type="sedan"
-            data-price="555"
-            data-passengers="3"
-            data-bags="2"
-          >
-            <img src="./Assets/4.png" alt="Sedan" />
-            <div class="vehicle-details">
-              <div class="vehicle-type">Sedan: Octavia</div>
-              <div class="vehicle-actions">
-                <div class="price">€555.00</div>
-                <div class="price">€1110.00</div>
-              </div>
-              <ul class="specs">
-                <li class="spec-item">
-                  <i class="fas fa-user"></i> 3 passengers
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-snowflake"></i> Air-conditioned
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-cog"></i> Automatic transmission
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-car"></i> Full leather interior
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-wifi"></i> On Board WiFi
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-glass-whiskey"></i> Bottled water & snacks
-                </li>
-              </ul>
-              <div class="vehicle-actions">
-                <button
-                  type="button"
-                  class="btn-select"
-                  data-trip-type="one-way"
-                >
-                  One Way
-                </button>
-                <button
-                  type="button"
-                  class="btn-select"
-                  data-trip-type="round-trip"
-                >
-                  Round Trip
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Van -->
-          <div
-            class="vehicle-card"
-            data-type="van"
-            data-price="600"
-            data-passengers="5"
-            data-bags="3"
-          >
-            <img src="./Assets/108.png" alt="Van" />
-            <div class="vehicle-details">
-              <div class="vehicle-type">Van: Mercedes V-Class</div>
-
-              <div class="vehicle-actions">
-                <div class="price">€600.00</div>
-                <div class="price">€1200.00</div>
-              </div>
-              <ul class="specs">
-                <li class="spec-item">
-                  <i class="fas fa-user"></i> 5 passengers
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-snowflake"></i> Air-conditioned
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-cog"></i> Automatic transmission
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-car"></i> Full leather interior
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-wifi"></i> On Board WiFi
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-glass-whiskey"></i> Bottled water & snacks
-                </li>
-              </ul>
-              <div class="vehicle-actions">
-                <button
-                  type="button"
-                  class="btn-select"
-                  data-trip-type="one-way"
-                >
-                  One Way
-                </button>
-                <button
-                  type="button"
-                  class="btn-select"
-                  data-trip-type="round-trip"
-                >
-                  Round Trip
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Minibus -->
-          <div
-            class="vehicle-card"
-            data-type="minibus"
-            data-price="750"
-            data-passengers="8"
-            data-bags="5"
-          >
-            <img src="./Assets/car.png" alt="Minibus" />
-            <div class="vehicle-details">
-              <div class="vehicle-type">Minibus: Mercedes Sprinter</div>
-              <div class="vehicle-actions">
-                <div class="price">€750.00</div>
-                <div class="price">€1500.00</div>
-              </div>
-              <ul class="specs">
-                <li class="spec-item">
-                  <i class="fas fa-user"></i> 8 passengers
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-snowflake"></i> Air-conditioned
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-cog"></i> Automatic transmission
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-car"></i> Full leather interior
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-wifi"></i> On Board WiFi
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-glass-whiskey"></i> Bottled water & snacks
-                </li>
-              </ul>
-              <div class="vehicle-actions">
-                <button
-                  type="button"
-                  class="btn-select"
-                  data-trip-type="one-way"
-                >
-                  One Way
-                </button>
-                <button
-                  type="button"
-                  class="btn-select"
-                  data-trip-type="round-trip"
-                >
-                  Round Trip
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="vehicle-options">
-          <!-- Sedan -->
-          <div
-            class="vehicle-card"
-            data-type="sedan"
-            data-price="850"
-            data-passengers="10"
-            data-bags="7"
-          >
-            <img src="./Assets/4.png" alt="Sedan" />
-            <div class="vehicle-details">
-              <div class="vehicle-type">Sedan: Octavia</div>
-              <div class="vehicle-actions">
-                <div class="price">€850.00</div>
-                <div class="price">€1700.00</div>
-              </div>
-              <ul class="specs">
-                <li class="spec-item">
-                  <i class="fas fa-user"></i> 10 passengers
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-snowflake"></i> Air-conditioned
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-cog"></i> Automatic transmission
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-car"></i> Full leather interior
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-wifi"></i> On Board WiFi
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-glass-whiskey"></i> Bottled water & snacks
-                </li>
-              </ul>
-              <div class="vehicle-actions">
-                <button
-                  type="button"
-                  class="btn-select"
-                  data-trip-type="one-way"
-                >
-                  One Way
-                </button>
-                <button
-                  type="button"
-                  class="btn-select"
-                  data-trip-type="round-trip"
-                >
-                  Round Trip
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Van -->
-          <div
-            class="vehicle-card"
-            data-type="van"
-            data-price="950"
-            data-passengers="12"
-            data-bags="8"
-          >
-            <img src="./Assets/107.png" alt="Van" />
-            <div class="vehicle-details">
-              <div class="vehicle-type">Van: Mercedes V-Class</div>
-
-              <div class="vehicle-actions">
-                <div class="price">€950.00</div>
-                <div class="price">€1900.00</div>
-              </div>
-              <ul class="specs">
-                <li class="spec-item">
-                  <i class="fas fa-user"></i> 12 passengers
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-snowflake"></i> Air-conditioned
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-cog"></i> Automatic transmission
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-car"></i> Full leather interior
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-wifi"></i> On Board WiFi
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-glass-whiskey"></i> Bottled water & snacks
-                </li>
-              </ul>
-              <div class="vehicle-actions">
-                <button
-                  type="button"
-                  class="btn-select"
-                  data-trip-type="one-way"
-                >
-                  One Way
-                </button>
-                <button
-                  type="button"
-                  class="btn-select"
-                  data-trip-type="round-trip"
-                >
-                  Round Trip
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Minibus -->
-          <div
-            class="vehicle-card"
-            data-type="minibus"
-            data-price="1050"
-            data-passengers="14"
-            data-bags="10"
-          >
-            <img src="./Assets/8.png" alt="Minibus" />
-            <div class="vehicle-details">
-              <div class="vehicle-type">Minibus: Mercedes Sprinter</div>
-              <div class="vehicle-actions">
-                <div class="price">€1050.00</div>
-                <div class="price">€2100.00</div>
-              </div>
-              <ul class="specs">
-                <li class="spec-item">
-                  <i class="fas fa-user"></i> 14 passengers
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-snowflake"></i> Air-conditioned
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-cog"></i> Automatic transmission
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-car"></i> Full leather interior
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-wifi"></i> On Board WiFi
-                </li>
-                <li class="spec-item">
-                  <i class="fas fa-glass-whiskey"></i> Bottled water & snacks
-                </li>
-              </ul>
-              <div class="vehicle-actions">
-                <button
-                  type="button"
-                  class="btn-select"
-                  data-trip-type="one-way"
-                >
-                  One Way
-                </button>
-                <button
-                  type="button"
-                  class="btn-select"
-                  data-trip-type="round-trip"
-                >
-                  Round Trip
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="button-group">
-          <button type="button" class="btn-prev">Back</button>
-          <button type="button" class="btn-next">
-            Continue to Your Details
-          </button>
-        </div>
-      </form>
+      </div>
 
       <!-- Step 3: User Details -->
       <form id="userDetailsForm" class="step-content" data-step="3">

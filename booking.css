@@ -94,7 +94,7 @@
 }
 
 .site-header.scrolled {
-  background: #333;
+  background: #003366;
   color: white;
   padding: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -144,7 +144,7 @@ body {
 }
 
 .hero {
-  height: 60vh;
+  height: 10vh;
   position: relative;
 }
 
@@ -308,99 +308,6 @@ button:hover {
   letter-spacing: 1.2px;
 }
 
-/* Enhanced Vehicle Cards with Responsive Design */
-.vehicle-options {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  margin: 2rem 0;
-  padding: 0 1rem;
-}
-
-.vehicle-card {
-  background: white;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  border: 1px solid #e0e0e0;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.vehicle-card.selected {
-  border: 2px solid #005aaa;
-  box-shadow: 0 4px 15px rgba(0, 90, 170, 0.2);
-  transform: translateY(-3px);
-}
-
-.vehicle-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-}
-
-.vehicle-image {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.vehicle-details {
-  padding: 1.5rem;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.vehicle-type {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 0.5rem;
-}
-
-.price {
-  font-size: 1.6rem;
-  color: #005aaa;
-  font-weight: 700;
-  margin-bottom: 1rem;
-}
-
-.specs {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 1rem 0;
-  flex-grow: 1;
-}
-
-.spec-item {
-  padding: 0.5rem 0;
-  border-bottom: 1px dashed #e0e0e0;
-  display: flex;
-  align-items: center;
-  font-size: 0.95rem;
-}
-
-.spec-item:last-child {
-  border-bottom: none;
-}
-
-.spec-item i {
-  margin-right: 0.5rem;
-  color: #005aaa;
-  width: 20px;
-  text-align: center;
-}
-
-.vehicle-actions {
-  margin-top: auto;
-  display: flex;
-  gap: 5px;
-  justify-content: space-between;
-}
-
 .btn-select {
   background: #005aaa;
   color: white;
@@ -539,6 +446,7 @@ button:hover {
   margin-bottom: 0.5rem;
   font-weight: 600;
   color: #555;
+  font-size: 10px;
 }
 
 .form-group input,
@@ -614,10 +522,6 @@ button:hover {
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
-  .vehicle-options {
-    grid-template-columns: 1fr;
-  }
-
   .booking-form {
     margin: 1rem;
     padding: 1.5rem;
@@ -646,10 +550,6 @@ button:hover {
 }
 
 @media (max-width: 480px) {
-  .vehicle-card {
-    margin-bottom: 1.5rem;
-  }
-
   .booking-form {
     padding: 1rem;
   }
@@ -811,8 +711,8 @@ button:hover {
   margin: 0 15px;
   color: inherit;
   text-decoration: none;
-  background: white;
-  color: black;
+  background: orange;
+  color: white;
   padding: 0.75rem 1.5rem;
   text-decoration: none;
   border-radius: 5px;
@@ -821,7 +721,7 @@ button:hover {
   cursor: pointer;
 }
 .site-header nav button:hover {
-  background: #ffcc00;
+  background: black;
   color: white;
   transition: 400ms;
   cursor: pointer;
@@ -845,4 +745,184 @@ button:hover {
 .column label {
   margin: 0;
   white-space: nowrap;
+}
+
+/*  */
+
+.booking-form-container {
+  display: flex;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.map-sidebar {
+  flex: 1;
+  position: sticky;
+  top: 20px;
+  height: fit-content;
+}
+
+.form-content {
+  flex: 2;
+}
+
+#route-map {
+  height: 200px;
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.route-info {
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Remove the existing display:none from #route-map */
+.vehicle-selection-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.vehicle-selection-container h3 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 28px;
+  color: #333;
+  font-weight: 600;
+}
+
+.vehicle-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+  gap: 25px;
+}
+
+.vehicle-card {
+  display: flex;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+}
+
+.vehicle-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.vehicle-card img {
+  width: 200px;
+  height: 100%;
+  object-fit: contain;
+  border-right: 1px solid #f0f0f0;
+}
+
+.vehicle-details {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.vehicle-type {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #2c3e50;
+}
+
+.vehicle-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.price {
+  font-size: 20px;
+  font-weight: 700;
+  color: #3498db;
+}
+
+.price:nth-child(2) {
+  color: #e74c3c;
+  text-decoration: line-through;
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+.specs {
+  list-style: none;
+  padding: 0;
+  margin: 15px 0;
+  flex-grow: 1;
+}
+
+.spec-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #555;
+}
+
+.spec-item i {
+  margin-right: 10px;
+  color: #3498db;
+  width: 20px;
+  text-align: center;
+}
+
+.btn-select {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.3s ease;
+  flex: 1;
+  margin: 0 5px;
+}
+
+.btn-select:hover {
+  background: #2980b9;
+}
+
+.btn-select[data-trip-type="round-trip"] {
+  background: #2ecc71;
+}
+
+.btn-select[data-trip-type="round-trip"]:hover {
+  background: #27ae60;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .vehicle-options {
+    grid-template-columns: 1fr;
+  }
+  
+  .vehicle-card {
+    flex-direction: column;
+  }
+  
+  .vehicle-card img {
+    width: 100%;
+    height: 108px;
+    object-fit: contain;
+    border-right: none;
+    border-bottom: 1px solid #f0f0f0;
+  }
 }
