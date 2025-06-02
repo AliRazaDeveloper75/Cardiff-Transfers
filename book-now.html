@@ -29,7 +29,7 @@
           <!--
             <h1>Book Your Trip!</h1>
           <p>Very Qucik and Affordable Private Trip Plan!</p>
-          --> 
+          -->
         </div>
       </div>
     </section>
@@ -40,10 +40,9 @@
       </section>
       <!-- Progress Steps -->
       <div class="progress-steps">
-        <div class="step active" data-step="1">1. Trip Details</div>
-        <div class="step" data-step="2">2. Select Vehicle</div>
-        <div class="step" data-step="3">3. Contact Details</div>
-        <div class="step" data-step="4">4. Payment</div>
+        <div class="step active" data-step="1">1. Trip & Vehicle</div>
+        <div class="step" data-step="2">2. Your Details</div>
+        <div class="step" data-step="3">3. Payment</div>
       </div>
 
       <!-- Step 1: Trip Details -->
@@ -148,6 +147,7 @@
                   id="vehicleSelectionStep1"
                 >
                   <h3>Select Your Vehicle</h3>
+                  <!--data from js -->
                   <div class="vehicle-options"></div>
                 </div>
                 <button type="button" class="btn-next">
@@ -160,7 +160,7 @@
       </div>
 
       <!-- Step 3: User Details -->
-      <form id="userDetailsForm" class="step-content" data-step="3">
+      <form id="userDetailsForm" class="step-content" data-step="2">
         <h3>Your Contact Information</h3>
         <div class="form-group">
           <label for="fullName">Full Name</label>
@@ -186,7 +186,7 @@
       </form>
 
       <!-- Step 4: Payment -->
-      <form id="paymentForm" class="step-content" data-step="4">
+      <form id="paymentForm" class="step-content" data-step="3">
         <h3>Payment Information</h3>
         <div class="form-group">
           <label for="cardNumber">Card Number</label>

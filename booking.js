@@ -1,4 +1,45 @@
-// Global variables
+
+function showStep(step) {
+  // Update progress steps
+  document.querySelectorAll('.step').forEach(s => {
+    if (parseInt(s.dataset.step) <= step) {
+      s.classList.add('active');
+    } else {
+      s.classList.remove('active');
+    }
+  });
+
+  // Show/hide forms
+  document.querySelectorAll('.step-content').forEach(form => {
+    form.classList.remove('active');
+  });
+  document.querySelector(`.step-content[data-step="${step}"]`).classList.add('active');
+
+  // Map visibility - only show in step 1
+  const mapSidebar = document.querySelector('.map-sidebar');
+  const routeMapContainer = document.getElementById('route-map');
+  const routeInfo = document.getElementById('routeInfo');
+
+  if (step === 1) {
+    mapSidebar.style.display = 'block';
+    if (routeMapContainer) routeMapContainer.style.display = 'block';
+    if (routeInfo) routeInfo.style.display = 'block';
+    if (!mapInitialized) initMap();
+  } else {
+    mapSidebar.style.display = 'none';
+    if (routeMapContainer) routeMapContainer.style.display = 'none';
+    if (routeInfo) routeInfo.style.display = 'none';
+  }
+
+  // Update summary before payment
+  if (step === 3) {
+    updateSummary();
+  }
+
+  // Scroll to top of the form container
+  const formContainer = document.querySelector('.booking-form-container') || document.body;
+  formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
 // Booking data structure
 const bookingData = {
@@ -37,21 +78,34 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initialize map
   initMap();
 
-  // Transfer type toggle
-  const returnFields = document.getElementById("returnFields");
-  document.querySelectorAll('input[name="transferType"]').forEach((checkbox) => {
-    checkbox.addEventListener("change", function () {
-      if (this.value === "round-trip" && this.checked) {
+// Transfer type toggle
+const returnFields = document.getElementById("returnFields");
+document.querySelectorAll('input[name="transferType"]').forEach((checkbox) => {
+  checkbox.addEventListener("change", function() {
+    if (this.checked) {
+      if (this.value === "round-trip") {
         returnFields.style.display = "flex";
         bookingData.transferType = "round-trip";
-        document.querySelector('input[name="transferType"][value="one-way"]').checked = false;
-      } else if (this.value === "one-way" && this.checked) {
-        returnFields.style.display = "";
+      } else {
+        returnFields.style.display = "none";
         bookingData.transferType = "one-way";
-        document.querySelector('input[name="transferType"][value="round-trip"]').checked = false;
+        // Clear return date/time values when switching to one-way
+        bookingData.returnDate = "";
+        bookingData.returnTime = "";
+        document.getElementById("returnDate").value = "";
+        document.getElementById("returnTime").value = "";
       }
-    });
+      
+      // Uncheck the other option
+      document.querySelectorAll('input[name="transferType"]').forEach((cb) => {
+        if (cb !== this) cb.checked = false;
+      });
+    } else {
+      // Prevent unchecking the currently selected option
+      this.checked = true;
+    }
   });
+});
 
   // Initialize vehicle selection in Step 1
   initVehicleSelection();
@@ -59,35 +113,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Form navigation
   const forms = document.querySelectorAll(".step-content");
   const steps = document.querySelectorAll(".step");
-
-  function showStep(step) {
-    steps.forEach((s) => {
-      if (parseInt(s.dataset.step) <= step) {
-        s.classList.add("active");
-      } else {
-        s.classList.remove("active");
-      }
-    });
-
-    forms.forEach((form) => {
-      if (parseInt(form.dataset.step) === step) {
-        form.classList.add("active");
-      } else {
-        form.classList.remove("active");
-      }
-    });
-
-    bookingData.step = step;
-
-    // Update summary before showing payment step
-    if (step === 3) {
-      updateSummary();
-    }
-
-    // Scroll to top of the form container
-    const formContainer = document.querySelector('.booking-form-container') || document.body;
-    formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
 
   // Next button
   document.querySelectorAll(".btn-next").forEach((btn) => {
@@ -200,7 +225,7 @@ function initVehicleSelection() {
         </div>
         <ul class="specs">
           <li class="spec-item"><i class="fas fa-user"></i> ${vehicle.passengers} passengers</li>
-          <li class="spec-item"><i class="fas fa-glass-whiskey"></i> ${vehicle.bags}</li>
+          <li class="spec-item"><i class="fas fa-glass-whiskey"></i> ${vehicle.bags} Bags</li>
         </ul>
         <div class="vehicle-actions">
           <button type="button" class="btn-select" data-trip-type="one-way">
@@ -739,145 +764,7 @@ function updateRouteInfo() {
   `;
 }
 
-// Initialize the booking form
-document.addEventListener("DOMContentLoaded", function () {
-  // Load from localStorage if available
-  const savedBooking = localStorage.getItem("currentBooking");
-  if (savedBooking) {
-    Object.assign(bookingData, JSON.parse(savedBooking));
-    restoreFormData();
-  }
 
-  // Transfer type toggle
-  const returnFields = document.getElementById("returnFields");
-  document
-    .querySelectorAll('input[name="transferType"]')
-    .forEach((checkbox) => {
-      checkbox.addEventListener("change", function () {
-        if (this.value === "round-trip" && this.checked) {
-          returnFields.style.display = "flex";
-          bookingData.transferType = "round-trip";
-          document.querySelector(
-            'input[name="transferType"][value="one-way"]'
-          ).checked = false;
-        } else if (this.value === "one-way" && this.checked) {
-          returnFields.style.display = "";
-          bookingData.transferType = "one-way";
-          document.querySelector(
-            'input[name="transferType"][value="round-trip"]'
-          ).checked = false;
-        }
-      });
-    });
-
-  // Vehicle selection
-  document.querySelectorAll(".btn-select").forEach((button) => {
-    button.addEventListener("click", function () {
-      const vehicleCard = this.closest(".vehicle-card");
-      const tripType = this.dataset.tripType;
-
-      // Update UI
-      document.querySelectorAll(".vehicle-card").forEach((card) => {
-        card.classList.remove("selected");
-        card.querySelectorAll(".btn-select").forEach((btn) => {
-          btn.textContent =
-            btn.dataset.tripType === "one-way" ? "One Way" : "Round Trip";
-        });
-      });
-
-      vehicleCard.classList.add("selected");
-      this.textContent = tripType === "one-way" ? "One Way ✓" : "Round Trip ✓";
-
-      // Update booking data
-      bookingData.vehicleType =
-        vehicleCard.querySelector(".vehicle-type").textContent;
-      bookingData.basePrice = parseFloat(vehicleCard.dataset.price);
-      bookingData.passengers = vehicleCard.dataset.passengers;
-      bookingData.bags = vehicleCard.dataset.bags;
-      bookingData.transferType = tripType;
-      bookingData.price =
-        tripType === "round-trip"
-          ? bookingData.basePrice * 2
-          : bookingData.basePrice;
-    });
-  });
-
-  // Form navigation
-  const forms = document.querySelectorAll(".step-content");
-  const steps = document.querySelectorAll(".step");
-
-  function showStep(step) {
-    steps.forEach((s) => {
-      if (parseInt(s.dataset.step) <= step) {
-        s.classList.add("active");
-      } else {
-        s.classList.remove("active");
-      }
-    });
-
-    forms.forEach((form) => {
-      if (parseInt(form.dataset.step) === step) {
-        form.classList.add("active");
-      } else {
-        form.classList.remove("active");
-      }
-    });
-
-    bookingData.step = step;
-
-    // Update summary before showing payment step
-    if (step === 4) {
-      updateSummary();
-    }
-
-    // Scroll to top of the form container
-    const formContainer =
-      document.querySelector(".booking-form-container") || document.body;
-    formContainer.scrollIntoView({ behavior: "smooth", block: "start" });
-
-    // Alternative if you want instant scroll:
-    // window.scrollTo(0, 0);
-  }
-
-  // Next button
-  document.querySelectorAll(".btn-next").forEach((btn) => {
-    btn.addEventListener("click", function () {
-      const currentStep = parseInt(this.closest(".step-content").dataset.step);
-      if (validateStep(currentStep)) {
-        saveStepData(currentStep);
-        showStep(currentStep + 1);
-      }
-    });
-  });
-
-  // Previous button
-  document.querySelectorAll(".btn-prev").forEach((btn) => {
-    btn.addEventListener("click", function () {
-      const currentStep = parseInt(this.closest(".step-content").dataset.step);
-      showStep(currentStep - 1);
-    });
-  });
-
-  // Form submission
-  document
-    .getElementById("paymentForm")
-    .addEventListener("submit", function (e) {
-      e.preventDefault();
-      saveStepData(4);
-
-      // Save complete booking
-      localStorage.setItem("currentBooking", JSON.stringify(bookingData));
-
-      // Generate and download PDF
-      generateBookingPdf();
-
-      // Redirect to confirmation
-      window.location.href = "confirmation.html";
-    });
-
-  // Initialize with first step
-  showStep(1);
-});
 
 // Helper functions
 function generateBookingRef() {
@@ -899,11 +786,17 @@ function validateStep(step) {
       alert("Please enter drop-off location");
       return false;
     }
+    if (!bookingData.vehicleType) {
+      alert("Please select a vehicle");
+      return false;
+    }
   }
 
-  if (step === 2 && !bookingData.vehicleType) {
-    alert("Please select a vehicle");
-    return false;
+  if (step === 2) {
+    if (!document.getElementById("fullName").value) {
+      alert("Please enter your full name");
+      return false;
+    }
   }
 
   if (step === 3) {
