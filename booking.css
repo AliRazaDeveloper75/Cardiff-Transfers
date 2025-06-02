@@ -616,7 +616,6 @@ button:hover {
 
 .form-section {
   flex: 1;
-  min-width: 300px;
 }
 
 .map-section {
@@ -760,7 +759,7 @@ button:hover {
 .map-sidebar {
   flex: 1;
   position: sticky;
-  top: 20px;
+  top: 20%;
   height: fit-content;
 }
 
@@ -950,6 +949,7 @@ button:hover {
   position: relative;
   top: 20px;
   height: fit-content;
+  margin-bottom: 10%;
 }
 }
 
