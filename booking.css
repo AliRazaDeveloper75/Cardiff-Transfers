@@ -94,7 +94,7 @@
 }
 
 .site-header.scrolled {
-  background: #003366;
+  background: #005AAA;
   color: white;
   padding: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -149,7 +149,7 @@ body {
 }
 
 .overlay {
-  background-color: #003366;
+  background-color: #005AAA;
   height: 100%;
   width: 100%;
   color: white;
@@ -860,7 +860,7 @@ button:hover {
 }
 
 .price:nth-child(2) {
-  color: #003366;
+  color: #005AAA;
   font-size: 16px;
   opacity: 0.8;
 }
@@ -906,11 +906,11 @@ button:hover {
 }
 
 .btn-select[data-trip-type="round-trip"] {
-  background: #003366;
+  background: #005AAA;
 }
 
 .btn-select[data-trip-type="round-trip"]:hover {
-  background: #003366;
+  background: #005AAA;
 }
 
 /* Responsive adjustments */
@@ -975,7 +975,7 @@ button:hover {
 
 .v-feature i {
   color: white;
-  background-color:#003366;
+  background-color:#005AAA;
   border-radius: 50%;
   padding: 6px;
   margin-right: 10px;

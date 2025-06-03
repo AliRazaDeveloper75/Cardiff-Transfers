@@ -35,7 +35,7 @@ body {
 }
 
 .site-header.scrolled {
-  background: #002b45;
+  background: #005AAA;
   color: white;
   padding: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -103,7 +103,7 @@ body {
 }
 
 .booking-form {
-  background-color: #002b45; /* Yellow container */
+  background-color: #005AAA; /* Yellow container */
   padding: 30px;
   border-radius: 16px;
   color: #000;
