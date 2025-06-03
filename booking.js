@@ -242,32 +242,44 @@ function initVehicleSelection() {
   });
 
   // Vehicle selection
-  document.querySelectorAll(".btn-select").forEach((button) => {
-    button.addEventListener("click", function () {
-      const vehicleCard = this.closest(".vehicle-card");
-      const tripType = this.dataset.tripType;
+  // Vehicle selection
+document.querySelectorAll(".btn-select").forEach((button) => {
+  button.addEventListener("click", function () {
+    const vehicleCard = this.closest(".vehicle-card");
+    const tripType = this.dataset.tripType;
 
-      // Update UI
-      document.querySelectorAll(".vehicle-card").forEach((card) => {
-        card.classList.remove("selected");
-        card.querySelectorAll(".btn-select").forEach((btn) => {
-          btn.textContent =
-            btn.dataset.tripType === "one-way" ? "One Way" : "Round Trip";
-        });
+    // Update UI
+    document.querySelectorAll(".vehicle-card").forEach((card) => {
+      card.classList.remove("selected");
+      card.querySelectorAll(".btn-select").forEach((btn) => {
+        btn.textContent =
+          btn.dataset.tripType === "one-way" ? "One Way" : "Round Trip";
       });
-
-      vehicleCard.classList.add("selected");
-      this.textContent = tripType === "one-way" ? "One Way ✓" : "Round Trip ✓";
-
-      // Update booking data
-      bookingData.vehicleType = vehicleCard.querySelector(".vehicle-type").textContent;
-      bookingData.basePrice = parseFloat(vehicleCard.dataset.price);
-      bookingData.passengers = vehicleCard.dataset.passengers;
-      bookingData.bags = vehicleCard.dataset.bags;
-      bookingData.transferType = tripType;
-      bookingData.price = tripType === "round-trip" ? bookingData.basePrice * 2 : bookingData.basePrice;
     });
+
+    vehicleCard.classList.add("selected");
+    this.textContent = tripType === "one-way" ? "One Way ✓" : "Round Trip ✓";
+
+    // Update booking data
+    bookingData.vehicleType = vehicleCard.querySelector(".vehicle-type").textContent;
+    bookingData.basePrice = parseFloat(vehicleCard.dataset.price);
+    bookingData.passengers = vehicleCard.dataset.passengers;
+    bookingData.bags = vehicleCard.dataset.bags;
+    bookingData.transferType = tripType;
+    bookingData.price = tripType === "round-trip" ? bookingData.basePrice * 2 : bookingData.basePrice;
+
+    // Show the Continue button
+    document.querySelectorAll(".btn-next").forEach(btn => {
+      btn.classList.add("visible");
+    });
+
+    // Scroll to the Continue button
+    const firstContinueBtn = document.querySelector(".btn-next.visible");
+    if (firstContinueBtn) {
+      firstContinueBtn.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
   });
+});
 }
 
 // Rest of your existing functions (validateStep, saveStepData, restoreFormData, etc.) remain the same

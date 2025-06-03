@@ -958,3 +958,12 @@ button:hover {
 }
 }
 
+
+.btn-next {
+  display: none; /* Hide by default */
+  /* Your existing button styles */
+}
+
+.btn-next.visible {
+  display: block; /* Show when vehicle is selected */
+}
