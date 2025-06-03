@@ -545,8 +545,9 @@ body {
 }
 
 .booking a:hover {
-  background: #ffcc00;
-  color: #000;
+  background: orange;
+  color: white;
+  border: 2px solid orange;
 }
 
 @media (max-width: 768px) {
