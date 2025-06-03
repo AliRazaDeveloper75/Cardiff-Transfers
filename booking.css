@@ -860,7 +860,7 @@ button:hover {
 }
 
 .price:nth-child(2) {
-  color: #27ae60;
+  color: #003366;
   font-size: 16px;
   opacity: 0.8;
 }
@@ -906,11 +906,11 @@ button:hover {
 }
 
 .btn-select[data-trip-type="round-trip"] {
-  background: #2ecc71;
+  background: #003366;
 }
 
 .btn-select[data-trip-type="round-trip"]:hover {
-  background: #27ae60;
+  background: #003366;
 }
 
 /* Responsive adjustments */
