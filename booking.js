@@ -1,34 +1,35 @@
-
 function showStep(step) {
   // Update progress steps
-  document.querySelectorAll('.step').forEach(s => {
+  document.querySelectorAll(".step").forEach((s) => {
     if (parseInt(s.dataset.step) <= step) {
-      s.classList.add('active');
+      s.classList.add("active");
     } else {
-      s.classList.remove('active');
+      s.classList.remove("active");
     }
   });
 
   // Show/hide forms
-  document.querySelectorAll('.step-content').forEach(form => {
-    form.classList.remove('active');
+  document.querySelectorAll(".step-content").forEach((form) => {
+    form.classList.remove("active");
   });
-  document.querySelector(`.step-content[data-step="${step}"]`).classList.add('active');
+  document
+    .querySelector(`.step-content[data-step="${step}"]`)
+    .classList.add("active");
 
   // Map visibility - only show in step 1
-  const mapSidebar = document.querySelector('.map-sidebar');
-  const routeMapContainer = document.getElementById('route-map');
-  const routeInfo = document.getElementById('routeInfo');
+  const mapSidebar = document.querySelector(".map-sidebar");
+  const routeMapContainer = document.getElementById("route-map");
+  const routeInfo = document.getElementById("routeInfo");
 
   if (step === 1) {
-    mapSidebar.style.display = 'block';
-    if (routeMapContainer) routeMapContainer.style.display = 'block';
-    if (routeInfo) routeInfo.style.display = 'block';
+    mapSidebar.style.display = "block";
+    if (routeMapContainer) routeMapContainer.style.display = "block";
+    if (routeInfo) routeInfo.style.display = "block";
     if (!mapInitialized) initMap();
   } else {
-    mapSidebar.style.display = 'none';
-    if (routeMapContainer) routeMapContainer.style.display = 'none';
-    if (routeInfo) routeInfo.style.display = 'none';
+    mapSidebar.style.display = "none";
+    if (routeMapContainer) routeMapContainer.style.display = "none";
+    if (routeInfo) routeInfo.style.display = "none";
   }
 
   // Update summary before payment
@@ -37,8 +38,14 @@ function showStep(step) {
   }
 
   // Scroll to top of the form container
-  const formContainer = document.querySelector('.booking-form-container') || document.body;
-  formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Scroll to top of the page (or navbar)
+  window.scrollTo({ 
+    top: 0, 
+    behavior: "smooth" 
+  });
+  const formContainer =
+    document.querySelector(".booking-form-container") || document.body;
+  formContainer.scrollIntoView({ behavior: "smooth", block: "", top:0 });
 }
 
 // Booking data structure
@@ -78,34 +85,38 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initialize map
   initMap();
 
-// Transfer type toggle
-const returnFields = document.getElementById("returnFields");
-document.querySelectorAll('input[name="transferType"]').forEach((checkbox) => {
-  checkbox.addEventListener("change", function() {
-    if (this.checked) {
-      if (this.value === "round-trip") {
-        returnFields.style.display = "flex";
-        bookingData.transferType = "round-trip";
-      } else {
-        returnFields.style.display = "none";
-        bookingData.transferType = "one-way";
-        // Clear return date/time values when switching to one-way
-        bookingData.returnDate = "";
-        bookingData.returnTime = "";
-        document.getElementById("returnDate").value = "";
-        document.getElementById("returnTime").value = "";
-      }
-      
-      // Uncheck the other option
-      document.querySelectorAll('input[name="transferType"]').forEach((cb) => {
-        if (cb !== this) cb.checked = false;
+  // Transfer type toggle
+  const returnFields = document.getElementById("returnFields");
+  document
+    .querySelectorAll('input[name="transferType"]')
+    .forEach((checkbox) => {
+      checkbox.addEventListener("change", function () {
+        if (this.checked) {
+          if (this.value === "round-trip") {
+            returnFields.style.display = "flex";
+            bookingData.transferType = "round-trip";
+          } else {
+            returnFields.style.display = "none";
+            bookingData.transferType = "one-way";
+            // Clear return date/time values when switching to one-way
+            bookingData.returnDate = "";
+            bookingData.returnTime = "";
+            document.getElementById("returnDate").value = "";
+            document.getElementById("returnTime").value = "";
+          }
+
+          // Uncheck the other option
+          document
+            .querySelectorAll('input[name="transferType"]')
+            .forEach((cb) => {
+              if (cb !== this) cb.checked = false;
+            });
+        } else {
+          // Prevent unchecking the currently selected option
+          this.checked = true;
+        }
       });
-    } else {
-      // Prevent unchecking the currently selected option
-      this.checked = true;
-    }
-  });
-});
+    });
 
   // Initialize vehicle selection in Step 1
   initVehicleSelection();
@@ -134,19 +145,21 @@ document.querySelectorAll('input[name="transferType"]').forEach((checkbox) => {
   });
 
   // Form submission
-  document.getElementById("paymentForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-    saveStepData(3);
+  document
+    .getElementById("paymentForm")
+    .addEventListener("submit", function (e) {
+      e.preventDefault();
+      saveStepData(3);
 
-    // Save complete booking
-    localStorage.setItem("currentBooking", JSON.stringify(bookingData));
+      // Save complete booking
+      localStorage.setItem("currentBooking", JSON.stringify(bookingData));
 
-    // Generate and download PDF
-    generateBookingPdf();
+      // Generate and download PDF
+      generateBookingPdf();
 
-    // Redirect to confirmation
-    window.location.href = "confirmation.html";
-  });
+      // Redirect to confirmation
+      window.location.href = "confirmation.html";
+    });
 
   // Initialize with first step
   showStep(1);
@@ -161,7 +174,7 @@ function initVehicleSelection() {
       price: 555,
       passengers: 3,
       bags: 2,
-      image: "./Assets/4.png"
+      image: "./Assets/4.png",
     },
     {
       type: "van",
@@ -169,7 +182,7 @@ function initVehicleSelection() {
       price: 600,
       passengers: 5,
       bags: 3,
-      image: "./Assets/108.png"
+      image: "./Assets/108.png",
     },
     {
       type: "minibus",
@@ -177,7 +190,7 @@ function initVehicleSelection() {
       price: 750,
       passengers: 8,
       bags: 5,
-      image: "./Assets/car.png"
+      image: "./Assets/car.png",
     },
     {
       type: "large-sedan",
@@ -185,7 +198,7 @@ function initVehicleSelection() {
       price: 850,
       passengers: 10,
       bags: 7,
-      image: "./Assets/4.png"
+      image: "./Assets/4.png",
     },
     {
       type: "large-van",
@@ -193,7 +206,7 @@ function initVehicleSelection() {
       price: 950,
       passengers: 12,
       bags: 8,
-      image: "./Assets/107.png"
+      image: "./Assets/107.png",
     },
     {
       type: "large-minibus",
@@ -201,13 +214,15 @@ function initVehicleSelection() {
       price: 1050,
       passengers: 14,
       bags: 10,
-      image: "./Assets/8.png"
-    }
+      image: "./Assets/8.png",
+    },
   ];
 
-  const vehicleContainer = document.querySelector("#vehicleSelectionStep1 .vehicle-options");
-  
-  vehicleOptions.forEach(vehicle => {
+  const vehicleContainer = document.querySelector(
+    "#vehicleSelectionStep1 .vehicle-options"
+  );
+
+  vehicleOptions.forEach((vehicle) => {
     const vehicleCard = document.createElement("div");
     vehicleCard.className = "vehicle-card";
     vehicleCard.dataset.type = vehicle.type;
@@ -224,8 +239,12 @@ function initVehicleSelection() {
           <div class="price">€${(vehicle.price * 2).toFixed(2)}</div>
         </div>
         <ul class="specs">
-          <li class="spec-item"><i class="fas fa-user"></i> ${vehicle.passengers} passengers</li>
-          <li class="spec-item"><i class="fas fa-glass-whiskey"></i> ${vehicle.bags} Bags</li>
+          <li class="spec-item"><i class="fas fa-user"></i> ${
+            vehicle.passengers
+          } passengers</li>
+          <li class="spec-item"><i class="fas fa-glass-whiskey"></i> ${
+            vehicle.bags
+          } Bags</li>
         </ul>
         <div class="vehicle-actions">
           <button type="button" class="btn-select" data-trip-type="one-way">
@@ -243,57 +262,51 @@ function initVehicleSelection() {
 
   // Vehicle selection
   // Vehicle selection
-document.querySelectorAll(".btn-select").forEach((button) => {
-  button.addEventListener("click", function () {
-    const vehicleCard = this.closest(".vehicle-card");
-    const tripType = this.dataset.tripType;
+  document.querySelectorAll(".btn-select").forEach((button) => {
+    button.addEventListener("click", function () {
+      const vehicleCard = this.closest(".vehicle-card");
+      const tripType = this.dataset.tripType;
 
-    // Update UI
-    document.querySelectorAll(".vehicle-card").forEach((card) => {
-      card.classList.remove("selected");
-      card.querySelectorAll(".btn-select").forEach((btn) => {
-        btn.textContent =
-          btn.dataset.tripType === "one-way" ? "One Way" : "Round Trip";
+      // Update UI
+      document.querySelectorAll(".vehicle-card").forEach((card) => {
+        card.classList.remove("selected");
+        card.querySelectorAll(".btn-select").forEach((btn) => {
+          btn.textContent =
+            btn.dataset.tripType === "one-way" ? "One Way" : "Round Trip";
+        });
       });
+
+      vehicleCard.classList.add("selected");
+      this.textContent = tripType === "one-way" ? "One Way ✓" : "Round Trip ✓";
+
+      // Update booking data
+      bookingData.vehicleType =
+        vehicleCard.querySelector(".vehicle-type").textContent;
+      bookingData.basePrice = parseFloat(vehicleCard.dataset.price);
+      bookingData.passengers = vehicleCard.dataset.passengers;
+      bookingData.bags = vehicleCard.dataset.bags;
+      bookingData.transferType = tripType;
+      bookingData.price =
+        tripType === "round-trip"
+          ? bookingData.basePrice * 2
+          : bookingData.basePrice;
+
+      // Show the Continue button
+      document.querySelectorAll(".btn-next").forEach((btn) => {
+        btn.classList.add("visible");
+      });
+
+      // Scroll to the Continue button
+      const firstContinueBtn = document.querySelector(".btn-next.visible");
+      if (firstContinueBtn) {
+        firstContinueBtn.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+        });
+      }
     });
-
-    vehicleCard.classList.add("selected");
-    this.textContent = tripType === "one-way" ? "One Way ✓" : "Round Trip ✓";
-
-    // Update booking data
-    bookingData.vehicleType = vehicleCard.querySelector(".vehicle-type").textContent;
-    bookingData.basePrice = parseFloat(vehicleCard.dataset.price);
-    bookingData.passengers = vehicleCard.dataset.passengers;
-    bookingData.bags = vehicleCard.dataset.bags;
-    bookingData.transferType = tripType;
-    bookingData.price = tripType === "round-trip" ? bookingData.basePrice * 2 : bookingData.basePrice;
-
-    // Show the Continue button
-    document.querySelectorAll(".btn-next").forEach(btn => {
-      btn.classList.add("visible");
-    });
-
-    // Scroll to the Continue button
-    const firstContinueBtn = document.querySelector(".btn-next.visible");
-    if (firstContinueBtn) {
-      firstContinueBtn.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    }
   });
-});
 }
-
-// Rest of your existing functions (validateStep, saveStepData, restoreFormData, etc.) remain the same
-// ...
-
-
-
-
-
-
-
-
-
-
 
 // Global variables
 let routeMap;
@@ -634,8 +647,6 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("showMapBtn")?.addEventListener("click", initMap);
 });
 
-
-
 // Initialize the map
 function initMap() {
   if (mapInitialized) return;
@@ -775,8 +786,6 @@ function updateRouteInfo() {
     </div>
   `;
 }
-
-
 
 // Helper functions
 function generateBookingRef() {
