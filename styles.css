@@ -1,7 +1,3 @@
-
-
-
-
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -9,7 +5,7 @@ body {
 
 .container {
   max-width: 1200px;
-  margin: auto; 
+  margin: auto;
 }
 
 .site-header {
@@ -84,11 +80,10 @@ body {
   background-color: #1d1d2e;
   padding: 60px 20px;
   color: white;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
   background: url("https://i0.wp.com/cardiffyouthcouncil.com/wp-content/uploads/2020/09/cropped-cardiff-skyline.jpg?ssl=1")
     no-repeat center center/cover;
 }
-
 
 .overlay {
   max-width: 900px;
@@ -145,7 +140,7 @@ body {
   border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
-  background-color:transparent;
+  background-color: transparent;
   transition: 0.3s;
   display: inline-block;
 }
@@ -172,7 +167,7 @@ input[type="checkbox"]:checked + label {
 button[type="submit"] {
   background-color: transparent;
   color: white;
-  border:2px solid white;
+  border: 2px solid white;
   font-weight: bold;
   height: 100%;
   font-size: 18px;
@@ -185,7 +180,6 @@ button[type="submit"] {
 button[type="submit"]:hover {
   background-color: orange;
 }
-
 
 .logo {
   font-size: 1.5rem;
@@ -313,7 +307,7 @@ button[type="submit"]:hover {
   font-size: 16px;
   transition: background-color 0.3s;
 }
-.book-btn a{
+.book-btn a {
   color: white;
   text-decoration: none;
 }
@@ -371,9 +365,8 @@ button[type="submit"]:hover {
   border: none;
   border-radius: 8px;
   font-size: 14px;
- 
 }
-.btn a{
+.btn a {
   text-decoration: none;
   color: white;
   cursor: pointer;
@@ -618,6 +611,14 @@ body {
   padding: 5px;
 }
 
+.type-input-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 5px;
+}
+
 .input-row .input-container {
   flex: 1;
 }
@@ -641,10 +642,7 @@ body {
   right: 55px;
   top: 64%;
   transform: translateY(-50%);
-  
 }
-
-
 
 .column {
   display: flex;
@@ -680,15 +678,14 @@ body {
   cursor: pointer;
 }
 
-
 /* top step  */
 .step-progress {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  font-family: 'Segoe UI', sans-serif;
-  background-image: url('/path/to/your/image.png'); /* Optional */
+  font-family: "Segoe UI", sans-serif;
+  background-image: url("/path/to/your/image.png"); /* Optional */
   background-size: cover;
   background-position: center;
   padding: 20px;
@@ -728,4 +725,29 @@ body {
   height: 2px;
   width: 100px;
   background-color: #ccc;
+}
+/* ✅ Mobile: Number above text, no lines */
+@media (max-width: 768px) {
+  .step-progress {
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 2px;
+  }
+
+  .step {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .line {
+    display: none;
+  }
+  .hero-text h1 {
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+  .input-row {
+    display: block;
+  }
 }
