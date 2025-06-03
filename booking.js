@@ -1049,3 +1049,26 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+
+//auto time and date display when click
+      document
+        .getElementById("pickupDate")
+        .addEventListener("click", function () {
+          this.showPicker();
+        });
+      document
+        .getElementById("pickupTime")
+        .addEventListener("click", function () {
+          this.showPicker();
+        });
+      document
+        .getElementById("returnTime")
+        .addEventListener("click", function () {
+          this.showPicker();
+        });
+      document
+        .getElementById("returnDate")
+        .addEventListener("click", function () {
+          this.showPicker();
+        });

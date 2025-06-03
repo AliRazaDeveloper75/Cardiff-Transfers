@@ -117,9 +117,6 @@
               </div>
               <button type="submit">BOOK NOW</button>
             </div>
-            <div class="input-row">
-              <!-- Return Date & Time -->
-            </div>
           </form>
         </div>
       </div>
@@ -580,6 +577,29 @@
           }
         });
       });
+
+
+      //auto time and date display when click
+      document
+        .getElementById("pickupDate")
+        .addEventListener("click", function () {
+          this.showPicker();
+        });
+      document
+        .getElementById("pickupTime")
+        .addEventListener("click", function () {
+          this.showPicker();
+        });
+      document
+        .getElementById("returnTime")
+        .addEventListener("click", function () {
+          this.showPicker();
+        });
+      document
+        .getElementById("returnDate")
+        .addEventListener("click", function () {
+          this.showPicker();
+        });
     </script>
   </body>
 </html>

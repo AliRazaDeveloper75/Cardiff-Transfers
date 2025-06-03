@@ -144,12 +144,13 @@ body {
 }
 
 .hero {
-  height: 10vh;
+  height: 14vh;
   position: relative;
+  background-color: #005AAA;
 }
 
 .overlay {
-  background-color: #005AAA;
+  
   height: 100%;
   width: 100%;
   color: white;
@@ -497,7 +498,7 @@ button:hover {
 
 .btn-next,
 .btn-submit {
-  background: #005aaa;
+  background: #005AAA;
   color: white;
   border: none;
   flex-grow: 1;
