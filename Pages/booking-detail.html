@@ -155,20 +155,25 @@
         
         .btn {
             display: inline-block;
-            background-color: var(--secondary-color);
-            color: var(--dark-color);
+            background-color: transparent;
+            color: white;
             padding: 0.8rem 2rem;
             border-radius: 30px;
             text-decoration: none;
             font-weight: bold;
             transition: all 0.3s ease;
-            border: none;
+            border: 2px solid white;
             cursor: pointer;
             font-size: 1rem;
         }
+        .btn a{
+            text-decoration: none;
+            color: white;
+            
+        }
         
         .btn:hover {
-            background-color: white;
+            background-color: orange;
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
@@ -399,7 +404,10 @@
         <div class="container">
             <h2>Let's Get You There</h2>
             <p>Avoid delays, missed connections, or stressful travel. Book with Cardiff Transfers today and travel with total peace of mind.</p>
-            <button class="btn btn-large" id="ctaBookingBtn">Start Your Booking Now</button>
+            <button class="btn btn-large" id="ctaBookingBtn" > 
+                <a href="book-now.html">Start Your Booking Now</a>
+
+            </button>
         </div>
     </section>
     
