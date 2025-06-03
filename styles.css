@@ -129,7 +129,7 @@ body {
 
 .input-container {
   flex: 1;
-  min-width: 200px;
+  /* min-width: 200px; */
   margin-bottom: 20px;
 }
 
@@ -137,14 +137,6 @@ body {
   display: block;
   margin-bottom: 8px;
   font-weight: 600;
-}
-
-.input-container input {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
 }
 
 .column label {
@@ -620,7 +612,7 @@ body {
 
 .input-row {
   display: flex;
-  /* justify-content: center; */
+  justify-content: center;
   align-items: center;
   gap: 10px;
   padding: 5px;

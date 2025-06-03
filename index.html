@@ -67,17 +67,6 @@
                   placeholder="Enter Dropoff Address"
                 />
               </div>
-            </div>
-            <div class="input-row">
-              <div class="input-container">
-                <label for="pickupDate">Pickup Date</label>
-                <input type="date" id="pickupDate" required />
-              </div>
-
-              <div class="input-container">
-                <label for="pickupTime">Pickup Time</label>
-                <input type="time" id="pickupTime" required />
-              </div>
               <!--transfers type btn-->
               <div class="input-container">
                 <label>Transfer Type</label>
@@ -103,9 +92,18 @@
                 </div>
               </div>
             </div>
+            <!--pick up date & time -->
             <div class="input-row">
-            <!-- Return Date & Time -->
-            <div id="return-fields" style="display: none">
+              <div class="input-container">
+                <label for="pickupDate">Pickup Date</label>
+                <input type="date" id="pickupDate" required />
+              </div>
+
+              <div class="input-container">
+                <label for="pickupTime">Pickup Time</label>
+                <input type="time" id="pickupTime" required />
+              </div>
+<div id="return-fields" style="display: none">
               <div class="input-row">
                 <div class="input-container">
                   <label for="returnDate">Return Date</label>
@@ -117,7 +115,12 @@
                 </div>
               </div>
             </div>
-            <button type="submit">BOOK NOW</button>
+              <button type="submit">BOOK NOW</button>
+            </div>
+            <div class="input-row">
+            <!-- Return Date & Time -->
+            
+            
           </div>
           </form>
         </div>
