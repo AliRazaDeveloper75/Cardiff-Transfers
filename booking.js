@@ -171,7 +171,7 @@ function initVehicleSelection() {
     {
       type: "sedan",
       name: "Sedan: Octavia",
-      price: 555,
+      price: 0.75,
       passengers: 3,
       bags: 2,
       image: "./Assets/4.png",
@@ -179,7 +179,7 @@ function initVehicleSelection() {
     {
       type: "van",
       name: "Van: Mercedes V-Class",
-      price: 600,
+      price: 1.25,
       passengers: 5,
       bags: 3,
       image: "./Assets/108.png",
@@ -187,7 +187,7 @@ function initVehicleSelection() {
     {
       type: "minibus",
       name: "Minibus: Mercedes Sprinter",
-      price: 750,
+      price: 1.75,
       passengers: 8,
       bags: 5,
       image: "./Assets/car.png",
@@ -195,7 +195,7 @@ function initVehicleSelection() {
     {
       type: "large-sedan",
       name: "Sedan: Octavia (Large)",
-      price: 850,
+      price: 2.25,
       passengers: 10,
       bags: 7,
       image: "./Assets/4.png",
@@ -203,7 +203,7 @@ function initVehicleSelection() {
     {
       type: "large-van",
       name: "Van: Mercedes V-Class (Large)",
-      price: 950,
+      price: 2.75,
       passengers: 12,
       bags: 8,
       image: "./Assets/107.png",
@@ -211,7 +211,7 @@ function initVehicleSelection() {
     {
       type: "large-minibus",
       name: "Minibus: Mercedes Sprinter (Large)",
-      price: 1050,
+      price: 3.25,
       passengers: 14,
       bags: 10,
       image: "./Assets/8.png",
@@ -234,10 +234,10 @@ function initVehicleSelection() {
       <img src="${vehicle.image}" alt="${vehicle.type}" />
       <div class="vehicle-details">
         <div class="vehicle-type">${vehicle.name}</div>
-        <div class="vehicle-actions">
+        <!--<div class="vehicle-actions">
           <div class="price">€${vehicle.price.toFixed(2)}</div>
           <div class="price">€${(vehicle.price * 2).toFixed(2)}</div>
-        </div>
+        </div>-->
         <ul class="specs">
           <li class="spec-item"><i class="fas fa-user"></i> ${
             vehicle.passengers
@@ -248,10 +248,10 @@ function initVehicleSelection() {
         </ul>
         <div class="vehicle-actions">
           <button type="button" class="btn-select" data-trip-type="one-way">
-            One Way
+            One Way <strong>€${vehicle.price.toFixed(2)}/KM</strong>
           </button>
           <button type="button" class="btn-select" data-trip-type="round-trip">
-            Round Trip
+            Round Trip <strong>€${(vehicle.price * 2).toFixed(2)}/KM</strong>
           </button>
         </div>
       </div>
@@ -261,51 +261,51 @@ function initVehicleSelection() {
   });
 
   // Vehicle selection
-  // Vehicle selection
   document.querySelectorAll(".btn-select").forEach((button) => {
     button.addEventListener("click", function () {
-      const vehicleCard = this.closest(".vehicle-card");
-      const tripType = this.dataset.tripType;
+        const vehicleCard = this.closest(".vehicle-card");
+        const tripType = this.dataset.tripType;
+        const basePrice = parseFloat(vehicleCard.dataset.price);
 
-      // Update UI
-      document.querySelectorAll(".vehicle-card").forEach((card) => {
-        card.classList.remove("selected");
-        card.querySelectorAll(".btn-select").forEach((btn) => {
-          btn.textContent =
-            btn.dataset.tripType === "one-way" ? "One Way" : "Round Trip";
+        // Update UI
+        document.querySelectorAll(".vehicle-card").forEach((card) => {
+            card.classList.remove("selected");
+            card.querySelectorAll(".btn-select").forEach((btn) => {
+                const btnPrice = parseFloat(btn.dataset.tripType === "one-way" ? card.dataset.price : card.dataset.price * 2);
+                btn.innerHTML = btn.dataset.tripType === "one-way" 
+                    ? `One Way<strong>€${parseFloat(card.dataset.price).toFixed(2)}/KM</strong>` 
+                    : `Round Trip <strong>€${(parseFloat(card.dataset.price) * 2).toFixed(2)}/KM</strong>`;
+            });
         });
-      });
 
-      vehicleCard.classList.add("selected");
-      this.textContent = tripType === "one-way" ? "One Way ✓" : "Round Trip ✓";
+        vehicleCard.classList.add("selected");
+        this.innerHTML = tripType === "one-way" 
+            ? `<strong><span class="selected-tick">✓</span>Select €${basePrice.toFixed(2)}/KM</strong>`
+            : `<strong><span class="selected-tick">✓</span>Select €${(basePrice * 2).toFixed(2)}/KM </strong> `;
 
-      // Update booking data
-      bookingData.vehicleType =
-        vehicleCard.querySelector(".vehicle-type").textContent;
-      bookingData.basePrice = parseFloat(vehicleCard.dataset.price);
-      bookingData.passengers = vehicleCard.dataset.passengers;
-      bookingData.bags = vehicleCard.dataset.bags;
-      bookingData.transferType = tripType;
-      bookingData.price =
-        tripType === "round-trip"
-          ? bookingData.basePrice * 2
-          : bookingData.basePrice;
+        // Update booking data
+        bookingData.vehicleType = vehicleCard.querySelector(".vehicle-type").textContent;
+        bookingData.basePrice = basePrice;
+        bookingData.passengers = vehicleCard.dataset.passengers;
+        bookingData.bags = vehicleCard.dataset.bags;
+        bookingData.transferType = tripType;
+        bookingData.price = tripType === "round-trip" ? basePrice * 2 : basePrice;
 
-      // Show the Continue button
-      document.querySelectorAll(".btn-next").forEach((btn) => {
-        btn.classList.add("visible");
-      });
-
-      // Scroll to the Continue button
-      const firstContinueBtn = document.querySelector(".btn-next.visible");
-      if (firstContinueBtn) {
-        firstContinueBtn.scrollIntoView({
-          behavior: "smooth",
-          block: "nearest",
+        // Show the Continue button
+        document.querySelectorAll(".btn-next").forEach((btn) => {
+            btn.classList.add("visible");
         });
-      }
+
+        // Scroll to the Continue button
+        const firstContinueBtn = document.querySelector(".btn-next.visible");
+        if (firstContinueBtn) {
+            firstContinueBtn.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest",
+            });
+        }
     });
-  });
+});
 }
 
 // Global variables
@@ -622,6 +622,8 @@ function updateRouteInfo() {
     </div>
   `;
 }
+
+
 
 // Simple debounce function
 function debounce(func, wait) {
@@ -1072,3 +1074,4 @@ document.addEventListener("DOMContentLoaded", function () {
         .addEventListener("click", function () {
           this.showPicker();
         });
+        

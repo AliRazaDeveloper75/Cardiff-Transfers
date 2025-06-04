@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Airport Transfer | Cardiff Transfers</title>
+    <style>
+        :root {
+            --primary-color: #003366;
+            --secondary-color: #ffcc00;
+            --accent-color: #e63946;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --gray-color: #6c757d;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5px 20px;
+        }
+        
+        .divider {
+            border-top: 2px solid var(--secondary-color);
+            margin: 1.5rem auto;
+            width: 100px;
+        }
+        
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            font-size: 1.8rem;
+        }
+        
+        .booking-methods {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .method {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .method h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .method-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+        
+        .requirements {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .requirements ul {
+            list-style-type: none;
+        }
+        
+        .requirements li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .requirements li:last-child {
+            border-bottom: none;
+        }
+        
+        .payment-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <div class="container">
+            <h2 class="section-title">📅 How to Book</h2>
+            <p>You can book your journey in three easy ways:</p>
+            
+            <div class="booking-methods">
+                <div class="method">
+                    <div class="method-icon">📝</div>
+                    <h3>Online Booking Form</h3>
+                    <p>Fill in your journey details, and we'll confirm your booking by phone or email within minutes.</p>
+                    <button class="btn" id="openBookingForm">Start Online Booking</button>
+                </div>
+                
+                <div class="method">
+                    <div class="method-icon">📞</div>
+                    <h3>Call Us Directly</h3>
+                    <p>Prefer to speak to someone? Give us a call for instant confirmation and any custom requests.</p>
+                    <p><strong>📞 02920 123 456</strong></p>
+                </div>
+                
+                <div class="method">
+                    <div class="method-icon">✉️</div>
+                    <h3>Email or WhatsApp</h3>
+                    <p>Quick questions or last-minute changes? Reach out via:</p>
+                    <p><strong>📧 bookings@cardifftransfers.com</strong></p>
+                    <p><strong>💬 07912 345 678</strong></p>
+                </div>
+            </div>
+            
+            
+            <h2 class="section-title">🚖 What We'll Need:</h2>
+            <div class="requirements">
+                <ul>
+                    <li>Pickup location & time</li>
+                    <li>Drop-off location (e.g., Cardiff Airport, Bristol Airport, etc.)</li>
+                    <li>Flight details (if applicable)</li>
+                    <li>Number of passengers & luggage</li>
+                    <li>Any special requirements (child seats, meet & greet, etc.)</li>
+                </ul>
+            </div>
+            
+        </div>
+    </section>
+</body>
+</html>

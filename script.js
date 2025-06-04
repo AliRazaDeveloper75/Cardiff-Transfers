@@ -22,6 +22,11 @@ document.addEventListener("DOMContentLoaded", function () {
     .then(data => {
       document.getElementById("book-now-placeholder").innerHTML = data;
     });
+  fetch("Pages/home-page-content.html")
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById("home-page-content-placeholder").innerHTML = data;
+    });
   fetch("Pages/animatedmap.html")
     .then(res => res.text())
     .then(data => {
@@ -44,10 +49,6 @@ function initScrollEffect() {
  function toggleMenu() {
     document.getElementById("mainNav").classList.toggle("show");
   }
-
-
-  
-
 
   document.addEventListener('DOMContentLoaded', function() {
   // For date inputs that don't support placeholder
