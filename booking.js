@@ -66,6 +66,7 @@ const bookingData = {
   fullName: "",
   email: "",
   phone: "",
+  flightNumber: "",
   specialRequests: "",
   bookingRef: generateBookingRef(),
   distance: "",
@@ -165,55 +166,55 @@ document.addEventListener("DOMContentLoaded", function () {
   showStep(1);
 });
 
-// Initialize vehicle selection in Step 1
+// Initialize vehicle selection in Step 1 with 5% discount for round trips
 function initVehicleSelection() {
   const vehicleOptions = [
     {
-      type: "sedan",
+      type: "Saloon",
       name: "Sedan: Octavia",
-      price: 0.75,
+      price: 1.95,
       passengers: 3,
-      bags: 2,
+      bags: 3,
       image: "./Assets/4.png",
     },
     {
-      type: "van",
+      type: "Executive Saloon",
       name: "Van: Mercedes V-Class",
-      price: 1.25,
-      passengers: 5,
+      price: 2.50,
+      passengers: 3,
       bags: 3,
       image: "./Assets/108.png",
     },
     {
-      type: "minibus",
+      type: "Estate Car",
       name: "Minibus: Mercedes Sprinter",
-      price: 1.75,
-      passengers: 8,
-      bags: 5,
+      price: 2.10,
+      passengers: 4,
+      bags: 4,
       image: "./Assets/car.png",
     },
     {
-      type: "large-sedan",
+      type: "People Carrier",
       name: "Sedan: Octavia (Large)",
-      price: 2.25,
-      passengers: 10,
-      bags: 7,
+      price: 2.50,
+      passengers: 5,
+      bags: 5,
       image: "./Assets/4.png",
     },
     {
-      type: "large-van",
+      type: "Executive People Carrier",
       name: "Van: Mercedes V-Class (Large)",
-      price: 2.75,
-      passengers: 12,
-      bags: 8,
+      price: 3.50,
+      passengers: 5,
+      bags: 5,
       image: "./Assets/107.png",
     },
     {
-      type: "large-minibus",
+      type: "8 Seater Mini Bus",
       name: "Minibus: Mercedes Sprinter (Large)",
       price: 3.25,
-      passengers: 14,
-      bags: 10,
+      passengers: 8,
+      bags: 8,
       image: "./Assets/8.png",
     },
   ];
@@ -230,28 +231,26 @@ function initVehicleSelection() {
     vehicleCard.dataset.passengers = vehicle.passengers;
     vehicleCard.dataset.bags = vehicle.bags;
 
+    const oneWayPrice = vehicle.price;
+    const roundTripPrice = vehicle.price  * 0.95; // Apply 5% discount
+
     vehicleCard.innerHTML = `
       <img src="${vehicle.image}" alt="${vehicle.type}" />
       <div class="vehicle-details">
-        <div class="vehicle-type">${vehicle.name}</div>
-        <!--<div class="vehicle-actions">
-          <div class="price">€${vehicle.price.toFixed(2)}</div>
-          <div class="price">€${(vehicle.price * 2).toFixed(2)}</div>
-        </div>-->
+      <div class="vehicle-type">${vehicle.name}</div>
+      <div class="vehicle-type"><strong>Type:</strong> ${vehicle.type}</div>
         <ul class="specs">
-          <li class="spec-item"><i class="fas fa-user"></i> ${
-            vehicle.passengers
-          } passengers</li>
-          <li class="spec-item"><i class="fas fa-glass-whiskey"></i> ${
-            vehicle.bags
-          } Bags</li>
+          <li class="spec-item"><i class="fas fa-user"></i> ${vehicle.passengers} passengers</li>
+          <li class="spec-item"><i class="fas fa-glass-whiskey"></i> ${vehicle.bags} Bags</li>
         </ul>
         <div class="vehicle-actions">
           <button type="button" class="btn-select" data-trip-type="one-way">
-            One Way <strong>€${vehicle.price.toFixed(2)}/KM</strong>
+            One Way <strong>€${oneWayPrice.toFixed(2)}/KM</strong>
           </button>
           <button type="button" class="btn-select" data-trip-type="round-trip">
-            Round Trip <strong>€${(vehicle.price * 2).toFixed(2)}/KM</strong>
+            Round Trip <strong>€${roundTripPrice.toFixed(2)}/KM 
+            
+            </strong>
           </button>
         </div>
       </div>
@@ -260,52 +259,63 @@ function initVehicleSelection() {
     vehicleContainer.appendChild(vehicleCard);
   });
 
-  // Vehicle selection
+  // Vehicle selection with discount handling
   document.querySelectorAll(".btn-select").forEach((button) => {
     button.addEventListener("click", function () {
-        const vehicleCard = this.closest(".vehicle-card");
-        const tripType = this.dataset.tripType;
-        const basePrice = parseFloat(vehicleCard.dataset.price);
+      const vehicleCard = this.closest(".vehicle-card");
+      const tripType = this.dataset.tripType;
+      const basePrice = parseFloat(vehicleCard.dataset.price);
 
-        // Update UI
-        document.querySelectorAll(".vehicle-card").forEach((card) => {
-            card.classList.remove("selected");
-            card.querySelectorAll(".btn-select").forEach((btn) => {
-                const btnPrice = parseFloat(btn.dataset.tripType === "one-way" ? card.dataset.price : card.dataset.price * 2);
-                btn.innerHTML = btn.dataset.tripType === "one-way" 
-                    ? `One Way<strong>€${parseFloat(card.dataset.price).toFixed(2)}/KM</strong>` 
-                    : `Round Trip <strong>€${(parseFloat(card.dataset.price) * 2).toFixed(2)}/KM</strong>`;
-            });
+      // Calculate prices with discount for round trip
+      const oneWayPrice = basePrice;
+      const roundTripPrice = basePrice * 0.95; // 5% discount
+
+      // Update UI for all vehicle cards
+      document.querySelectorAll(".vehicle-card").forEach((card) => {
+        card.classList.remove("selected");
+        const cardBasePrice = parseFloat(card.dataset.price);
+        
+        card.querySelectorAll(".btn-select").forEach((btn) => {
+          if (btn.dataset.tripType === "one-way") {
+            btn.innerHTML = `One Way <strong>€${cardBasePrice.toFixed(2)}/KM</strong>`;
+          } else {
+            btn.innerHTML = `Round Trip <strong>€${(cardBasePrice  * 0.95).toFixed(2)}/KM `;
+          }
         });
+      });
 
-        vehicleCard.classList.add("selected");
-        this.innerHTML = tripType === "one-way" 
-            ? `<strong><span class="selected-tick">✓</span>Select €${basePrice.toFixed(2)}/KM</strong>`
-            : `<strong><span class="selected-tick">✓</span>Select €${(basePrice * 2).toFixed(2)}/KM </strong> `;
+      // Highlight selected vehicle and update button text
+      vehicleCard.classList.add("selected");
+      
+      if (tripType === "one-way") {
+        this.innerHTML = `<strong><span class="selected-tick">✓</span> Selected €${oneWayPrice.toFixed(2)}/KM</strong>`;
+      } else {
+        this.innerHTML = `<strong><span class="selected-tick">✓</span> Selected €${roundTripPrice.toFixed(2)}/KM `;
+      }
 
-        // Update booking data
-        bookingData.vehicleType = vehicleCard.querySelector(".vehicle-type").textContent;
-        bookingData.basePrice = basePrice;
-        bookingData.passengers = vehicleCard.dataset.passengers;
-        bookingData.bags = vehicleCard.dataset.bags;
-        bookingData.transferType = tripType;
-        bookingData.price = tripType === "round-trip" ? basePrice * 2 : basePrice;
+      // Update booking data with correct price
+      bookingData.vehicleType = vehicleCard.querySelector(".vehicle-type").textContent;
+      bookingData.basePrice = basePrice;
+      bookingData.passengers = vehicleCard.dataset.passengers;
+      bookingData.bags = vehicleCard.dataset.bags;
+      bookingData.transferType = tripType;
+      bookingData.price = tripType === "round-trip" ? roundTripPrice : oneWayPrice;
 
-        // Show the Continue button
-        document.querySelectorAll(".btn-next").forEach((btn) => {
-            btn.classList.add("visible");
+      // Show the Continue button
+      document.querySelectorAll(".btn-next").forEach((btn) => {
+        btn.classList.add("visible");
+      });
+
+      // Scroll to the Continue button
+      const firstContinueBtn = document.querySelector(".btn-next.visible");
+      if (firstContinueBtn) {
+        firstContinueBtn.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
         });
-
-        // Scroll to the Continue button
-        const firstContinueBtn = document.querySelector(".btn-next.visible");
-        if (firstContinueBtn) {
-            firstContinueBtn.scrollIntoView({
-                behavior: "smooth",
-                block: "nearest",
-            });
-        }
+      }
     });
-});
+  });
 }
 
 // Global variables
@@ -835,6 +845,10 @@ function validateStep(step) {
       alert("Please enter your phone number");
       return false;
     }
+    if (!document.getElementById("flightNumber").value) {
+      alert("Please enter your Flight Number number");
+      return false;
+    }
   }
 
   return true;
@@ -859,6 +873,7 @@ function saveStepData(step) {
     bookingData.fullName = document.getElementById("fullName").value;
     bookingData.email = document.getElementById("email").value;
     bookingData.phone = document.getElementById("phone").value;
+    bookingData.flightNumber = document.getElementById("flightNumber").value;
     bookingData.specialRequests =
       document.getElementById("specialRequests").value;
   }
@@ -889,6 +904,7 @@ function restoreFormData() {
   document.getElementById("fullName").value = bookingData.fullName || "";
   document.getElementById("email").value = bookingData.email || "";
   document.getElementById("phone").value = bookingData.phone || "";
+  document.getElementById("flightNumber").value = bookingData.flightNumber || "";
   document.getElementById("specialRequests").value =
     bookingData.specialRequests || "";
 }
@@ -896,6 +912,8 @@ function restoreFormData() {
 function updateSummary() {
   document.getElementById("summaryVehicle").textContent =
     bookingData.vehicleType || "Not selected";
+  document.getElementById("summaryDistance").textContent =
+    bookingData.distance || "Not selected";
   document.getElementById("summaryPickup").textContent =
     bookingData.pickupLocation || "Not specified";
   document.getElementById("summaryPickupDate").textContent =
@@ -907,6 +925,11 @@ function updateSummary() {
   document.getElementById(
     "summaryTotal"
   ).textContent = `€${bookingData.price.toFixed(2)}`;
+  // km multiple to acutal price
+    const price = parseFloat(bookingData.price) || 0;
+  const distance = parseFloat(bookingData.distance) || 0;
+  const kmTotal = (price * distance).toFixed(2);
+  document.getElementById("summaryKMTotal").textContent = `€${kmTotal}`;
 }
 
 function formatDate(dateString) {
@@ -960,6 +983,7 @@ function generateBookingPdf() {
           <p><strong>Name:</strong> ${bookingData.fullName}</p>
           <p><strong>Email:</strong> ${bookingData.email}</p>
           <p><strong>Phone:</strong> ${bookingData.phone}</p>
+          <p><strong>Phone:</strong> ${bookingData.flightNumber}</p>
           <p><strong>Requests:</strong> ${
             bookingData.specialRequests || "None"
           }</p>

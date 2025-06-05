@@ -190,6 +190,10 @@
           <input type="tel" id="phone" required />
         </div>
         <div class="form-group">
+          <label for="phone">Flight Number</label>
+          <input type="tel" id="flightNumber" required />
+        </div>
+        <div class="form-group">
           <label for="specialRequests">Special Requests</label>
           <textarea id="specialRequests" rows="3"></textarea>
         </div>
@@ -229,6 +233,10 @@
             <span id="summaryVehicle">Not selected</span>
           </div>
           <div class="summary-item">
+            <span>Distance:</span>
+            <span id="summaryDistance">Not selected</span>
+          </div>
+          <div class="summary-item">
             <span>Pickup:</span>
             <span id="summaryPickup">Not specified</span>
           </div>
@@ -241,8 +249,12 @@
             <span id="summaryTransferType">Not specified</span>
           </div>
           <div class="summary-item">
-            <span>Total:</span>
+            <span>Per KM:</span>
             <span id="summaryTotal">€0.00</span>
+          </div>
+          <div class="summary-item">
+            <span>Total:</span>
+            <span id="summaryKMTotal">€0.00</span>
           </div>
         </div>
 

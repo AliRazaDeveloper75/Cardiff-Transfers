@@ -324,6 +324,7 @@
           <p><strong>Name:</strong> <span id="conf-name"></span></p>
           <p><strong>Email:</strong> <span id="conf-email"></span></p>
           <p><strong>Phone:</strong> <span id="conf-phone"></span></p>
+          <p><strong>Flight Number:</strong> <span id="conf-flightNumber"></span></p>
           <p>
             <strong>Special Requests:</strong> <span id="conf-requests"></span>
           </p>
@@ -334,12 +335,16 @@
           <p>
             <strong>Vehicle Price:</strong> <span id="conf-base-price"></span>
           </p>
+          <p>
+            <strong>Total KM Price:</strong> <span id="conf-km-base-price"></span>
+          </p>
           <p id="conf-surcharge" style="display: none">
             <strong>Round Trip Surcharge:</strong> <span></span>
           </p>
-          <p>
+          <!--<p>
             <strong>Total Amount:</strong> <span id="conf-total-price"></span>
-          </p>
+          </p>-->
+
           <p><strong>Status:</strong> <span style="color: green">Paid</span></p>
         </div>
       </div>
@@ -388,11 +393,19 @@
         document.getElementById("conf-name").textContent = bookingData.fullName;
         document.getElementById("conf-email").textContent = bookingData.email;
         document.getElementById("conf-phone").textContent = bookingData.phone;
+        document.getElementById("conf-flightNumber").textContent = bookingData.flightNumber;
         document.getElementById("conf-requests").textContent =
           bookingData.specialRequests || "None";
 
         document.getElementById("conf-base-price").textContent =
           "€" + (bookingData.basePrice || bookingData.price).toFixed(2);
+          // Calculate KM total
+  const price = parseFloat(bookingData.price) || 0;
+  const distance = parseFloat(bookingData.distance) || 0;
+  const kmTotal = (price * distance).toFixed(2);
+  
+  document.getElementById("conf-km-base-price").textContent = `€${kmTotal}`;
+        
 
         if (bookingData.transferType === "round-trip") {
           document.getElementById("conf-surcharge").style.display = "block";
