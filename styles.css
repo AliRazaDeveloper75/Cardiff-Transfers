@@ -206,7 +206,7 @@ button[type="submit"]:hover {
     display: none;
     flex-direction: column;
     width: 100%;
-    background: #333;
+    background: #005aaa;
     margin-top: 10px;
     padding: 10px 0;
   }
@@ -217,7 +217,7 @@ button[type="submit"]:hover {
 
   .main-nav a {
     padding: 10px 20px;
-    border-top: 1px solid #444;
+    border-top: 1px solid white;
     color: white;
   }
 
