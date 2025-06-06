@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Booking Confirmation</title>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBh1KQfw1e4u8SRfQuDkC2G5rjhd_nxlI8&libraries=geometry"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBh1KQfw1e4u8SRfQuDkC2G5rjhd_nxlI8&libraries=places,geometry"></script>
     <style>
       body {
         .site-header {
@@ -297,6 +297,7 @@
       <div class="confirmation-details">
         <div class="detail-section">
           <h2>Transfer Details</h2>
+          <div id="confirmation-map"></div>
           <p><strong>Vehicle:</strong> <span id="conf-vehicle"></span></p>
           <p>
             <strong>Pickup Date/Time:</strong>
@@ -431,73 +432,87 @@
       });
 
       function initConfirmationMap(bookingData) {
-        const map = new google.maps.Map(
-          document.getElementById("confirmation-map"),
-          {
-            zoom: 12,
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-          }
-        );
+    const map = new google.maps.Map(document.getElementById("confirmation-map"), {
+        zoom: 12,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        styles: [
+            {
+                "featureType": "poi",
+                "elementType": "labels",
+                "stylers": [{"visibility": "off"}]
+            },
+            {
+                "featureType": "transit",
+                "elementType": "labels",
+                "stylers": [{"visibility": "off"}]
+            }
+        ]
+    });
 
-        // Decode polyline
-        const decodedPath = google.maps.geometry.encoding.decodePath(
-          bookingData.routePolyline
-        );
+    // Create bounds to fit both markers
+    const bounds = new google.maps.LatLngBounds();
 
-        // Create polyline
-        new google.maps.Polyline({
-          path: decodedPath,
-          geodesic: true,
-          strokeColor: "#005aaa",
-          strokeOpacity: 1.0,
-          strokeWeight: 3,
-          map: map,
-        });
-
-        // Add markers
-        const bounds = new google.maps.LatLngBounds();
-
-        // Pickup marker
-        if (bookingData.pickupLatLng) {
-          const pickupMarker = new google.maps.Marker({
+    // Pickup marker with label
+    if (bookingData.pickupLatLng) {
+        const pickupMarker = new google.maps.Marker({
             position: bookingData.pickupLatLng,
             map: map,
             title: "Pickup: " + bookingData.pickupLocation,
             icon: {
-              path: google.maps.SymbolPath.CIRCLE,
-              fillColor: "#4285F4",
-              fillOpacity: 1,
-              strokeColor: "#FFFFFF",
-              strokeWeight: 2,
-              scale: 10,
-            },
-          });
-          bounds.extend(pickupMarker.getPosition());
-        }
+                url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+            }
+        });
+        
+        // Add label for pickup
+        new google.maps.InfoWindow({
+            content: `<div style="font-weight:bold;color:#4285F4">Pickup: ${bookingData.pickupLocation}</div>`
+        }).open(map, pickupMarker);
+        
+        bounds.extend(pickupMarker.getPosition());
+    }
 
-        // Dropoff marker
-        if (bookingData.dropoffLatLng) {
-          const dropoffMarker = new google.maps.Marker({
+    // Dropoff marker with label
+    if (bookingData.dropoffLatLng) {
+        const dropoffMarker = new google.maps.Marker({
             position: bookingData.dropoffLatLng,
             map: map,
             title: "Dropoff: " + bookingData.dropoffLocation,
             icon: {
-              path: google.maps.SymbolPath.CIRCLE,
-              fillColor: "#EA4335",
-              fillOpacity: 1,
-              strokeColor: "#FFFFFF",
-              strokeWeight: 2,
-              scale: 10,
-            },
-          });
-          bounds.extend(dropoffMarker.getPosition());
-        }
+                url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
+            }
+        });
+        
+        // Add label for dropoff
+        new google.maps.InfoWindow({
+            content: `<div style="font-weight:bold;color:#EA4335">Drop-off: ${bookingData.dropoffLocation}</div>`
+        }).open(map, dropoffMarker);
+        
+        bounds.extend(dropoffMarker.getPosition());
+    }
 
-        // Fit bounds
-        if (!bounds.isEmpty()) {
-          map.fitBounds(bounds);
-        }
-      }
+    // Draw route if polyline exists
+    if (bookingData.routePolyline) {
+        const decodedPath = google.maps.geometry.encoding.decodePath(
+            bookingData.routePolyline
+        );
+
+        new google.maps.Polyline({
+            path: decodedPath,
+            geodesic: true,
+            strokeColor: "#005aaa",
+            strokeOpacity: 1.0,
+            strokeWeight: 3,
+            map: map,
+        });
+    }
+
+    // Fit bounds to show both markers
+    if (!bounds.isEmpty()) {
+        map.fitBounds(bounds);
+        // Add some padding if needed
+        map.panBy(0, -50);
+    }
+}
 
       function formatDate(dateString) {
         if (!dateString) return "Not specified";

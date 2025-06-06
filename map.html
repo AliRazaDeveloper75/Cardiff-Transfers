@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .confirmation-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 2rem;
+            background: #005AAA;
+            color: white;
+        }
+        .confirmation-header h1 {
+            color: white;
+            padding: 2rem;
+            padding-top: 6rem;
+            margin-bottom: 10px;
+        }
+        .confirmation-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .detail-section {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+            background: #f8f9fb;
+            border-radius: 8px;
+        }
+        #confirmation-map {
+            height: 400px;
+            width: 100%;
+            min-height: 300px;
+            background-color: #e8e8e8;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        #confirmation-map:empty::after {
+            content: "Map loading...";
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            color: #666;
+        }
+        .actions {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .btn {
+            padding: 10px 20px;
+            background: #005aaa;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0 10px;
+        }
+        .btn:hover {
+            background: #003d7a;
+        }
+    </style>
+</head>
+<body>
+    <div class="confirmation-header">
+        <h1>Booking Confirmed!</h1>
+        <p>Your booking reference: <strong id="bookingRef">BOOK-12345</strong></p>
+    </div>
+    
+    <div class="container">
+        <div class="confirmation-details">
+            <div class="detail-section">
+                <h2>Transfer Details</h2>
+                <p><strong>Pickup Location:</strong> <span id="conf-pickup">Lance, Palazzo</span></p>
+                <p><strong>Drop-off Location:</strong> <span id="conf-dropoff">Unlimited, Russian</span></p>
+                
+                <!-- Map Container -->
+                <div id="confirmation-map"></div>
+            </div>
+            
+            <div class="detail-section">
+                <h2>Customer Details</h2>
+                <p><strong>Name:</strong> All Rata</p>
+                <p><strong>Email:</strong> avant@pessim@gmail.com</p>
+                <p><strong>Phone:</strong> 0100 20000</p>
+            </div>
+        </div>
+        
+        <div class="actions">
+            <a href="index.html" class="btn">Return to Home</a>
+        </div>
+    </div>
+
+    <!-- Load Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBh1KQfw1e4u8SRfQuDkC2G5rjhd_nxlI8&libraries=geometry&callback=initMap" async defer></script>
+    
+    <script>
+        // Sample booking data - replace with your actual data
+        const bookingData = {
+            bookingRef: "BOOK-12345",
+            pickupLocation: "Lance, Palazzo",
+            dropoffLocation: "Unlimited, Russian",
+            pickupLatLng: { lat: 51.5074, lng: -0.1278 }, // London coordinates as example
+            dropoffLatLng: { lat: 51.5136, lng: -0.1366 }   // Nearby London coordinates
+        };
+
+        // Initialize map when API is loaded
+        function initMap() {
+            const mapElement = document.getElementById("confirmation-map");
+            
+            if (!mapElement) {
+                console.error("Map container not found");
+                return;
+            }
+            
+            // Create map with default center
+            const map = new google.maps.Map(mapElement, {
+                zoom: 12,
+                center: { lat: 51.5074, lng: -0.1278 }, // Default to London
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                streetViewControl: false
+            });
+
+            const bounds = new google.maps.LatLngBounds();
+            
+            // Add pickup marker
+            if (bookingData.pickupLatLng) {
+                const pickupLatLng = new google.maps.LatLng(
+                    bookingData.pickupLatLng.lat,
+                    bookingData.pickupLatLng.lng
+                );
+                
+                const pickupMarker = new google.maps.Marker({
+                    position: pickupLatLng,
+                    map: map,
+                    title: "Pickup: " + bookingData.pickupLocation,
+                    icon: {
+                        url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                    }
+                });
+                
+                // Add info window
+                const pickupInfo = new google.maps.InfoWindow({
+                    content: `<strong style="color:#4285F4">Pickup:</strong> ${bookingData.pickupLocation}`
+                });
+                pickupMarker.addListener("click", () => {
+                    pickupInfo.open(map, pickupMarker);
+                });
+                pickupInfo.open(map, pickupMarker);
+                
+                bounds.extend(pickupLatLng);
+            }
+
+            // Add dropoff marker
+            if (bookingData.dropoffLatLng) {
+                const dropoffLatLng = new google.maps.LatLng(
+                    bookingData.dropoffLatLng.lat,
+                    bookingData.dropoffLatLng.lng
+                );
+                
+                const dropoffMarker = new google.maps.Marker({
+                    position: dropoffLatLng,
+                    map: map,
+                    title: "Dropoff: " + bookingData.dropoffLocation,
+                    icon: {
+                        url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
+                    }
+                });
+                
+                // Add info window
+                const dropoffInfo = new google.maps.InfoWindow({
+                    content: `<strong style="color:#EA4335">Drop-off:</strong> ${bookingData.dropoffLocation}`
+                });
+                dropoffMarker.addListener("click", () => {
+                    dropoffInfo.open(map, dropoffMarker);
+                });
+                dropoffInfo.open(map, dropoffMarker);
+                
+                bounds.extend(dropoffLatLng);
+            }
+
+            // Fit bounds to show both markers
+            if (!bounds.isEmpty()) {
+                map.fitBounds(bounds);
+                
+                // Add some padding
+                const padding = 100; // pixels
+                map.panBy(0, -padding/2);
+            }
+            
+            // Add polyline if we have both points
+            if (bookingData.pickupLatLng && bookingData.dropoffLatLng) {
+                new google.maps.Polyline({
+                    path: [
+                        new google.maps.LatLng(bookingData.pickupLatLng.lat, bookingData.pickupLatLng.lng),
+                        new google.maps.LatLng(bookingData.dropoffLatLng.lat, bookingData.dropoffLatLng.lng)
+                    ],
+                    geodesic: true,
+                    strokeColor: "#005aaa",
+                    strokeOpacity: 1.0,
+                    strokeWeight: 3,
+                    map: map
+                });
+            }
+        }
+
+        // Error handling if API fails to load
+        window.gm_authFailure = function() {
+            const mapElement = document.getElementById("confirmation-map");
+            if (mapElement) {
+                mapElement.innerHTML = "<div style='padding:20px;color:red'>Google Maps failed to load. Please check your internet connection.</div>";
+            }
+        };
+    </script>
+</body>
+</html>
