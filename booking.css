@@ -94,7 +94,7 @@
 }
 
 .site-header.scrolled {
-  background: #005AAA;
+  background: #005aaa;
   color: white;
   padding: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -146,11 +146,10 @@ body {
 .hero {
   height: 14vh;
   position: relative;
-  background-color: #005AAA;
+  background-color: #005aaa;
 }
 
 .overlay {
-  
   height: 100%;
   width: 100%;
   color: white;
@@ -498,7 +497,7 @@ button:hover {
 
 .btn-next,
 .btn-submit {
-  background: #005AAA;
+  background: #005aaa;
   color: white;
   border: none;
   flex-grow: 1;
@@ -861,7 +860,7 @@ button:hover {
 }
 
 .price:nth-child(2) {
-  color: #005AAA;
+  color: #005aaa;
   font-size: 16px;
   opacity: 0.8;
 }
@@ -907,11 +906,11 @@ button:hover {
 }
 
 .btn-select[data-trip-type="round-trip"] {
-  background: #005AAA;
+  background: #005aaa;
 }
 
 .btn-select[data-trip-type="round-trip"]:hover {
-  background: #005AAA;
+  background: #005aaa;
 }
 
 /* Responsive adjustments */
@@ -976,7 +975,7 @@ button:hover {
 
 .v-feature i {
   color: white;
-  background-color:#005AAA;
+  background-color: #005aaa;
   border-radius: 50%;
   padding: 6px;
   margin-right: 10px;
@@ -987,19 +986,49 @@ button:hover {
   width: 22px;
   height: 22px;
 }
- /* Mobile: icon below text */
-    @media (max-width: 600px) {
-      .v-features {
-  display: none;
-}
-      .v-feature {
-        flex-direction: column-reverse;
-        margin-bottom: 20px;
-        font-size: 10px;
-      }
+/* Mobile: icon below text */
+@media (max-width: 600px) {
+  .v-features {
+    display: none;
+  }
+  .v-feature {
+    flex-direction: column-reverse;
+    margin-bottom: 20px;
+    font-size: 10px;
+  }
 
-      .v-feature i {
-        margin-right: 0;
-        margin-top: 8px;
-      }
-    }
+  .v-feature i {
+    margin-right: 0;
+    margin-top: 8px;
+  }
+}
+
+/* rount-trip-discount */
+.round-trip-discount {
+  position: relative; /* This establishes a positioning context for absolute children */
+  display: inline-block; /* Or whatever display you need */
+}
+
+.btn-select {
+  position: relative; /* Needed for proper badge positioning */
+  padding: 10px 20px; /* Adjust as needed */
+  /* Other button styles... */
+}
+
+.discount-badge {
+  position: absolute;
+  top: -30px; /* Adjust to position vertically */
+  right: 5px; /* Adjust to position horizontally */
+  background:  orange; /* Or any color you prefer */
+  padding: 1%;
+  color: white;
+  border-radius: 50%;
+  width: 40px; /* Adjust size as needed */
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}

@@ -753,3 +753,12 @@ body {
     display: block;
   }
 }
+/* airport-map-img */
+.airport-map-img{
+      display: flex;
+    text-align: center;
+    justify-content: center;
+}
+.airport-map-img img{
+  height: 50vh;
+}

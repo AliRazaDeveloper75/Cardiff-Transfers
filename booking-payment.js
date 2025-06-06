@@ -38,14 +38,14 @@ function showStep(step) {
   }
 
   // Scroll to top of the form container
-  // Scroll to top of the page (or navbar)
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
+    // Scroll to top of the page (or navbar)
+  window.scrollTo({ 
+    top: 0, 
+    behavior: "smooth" 
   });
   const formContainer =
     document.querySelector(".booking-form-container") || document.body;
-  formContainer.scrollIntoView({ behavior: "smooth", block: "", top: 0 });
+  formContainer.scrollIntoView({ behavior: "smooth", block: "", top:0 });
 }
 
 // Booking data structure
@@ -180,7 +180,7 @@ function initVehicleSelection() {
     {
       type: "Executive Saloon",
       name: "Van: Mercedes V-Class",
-      price: 2.5,
+      price: 2.50,
       passengers: 3,
       bags: 3,
       image: "./Assets/108.png",
@@ -188,7 +188,7 @@ function initVehicleSelection() {
     {
       type: "Estate Car",
       name: "Minibus: Mercedes Sprinter",
-      price: 2.1,
+      price: 2.10,
       passengers: 4,
       bags: 4,
       image: "./Assets/car.png",
@@ -196,7 +196,7 @@ function initVehicleSelection() {
     {
       type: "People Carrier",
       name: "Sedan: Octavia (Large)",
-      price: 2.5,
+      price: 2.50,
       passengers: 5,
       bags: 5,
       image: "./Assets/4.png",
@@ -204,7 +204,7 @@ function initVehicleSelection() {
     {
       type: "Executive People Carrier",
       name: "Van: Mercedes V-Class (Large)",
-      price: 3.5,
+      price: 3.50,
       passengers: 5,
       bags: 5,
       image: "./Assets/107.png",
@@ -232,7 +232,7 @@ function initVehicleSelection() {
     vehicleCard.dataset.bags = vehicle.bags;
 
     const oneWayPrice = vehicle.price;
-    const roundTripPrice = vehicle.price * 0.95; // Apply 5% discount
+    const roundTripPrice = vehicle.price  * 0.95; // Apply 5% discount
 
     vehicleCard.innerHTML = `
       <img src="${vehicle.image}" alt="${vehicle.type}" />
@@ -240,23 +240,18 @@ function initVehicleSelection() {
       <div class="vehicle-type">${vehicle.name}</div>
       <div class="vehicle-type"><strong>Type:</strong> ${vehicle.type}</div>
         <ul class="specs">
-          <li class="spec-item"><i class="fas fa-user"></i> ${
-            vehicle.passengers
-          } passengers</li>
-          <li class="spec-item"><i class="fas fa-glass-whiskey"></i> ${
-            vehicle.bags
-          } Bags</li>
+          <li class="spec-item"><i class="fas fa-user"></i> ${vehicle.passengers} passengers</li>
+          <li class="spec-item"><i class="fas fa-glass-whiskey"></i> ${vehicle.bags} Bags</li>
         </ul>
         <div class="vehicle-actions">
           <button type="button" class="btn-select" data-trip-type="one-way">
             One Way <strong>€${oneWayPrice.toFixed(2)}/KM</strong>
           </button>
-          <div class="round-trip-discount">
-            <button type="button" class="btn-select" data-trip-type="round-trip">
-              Round Trip <strong>€${roundTripPrice.toFixed(2)}/KM</strong>
-              <span class="discount-badge">-5% off</span>
-            </button>
-          </div>
+          <button type="button" class="btn-select" data-trip-type="round-trip">
+            Round Trip <strong>€${roundTripPrice.toFixed(2)}/KM 
+            </strong>
+          </button>
+          
         </div>
       </div>
     `;
@@ -279,42 +274,32 @@ function initVehicleSelection() {
       document.querySelectorAll(".vehicle-card").forEach((card) => {
         card.classList.remove("selected");
         const cardBasePrice = parseFloat(card.dataset.price);
-
+        
         card.querySelectorAll(".btn-select").forEach((btn) => {
           if (btn.dataset.tripType === "one-way") {
-            btn.innerHTML = `One Way <strong>€${cardBasePrice.toFixed(
-              2
-            )}/KM</strong>`;
+            btn.innerHTML = `One Way <strong>€${cardBasePrice.toFixed(2)}/KM</strong>`;
           } else {
-            btn.innerHTML = `Round Trip <strong>€${(
-              cardBasePrice * 0.95
-            ).toFixed(2)}/KM `;
+            btn.innerHTML = `Round Trip <strong>€${(cardBasePrice  * 0.95).toFixed(2)}/KM `;
           }
         });
       });
 
       // Highlight selected vehicle and update button text
       vehicleCard.classList.add("selected");
-
+      
       if (tripType === "one-way") {
-        this.innerHTML = `<strong><span class="selected-tick">✓</span> Selected €${oneWayPrice.toFixed(
-          2
-        )}/KM</strong>`;
+        this.innerHTML = `<strong><span class="selected-tick">✓</span> Selected €${oneWayPrice.toFixed(2)}/KM</strong>`;
       } else {
-        this.innerHTML = `<strong><span class="selected-tick">✓</span> Selected €${roundTripPrice.toFixed(
-          2
-        )}/KM `;
+        this.innerHTML = `<strong><span class="selected-tick">✓</span> Selected €${roundTripPrice.toFixed(2)}/KM `;
       }
 
       // Update booking data with correct price
-      bookingData.vehicleType =
-        vehicleCard.querySelector(".vehicle-type").textContent;
+      bookingData.vehicleType = vehicleCard.querySelector(".vehicle-type").textContent;
       bookingData.basePrice = basePrice;
       bookingData.passengers = vehicleCard.dataset.passengers;
       bookingData.bags = vehicleCard.dataset.bags;
       bookingData.transferType = tripType;
-      bookingData.price =
-        tripType === "round-trip" ? roundTripPrice : oneWayPrice;
+      bookingData.price = tripType === "round-trip" ? roundTripPrice : oneWayPrice;
 
       // Show the Continue button
       document.querySelectorAll(".btn-next").forEach((btn) => {
@@ -612,6 +597,44 @@ function showRoute() {
   });
 }
 
+// Update the route information display
+function updateRouteInfo() {
+  const routeInfo = document.getElementById("routeInfo");
+  if (!routeInfo) return;
+
+  routeInfo.innerHTML = `
+    <div class="route-header"><strong>Your Transfer Route</strong></div>
+    <div class="route-detail">
+      <span class="marker-icon pickup-marker"></span>
+      <div>
+        <strong>Pickup:</strong> 
+        <span class="location-text">${
+          bookingData.pickupLocation || "Not specified"
+        }</span>
+      </div>
+    </div>
+    <div class="route-stats">
+      <div><strong>Distance:</strong> ${
+        bookingData.distance || "Calculating..."
+      }</div>
+      <div><strong>Duration:</strong> ${
+        bookingData.duration || "Calculating..."
+      }</div>
+    </div>
+    <div class="route-detail">
+      <span class="marker-icon dropoff-marker"></span>
+      <div>
+        <strong>Drop-off:</strong> 
+        <span class="location-text">${
+          bookingData.dropoffLocation || "Not specified"
+        }</span>
+      </div>
+    </div>
+  `;
+}
+
+
+
 // Simple debounce function
 function debounce(func, wait) {
   let timeout;
@@ -766,7 +789,7 @@ function updateRouteInfo() {
       <strong>Pickup:</strong> ${bookingData.pickupLocation}
     </div>
     <div class="route-stats" style="padding-left: 4%;margin-left:8px; border-left:2px solid black;">
-      <div><strong>Distance:</strong> DIS ${bookingData.distance}</div>
+      <div><strong>Distance:</strong> ${bookingData.distance}</div>
       <div><strong>Duration:</strong> ${bookingData.duration}</div>
     </div>
     <div class="route-detail">
@@ -774,13 +797,8 @@ function updateRouteInfo() {
       <strong>Drop-off:</strong> ${bookingData.dropoffLocation}
     </div>
   `;
-  // Separately log the distance to console
-  logDistance();
 }
 
-function logDistance() {
-  console.log("Distance:", bookingData.distance);
-}
 // Helper functions
 function generateBookingRef() {
   const randomNum = Math.floor(1000 + Math.random() * 9000);
@@ -886,8 +904,7 @@ function restoreFormData() {
   document.getElementById("fullName").value = bookingData.fullName || "";
   document.getElementById("email").value = bookingData.email || "";
   document.getElementById("phone").value = bookingData.phone || "";
-  document.getElementById("flightNumber").value =
-    bookingData.flightNumber || "";
+  document.getElementById("flightNumber").value = bookingData.flightNumber || "";
   document.getElementById("specialRequests").value =
     bookingData.specialRequests || "";
 }
@@ -909,7 +926,7 @@ function updateSummary() {
     "summaryTotal"
   ).textContent = `€${bookingData.price.toFixed(2)}`;
   // km multiple to acutal price
-  const price = parseFloat(bookingData.price) || 0;
+    const price = parseFloat(bookingData.price) || 0;
   const distance = parseFloat(bookingData.distance) || 0;
   const kmTotal = (price * distance).toFixed(2);
   document.getElementById("summaryKMTotal").textContent = `€${kmTotal}`;
@@ -1059,16 +1076,26 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+
 //auto time and date display when click
-document.getElementById("pickupDate").addEventListener("click", function () {
-  this.showPicker();
-});
-document.getElementById("pickupTime").addEventListener("click", function () {
-  this.showPicker();
-});
-document.getElementById("returnTime").addEventListener("click", function () {
-  this.showPicker();
-});
-document.getElementById("returnDate").addEventListener("click", function () {
-  this.showPicker();
-});
+      document
+        .getElementById("pickupDate")
+        .addEventListener("click", function () {
+          this.showPicker();
+        });
+      document
+        .getElementById("pickupTime")
+        .addEventListener("click", function () {
+          this.showPicker();
+        });
+      document
+        .getElementById("returnTime")
+        .addEventListener("click", function () {
+          this.showPicker();
+        });
+      document
+        .getElementById("returnDate")
+        .addEventListener("click", function () {
+          this.showPicker();
+        });
+        
