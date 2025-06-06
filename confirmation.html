@@ -295,10 +295,11 @@
     </div>
     <div class="container">
       <div class="confirmation-details">
+        <!--card-1-->
         <div class="detail-section">
+          <!--map-->
           <div id="confirmation-map"></div>
-                 <!--
-          
+          <!--
           <div class="">
           <h2>Transfer Details</h2>
           <p><strong>Vehicle:</strong> <span id="conf-vehicle"></span></p>
@@ -323,48 +324,52 @@
           <p><strong>Duration:</strong> <span id="conf-duration"></span></p>
           
         </div>
-        -->
-        </div>
-          <!--customer details-->
+        --></div>
+        <!--customer details-->
         <div class="detail-section">
-           <div class="">
-          <h2>Transfer Details</h2>
-          <p><strong>Vehicle:</strong> <span id="conf-vehicle"></span></p>
-          <p>
-            <strong>Pickup Date/Time:</strong>
-            <span id="conf-pickup-time"></span>
-          </p>
-          <p>
-            <strong>Return Date/Time:</strong> <span id="return-Date"></span>
-          </p>
-          <p>
-            <strong>Pickup Location:</strong> <span id="conf-pickup"></span>
-          </p>
-          <p>
-            <strong>Drop-off Location:</strong> <span id="conf-dropoff"></span>
-          </p>
-          <p>
-            <strong>Transfer Type:</strong>
-            <span id="conf-transfer-type"></span>
-          </p>
-          <p><strong>Distance:</strong> <span id="conf-distance"></span></p>
-          <p><strong>Duration:</strong> <span id="conf-duration"></span></p>
+          <div class="">
+            <h2>Transfer Details</h2>
+            <p><strong>Vehicle:</strong> <span id="conf-vehicle"></span></p>
+            <p>
+              <strong>Pickup Date/Time:</strong>
+              <span id="conf-pickup-time"></span>
+            </p>
+            <p>
+              <strong>Return Date/Time:</strong> <span id="return-Date"></span>
+            </p>
+            <p>
+              <strong>Pickup Location:</strong> <span id="conf-pickup"></span>
+            </p>
+            <p>
+              <strong>Drop-off Location:</strong>
+              <span id="conf-dropoff"></span>
+            </p>
+            <p>
+              <strong>Transfer Type:</strong>
+              <span id="conf-transfer-type"></span>
+            </p>
+            <p><strong>Distance:</strong> <span id="conf-distance"></span></p>
+            <p><strong>Duration:</strong> <span id="conf-duration"></span></p>
+          </div>
           
         </div>
-          <h2>Customer Details</h2>
-          <p><strong>Name:</strong> <span id="conf-name"></span></p>
-          <p><strong>Email:</strong> <span id="conf-email"></span></p>
-          <p><strong>Phone:</strong> <span id="conf-phone"></span></p>
-          <p>
-            <strong>Flight Number:</strong> <span id="conf-flightNumber"></span>
-          </p>
-          <p>
-            <strong>Special Requests:</strong> <span id="conf-requests"></span>
-          </p>
-        </div>
 
-        <div class="detail-section">          
-          <!---->
+        <!---->
+        <div class="detail-section">
+          <div>
+            <h2>Customer Details</h2>
+            <p><strong>Name:</strong> <span id="conf-name"></span></p>
+            <p><strong>Email:</strong> <span id="conf-email"></span></p>
+            <p><strong>Phone:</strong> <span id="conf-phone"></span></p>
+            <p>
+              <strong>Flight Number:</strong>
+              <span id="conf-flightNumber"></span>
+            </p>
+            <p>
+              <strong>Special Requests:</strong>
+              <span id="conf-requests"></span>
+            </p>
+          </div>
           <h2>Payment Summary</h2>
           <p>
             <strong>Vehicle Price:</strong> <span id="conf-base-price"></span>
@@ -639,10 +644,12 @@
             "€" + (bookingData.price - bookingData.basePrice).toFixed(2);
         }
         const price = parseFloat(bookingData.price) || 0;
-  const distance = parseFloat(bookingData.distance) || 0;
-  const kmTotal = (price * distance).toFixed(2);
-  
-  document.getElementById("conf-km-base-price").textContent = `€${kmTotal}`;
+        const distance = parseFloat(bookingData.distance) || 0;
+        const kmTotal = (price * distance).toFixed(2);
+
+        document.getElementById(
+          "conf-km-base-price"
+        ).textContent = `€${kmTotal}`;
       }
 
       function isValidLatLng(latLng) {
