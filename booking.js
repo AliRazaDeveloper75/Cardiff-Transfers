@@ -266,6 +266,7 @@ function initVehicleSelection() {
 
   // Vehicle selection with discount handling
   document.querySelectorAll(".btn-select").forEach((button) => {
+    // Modify the vehicle selection part in initVehicleSelection()
     button.addEventListener("click", function () {
       const vehicleCard = this.closest(".vehicle-card");
       const tripType = this.dataset.tripType;
@@ -278,8 +279,11 @@ function initVehicleSelection() {
       // Update UI for all vehicle cards
       document.querySelectorAll(".vehicle-card").forEach((card) => {
         card.classList.remove("selected");
-        const cardBasePrice = parseFloat(card.dataset.price);
+        // Remove any existing price displays
+        const existingDisplay = card.querySelector(".total-price-display");
+        if (existingDisplay) existingDisplay.remove();
 
+        const cardBasePrice = parseFloat(card.dataset.price);
         card.querySelectorAll(".btn-select").forEach((btn) => {
           if (btn.dataset.tripType === "one-way") {
             btn.innerHTML = `One Way <strong>€${cardBasePrice.toFixed(
@@ -294,17 +298,24 @@ function initVehicleSelection() {
       });
 
       // Highlight selected vehicle and update button text
-      vehicleCard.classList.add("selected");
+    vehicleCard.classList.add("selected");
 
-      if (tripType === "one-way") {
-        this.innerHTML = `<strong><span class="selected-tick">✓</span> Selected €${oneWayPrice.toFixed(
-          2
-        )}/KM</strong>`;
-      } else {
-        this.innerHTML = `<strong><span class="selected-tick">✓</span> Selected €${roundTripPrice.toFixed(
-          2
-        )}/KM `;
-      }
+// Calculate and display total price if distance is available
+let totalPriceDisplay = '';
+if (bookingData.distance) {
+  const distanceValue = parseFloat(bookingData.distance.replace(/[^\d.]/g, ""));
+  const totalPrice = (tripType === "one-way" ? oneWayPrice : roundTripPrice) * distanceValue;
+  totalPriceDisplay = `<div class="total-price" style="margin-top: 8px; font-size: 0.9em; color: white;">
+    €${totalPrice.toFixed(2)}
+     <!--(${bookingData.distance}) -->
+  </div>`;
+}
+
+if (tripType === "one-way") {
+  this.innerHTML = `<strong><span class="selected-tick">✓</span> Selected €${totalPriceDisplay}</strong>`;
+} else {
+  this.innerHTML = `<strong><span class="selected-tick">✓</span> Selected €${totalPriceDisplay}</strong>`;
+}
 
       // Update booking data with correct price
       bookingData.vehicleType =
@@ -315,6 +326,17 @@ function initVehicleSelection() {
       bookingData.transferType = tripType;
       bookingData.price =
         tripType === "round-trip" ? roundTripPrice : oneWayPrice;
+
+      // If we already have distance, calculate and show total price
+      if (bookingData.distance) {
+        const distanceValue = parseFloat(
+          bookingData.distance.replace(/[^\d.]/g, "")
+        );
+        if (distanceValue) {
+          const totalPrice = (bookingData.price * distanceValue).toFixed(2);
+          updateVehicleCardWithPrice(totalPrice);
+        }
+      }
 
       // Show the Continue button
       document.querySelectorAll(".btn-next").forEach((btn) => {
@@ -589,6 +611,20 @@ function showRoute() {
       bookingData.duration = route.duration.text;
       bookingData.routePolyline = result.routes[0].overview_polyline;
 
+      // Extract numeric distance value (in km)
+      const distanceValue = parseFloat(
+        route.distance.text.replace(/[^\d.]/g, "")
+      );
+
+      // Calculate total price if vehicle is selected
+      if (bookingData.price && distanceValue) {
+        const totalPrice = (bookingData.price * distanceValue).toFixed(2);
+        bookingData.totalPrice = totalPrice;
+
+        // Update the vehicle card to show the total price
+        updateVehicleCardWithPrice(totalPrice);
+      }
+
       updateRouteInfo();
 
       // Fit bounds to show the entire route
@@ -610,6 +646,63 @@ function showRoute() {
       updateRouteInfo();
     }
   });
+}
+// Show the route between locations
+function showRoute() {
+  const request = {
+    origin: pickupMarker.getPosition(),
+    destination: dropoffMarker.getPosition(),
+    travelMode: google.maps.TravelMode.DRIVING,
+  };
+
+  directionsService.route(request, (result, status) => {
+    if (status === google.maps.DirectionsStatus.OK) {
+      directionsRenderer.setDirections(result);
+      const route = result.routes[0].legs[0];
+
+      // Store route data
+      bookingData.distance = route.distance.text;
+      bookingData.duration = route.duration.text;
+      bookingData.routePolyline = result.routes[0].overview_polyline;
+
+      updateRouteInfo();
+
+      // Fit bounds to show the entire route
+      const bounds = new google.maps.LatLngBounds();
+      bounds.extend(pickupMarker.getPosition());
+      bounds.extend(dropoffMarker.getPosition());
+      routeMap.fitBounds(bounds);
+    } else {
+      console.error("Directions request failed:", status);
+    }
+  });
+}
+// new function add
+function updateVehicleCardWithPrice(totalPrice) {
+  const selectedCard = document.querySelector(".vehicle-card.selected");
+  if (!selectedCard) return;
+
+  // Find or create the price display element
+  let priceDisplay = selectedCard.querySelector(".total-price-display");
+  if (!priceDisplay) {
+    priceDisplay = document.createElement("div");
+    priceDisplay.className = "total-price-display";
+    priceDisplay.style.marginTop = "10px";
+    priceDisplay.style.padding = "10px";
+    priceDisplay.style.backgroundColor = "#f8f9fa";
+    priceDisplay.style.borderRadius = "5px";
+    priceDisplay.style.fontWeight = "bold";
+    priceDisplay.style.textAlign = "center";
+    selectedCard.appendChild(priceDisplay);
+  }
+
+  priceDisplay.innerHTML = `Total Estimated Price: <span style="color: #3b82f6; font-size: 1.2em;">€${totalPrice}</span>`;
+
+  // Also update the booking data
+  bookingData.totalPrice = totalPrice;
+  // Update the bookingData object
+  bookingData.totalPrice = parseFloat(totalPrice); // Store as number
+  console.log("Updated bookingData.totalPrice:", bookingData.totalPrice);
 }
 
 // Simple debounce function
@@ -725,37 +818,6 @@ function updateMap(locationInput, isPickup) {
     document.getElementById("routeInfo").style.display = "block";
     showRoute();
   }
-}
-
-// Show the route between locations
-function showRoute() {
-  const request = {
-    origin: pickupMarker.getPosition(),
-    destination: dropoffMarker.getPosition(),
-    travelMode: google.maps.TravelMode.DRIVING,
-  };
-
-  directionsService.route(request, (result, status) => {
-    if (status === google.maps.DirectionsStatus.OK) {
-      directionsRenderer.setDirections(result);
-      const route = result.routes[0].legs[0];
-
-      // Store route data
-      bookingData.distance = route.distance.text;
-      bookingData.duration = route.duration.text;
-      bookingData.routePolyline = result.routes[0].overview_polyline;
-
-      updateRouteInfo();
-
-      // Fit bounds to show the entire route
-      const bounds = new google.maps.LatLngBounds();
-      bounds.extend(pickupMarker.getPosition());
-      bounds.extend(dropoffMarker.getPosition());
-      routeMap.fitBounds(bounds);
-    } else {
-      console.error("Directions request failed:", status);
-    }
-  });
 }
 
 function updateRouteInfo() {

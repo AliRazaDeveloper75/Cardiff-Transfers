@@ -1033,3 +1033,19 @@ button:hover {
   font-weight: bold;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
+
+.total-price-display {
+  margin-top: 10px;
+  display: none;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+  border: 1px solid #e9ecef;
+}
+
+.total-price-display span {
+  color: #3b82f6;
+  font-size: 1.2em;
+}
