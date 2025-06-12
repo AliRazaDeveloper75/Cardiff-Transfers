@@ -298,24 +298,17 @@ function initVehicleSelection() {
       });
 
       // Highlight selected vehicle and update button text
-    vehicleCard.classList.add("selected");
+      vehicleCard.classList.add("selected");
 
-// Calculate and display total price if distance is available
-let totalPriceDisplay = '';
-if (bookingData.distance) {
-  const distanceValue = parseFloat(bookingData.distance.replace(/[^\d.]/g, ""));
-  const totalPrice = (tripType === "one-way" ? oneWayPrice : roundTripPrice) * distanceValue;
-  totalPriceDisplay = `<div class="total-price" style="margin-top: 8px; font-size: 0.9em; color: white;">
-    €${totalPrice.toFixed(2)}
-     <!--(${bookingData.distance}) -->
-  </div>`;
-}
-
-if (tripType === "one-way") {
-  this.innerHTML = `<strong><span class="selected-tick">✓</span> Selected €${totalPriceDisplay}</strong>`;
-} else {
-  this.innerHTML = `<strong><span class="selected-tick">✓</span> Selected €${totalPriceDisplay}</strong>`;
-}
+      if (tripType === "one-way") {
+        this.innerHTML = `<strong><span class="selected-tick">✓</span> Selected €${oneWayPrice.toFixed(
+          2
+        )}/KM</strong>`;
+      } else {
+        this.innerHTML = `<strong><span class="selected-tick">✓</span> Selected €${roundTripPrice.toFixed(
+          2
+        )}/KM `;
+      }
 
       // Update booking data with correct price
       bookingData.vehicleType =
@@ -647,37 +640,7 @@ function showRoute() {
     }
   });
 }
-// Show the route between locations
-function showRoute() {
-  const request = {
-    origin: pickupMarker.getPosition(),
-    destination: dropoffMarker.getPosition(),
-    travelMode: google.maps.TravelMode.DRIVING,
-  };
 
-  directionsService.route(request, (result, status) => {
-    if (status === google.maps.DirectionsStatus.OK) {
-      directionsRenderer.setDirections(result);
-      const route = result.routes[0].legs[0];
-
-      // Store route data
-      bookingData.distance = route.distance.text;
-      bookingData.duration = route.duration.text;
-      bookingData.routePolyline = result.routes[0].overview_polyline;
-
-      updateRouteInfo();
-
-      // Fit bounds to show the entire route
-      const bounds = new google.maps.LatLngBounds();
-      bounds.extend(pickupMarker.getPosition());
-      bounds.extend(dropoffMarker.getPosition());
-      routeMap.fitBounds(bounds);
-    } else {
-      console.error("Directions request failed:", status);
-    }
-  });
-}
-// new function add
 function updateVehicleCardWithPrice(totalPrice) {
   const selectedCard = document.querySelector(".vehicle-card.selected");
   if (!selectedCard) return;
@@ -700,9 +663,6 @@ function updateVehicleCardWithPrice(totalPrice) {
 
   // Also update the booking data
   bookingData.totalPrice = totalPrice;
-  // Update the bookingData object
-  bookingData.totalPrice = parseFloat(totalPrice); // Store as number
-  console.log("Updated bookingData.totalPrice:", bookingData.totalPrice);
 }
 
 // Simple debounce function
@@ -818,6 +778,37 @@ function updateMap(locationInput, isPickup) {
     document.getElementById("routeInfo").style.display = "block";
     showRoute();
   }
+}
+
+// Show the route between locations
+function showRoute() {
+  const request = {
+    origin: pickupMarker.getPosition(),
+    destination: dropoffMarker.getPosition(),
+    travelMode: google.maps.TravelMode.DRIVING,
+  };
+
+  directionsService.route(request, (result, status) => {
+    if (status === google.maps.DirectionsStatus.OK) {
+      directionsRenderer.setDirections(result);
+      const route = result.routes[0].legs[0];
+
+      // Store route data
+      bookingData.distance = route.distance.text;
+      bookingData.duration = route.duration.text;
+      bookingData.routePolyline = result.routes[0].overview_polyline;
+
+      updateRouteInfo();
+
+      // Fit bounds to show the entire route
+      const bounds = new google.maps.LatLngBounds();
+      bounds.extend(pickupMarker.getPosition());
+      bounds.extend(dropoffMarker.getPosition());
+      routeMap.fitBounds(bounds);
+    } else {
+      console.error("Directions request failed:", status);
+    }
+  });
 }
 
 function updateRouteInfo() {
