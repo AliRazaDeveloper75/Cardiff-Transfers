@@ -842,7 +842,7 @@ button:hover {
 
 .vehicle-actions {
   display: flex;
-  justify-content: space-between;
+  justify-content: left;
   align-items: center;
   margin: 10px 0;
 }
