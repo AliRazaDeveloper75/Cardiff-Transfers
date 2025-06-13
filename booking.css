@@ -1013,6 +1013,7 @@ button:hover {
 .btn-select {
   position: relative; /* Needed for proper badge positioning */
   padding: 10px 20px; /* Adjust as needed */
+  height: 10vh;
   /* Other button styles... */
 }
 

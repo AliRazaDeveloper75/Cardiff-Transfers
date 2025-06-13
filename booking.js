@@ -249,11 +249,11 @@ function initVehicleSelection() {
         </ul>
         <div class="vehicle-actions">
           <button type="button" class="btn-select" data-trip-type="one-way">
-            One Way <strong>€${oneWayPrice.toFixed(2)}/KM</strong>
+            One Way 
           </button>
           <div class="round-trip-discount">
             <button type="button" class="btn-select" data-trip-type="round-trip">
-              Round Trip <strong>€${roundTripPrice.toFixed(2)}/KM</strong>
+              Round Trip
               <span class="discount-badge">-5% off</span>
             </button>
           </div>
@@ -268,90 +268,96 @@ function initVehicleSelection() {
   document.querySelectorAll(".btn-select").forEach((button) => {
     // Modify the vehicle selection part in initVehicleSelection()
     // Modify the vehicle selection part in initVehicleSelection()
-button.addEventListener("click", function () {
-  const vehicleCard = this.closest(".vehicle-card");
-  const tripType = this.dataset.tripType;
-  const basePrice = parseFloat(vehicleCard.dataset.price);
+    button.addEventListener("click", function () {
+      const vehicleCard = this.closest(".vehicle-card");
+      const tripType = this.dataset.tripType;
+      const basePrice = parseFloat(vehicleCard.dataset.price);
 
-  // Calculate prices with discount for round trip
-  const oneWayPrice = basePrice;
-  const roundTripPrice = basePrice * 0.95; // 5% discount
+      // Calculate prices with discount for round trip
+      const oneWayPrice = basePrice;
+      const roundTripPrice = basePrice * 0.95; // 5% discount
 
-  // Update UI for all vehicle cards
-  document.querySelectorAll(".vehicle-card").forEach((card) => {
-    card.classList.remove("selected");
-    // Remove any existing price displays
-    const existingDisplay = card.querySelector('.total-price-display');
-    if (existingDisplay) existingDisplay.remove();
-    
-    const cardBasePrice = parseFloat(card.dataset.price);
-    card.querySelectorAll(".btn-select").forEach((btn) => {
-      if (btn.dataset.tripType === "one-way") {
-        btn.innerHTML = `One Way <strong>€${cardBasePrice.toFixed(2)}/KM</strong>`;
+      // Update UI for all vehicle cards
+      document.querySelectorAll(".vehicle-card").forEach((card) => {
+        card.classList.remove("selected");
+        // Remove any existing price displays
+        const existingDisplay = card.querySelector(".total-price-display");
+        if (existingDisplay) existingDisplay.remove();
+
+        const cardBasePrice = parseFloat(card.dataset.price);
+        card.querySelectorAll(".btn-select").forEach((btn) => {
+          if (btn.dataset.tripType === "one-way") {
+            btn.innerHTML = `One Way `;
+          } else {
+            btn.innerHTML = `Round Trip <strong>`;
+          }
+        });
+      });
+
+      // Highlight selected vehicle and update button text
+      vehicleCard.classList.add("selected");
+
+      vehicleCard.classList.add("selected");
+
+      // Calculate and display total price if distance is available
+      let totalPriceDisplay = "";
+      if (bookingData.distance) {
+        const distanceValue = parseFloat(
+          bookingData.distance.replace(/[^\d.]/g, "")
+        );
+        const totalPrice =
+          (tripType === "one-way" ? oneWayPrice : roundTripPrice) *
+          distanceValue;
+        totalPriceDisplay = `<div class="total-price" style="margin-top: 8px; font-size: 0.9em; color: white;">
+    Total: €${totalPrice.toFixed(2)} (${bookingData.distance})
+  </div>`;
+      }
+
+      if (tripType === "one-way") {
+        this.innerHTML = `<strong><span class="selected-tick">✓</span> Selected</strong>${totalPriceDisplay}`;
       } else {
-        btn.innerHTML = `Round Trip <strong>€${(cardBasePrice * 0.95).toFixed(2)}/KM `;
+        this.innerHTML = `<strong><span class="selected-tick">✓</span> Selected</strong>${totalPriceDisplay}`;
+      }
+
+      // Update booking data with correct price
+      bookingData.vehicleType =
+        vehicleCard.querySelector(".vehicle-type").textContent;
+      bookingData.basePrice = basePrice;
+      bookingData.passengers = vehicleCard.dataset.passengers;
+      bookingData.bags = vehicleCard.dataset.bags;
+      bookingData.transferType = tripType;
+      bookingData.price =
+        tripType === "round-trip" ? roundTripPrice : oneWayPrice;
+
+      // If we already have distance, calculate and show total price
+      if (bookingData.distance) {
+        const distanceValue = parseFloat(
+          bookingData.distance.replace(/[^\d.]/g, "")
+        );
+        if (distanceValue) {
+          const totalPrice = (bookingData.price * distanceValue).toFixed(2);
+          updateVehicleCardWithPrice(totalPrice);
+        }
+      }
+
+      // Show the Continue button
+      document.querySelectorAll(".btn-next").forEach((btn) => {
+        btn.classList.add("visible");
+      });
+
+      // Scroll to the Continue button
+      const firstContinueBtn = document.querySelector(".btn-next.visible");
+      if (firstContinueBtn) {
+        firstContinueBtn.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+        });
       }
     });
   });
-
-  // Highlight selected vehicle and update button text
-  vehicleCard.classList.add("selected");
-
- vehicleCard.classList.add("selected");
-
-// Calculate and display total price if distance is available
-let totalPriceDisplay = '';
-if (bookingData.distance) {
-  const distanceValue = parseFloat(bookingData.distance.replace(/[^\d.]/g, ""));
-  const totalPrice = (tripType === "one-way" ? oneWayPrice : roundTripPrice) * distanceValue;
-  totalPriceDisplay = `<div class="total-price" style="margin-top: 8px; font-size: 0.9em; color: white;">
-    Total: €${totalPrice.toFixed(2)} (${bookingData.distance})
-  </div>`;
 }
 
-if (tripType === "one-way") {
-  this.innerHTML = `<strong><span class="selected-tick">✓</span> Selected €${oneWayPrice.toFixed(
-    2
-  )}/KM</strong>${totalPriceDisplay}`;
-} else {
-  this.innerHTML = `<strong><span class="selected-tick">✓</span> Selected €${roundTripPrice.toFixed(
-    2
-  )}/KM</strong>${totalPriceDisplay}`;
-}
 
-  // Update booking data with correct price
-  bookingData.vehicleType = vehicleCard.querySelector(".vehicle-type").textContent;
-  bookingData.basePrice = basePrice;
-  bookingData.passengers = vehicleCard.dataset.passengers;
-  bookingData.bags = vehicleCard.dataset.bags;
-  bookingData.transferType = tripType;
-  bookingData.price = tripType === "round-trip" ? roundTripPrice : oneWayPrice;
-
-  // If we already have distance, calculate and show total price
-  if (bookingData.distance) {
-    const distanceValue = parseFloat(bookingData.distance.replace(/[^\d.]/g, ''));
-    if (distanceValue) {
-      const totalPrice = (bookingData.price * distanceValue).toFixed(2);
-      updateVehicleCardWithPrice(totalPrice);
-    }
-  }
-
-  // Show the Continue button
-  document.querySelectorAll(".btn-next").forEach((btn) => {
-    btn.classList.add("visible");
-  });
-
-  // Scroll to the Continue button
-  const firstContinueBtn = document.querySelector(".btn-next.visible");
-  if (firstContinueBtn) {
-    firstContinueBtn.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest",
-    });
-  }
-});
-  });
-}
 
 // Global variables
 let routeMap;
@@ -609,13 +615,15 @@ function showRoute() {
       bookingData.routePolyline = result.routes[0].overview_polyline;
 
       // Extract numeric distance value (in km)
-      const distanceValue = parseFloat(route.distance.text.replace(/[^\d.]/g, ''));
-      
+      const distanceValue = parseFloat(
+        route.distance.text.replace(/[^\d.]/g, "")
+      );
+
       // Calculate total price if vehicle is selected
       if (bookingData.price && distanceValue) {
         const totalPrice = (bookingData.price * distanceValue).toFixed(2);
         bookingData.totalPrice = totalPrice;
-        
+
         // Update the vehicle card to show the total price
         updateVehicleCardWithPrice(totalPrice);
       }
@@ -644,27 +652,34 @@ function showRoute() {
 }
 
 function updateVehicleCardWithPrice(totalPrice) {
-  const selectedCard = document.querySelector('.vehicle-card.selected');
+  const selectedCard = document.querySelector(".vehicle-card.selected");
   if (!selectedCard) return;
   
-  // Find or create the price display element
-  let priceDisplay = selectedCard.querySelector('.total-price-display');
+  // Find or create the price display element on the vehicle card
+  let priceDisplay = selectedCard.querySelector(".total-price-display");
   if (!priceDisplay) {
-    priceDisplay = document.createElement('div');
-    priceDisplay.className = 'total-price-display';
-    priceDisplay.style.marginTop = '10px';
-    priceDisplay.style.padding = '10px';
-    priceDisplay.style.backgroundColor = '#f8f9fa';
-    priceDisplay.style.borderRadius = '5px';
-    priceDisplay.style.fontWeight = 'bold';
-    priceDisplay.style.textAlign = 'center';
+    priceDisplay = document.createElement("div");
+    priceDisplay.className = "total-price-display";
+    priceDisplay.style.marginTop = "10px";
+    priceDisplay.style.padding = "10px";
+    priceDisplay.style.backgroundColor = "#f8f9fa";
+    priceDisplay.style.borderRadius = "5px";
+    priceDisplay.style.fontWeight = "bold";
+    priceDisplay.style.textAlign = "center";
     selectedCard.appendChild(priceDisplay);
   }
-  
   priceDisplay.innerHTML = `Total Estimated Price: <span style="color: #3b82f6; font-size: 1.2em;">€${totalPrice}</span>`;
   
-  // Also update the booking data
-  bookingData.totalPrice = totalPrice;
+  // Update the booking data
+  bookingData.totalPrice = parseFloat(totalPrice);
+  
+  // Update the visible total price display in your HTML
+  const totalPriceElement = document.getElementById("totalPriceValue");
+  if (totalPriceElement) {
+    totalPriceElement.textContent = `€${totalPrice}`;
+  }
+  
+  console.log("Updated bookingData.totalPrice:", bookingData.totalPrice);
 }
 
 // Simple debounce function
