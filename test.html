@@ -1,148 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Rotated Map with Fixed Markers</title>
+  <meta charset="UTF-8">
+  <title>Price Tag</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #fff;
-      padding: 20px;
-    }
-
-    .map-wrapper {
+    .price-tag {
       position: relative;
-      width: 100%;
-      max-width: 1000px;
-      aspect-ratio: 16 / 9;
-      margin: auto;
-      overflow: hidden;
-    }
-
-    .rotated-map {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: url('https://img.freepik.com/free-psd/united-kingdom-map-isolated_23-2151880107.jpg?uid=R199518589&semt=ais_items_boosted&w=740') no-repeat center center/contain;
-      transform: rotate(-45deg);
-      transform-origin: center;
-      z-index: 1;
-    }
-
-    .marker-layer {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 2;
-    }
-
-    .marker {
-      position: absolute;
-      background-color: #ef2954;
-      color: #fff;
-      border-radius: 50% 50% 50% 0;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
+      display: inline-block;
+      background-color: #a11a1a; /* Dark red */
+      color: white;
+      padding: 10px 20px;
       font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s ease;
+      font-size: 1.2em;
+      border-radius: 5px 2px 2px 5px;
+      transform: rotate(-20deg);
+      clip-path: polygon(0% 50%, 10% 0%, 100% 0%, 100% 100%, 10% 100%);
+
+      /* optional shadow */
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
     }
 
-    .marker:hover {
-      transform: scale(1.7);
-      z-index: 10;
-    }
-
-    .marker::after {
-      content: attr(data-name);
+    .price-tag::before {
+      content: "";
       position: absolute;
-      bottom: 130%;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #333;
-      color: #fff;
-      padding: 5px 10px;
-      font-size: 11px;
-      border-radius: 5px;
-      opacity: 0;
-      white-space: nowrap;
-      pointer-events: none;
-      transition: opacity 0.2s;
-    }
-
-    .marker:hover::after {
-      opacity: 1;
-    }
-
-    /* Marker positions - Adjust these visually for best alignment */
-    .CWL { top: 51%; left: 40%; }
-    .LHR { top: 63%; left: 56%; }
-    .LGW { top: 50%; left: 71%; }
-    .LTN { top: 55%; left: 54%; }
-    .STN { top: 53%; left: 60%; }
-    .MAN { top: 31%; left: 45%; }
-    .LPL { top: 28%; left: 40%; }
-    .BHX { top: 42%; left: 50%; }
-    .BRS { top: 63%; left: 38%; }
-    .SOU { top: 75%; left: 50%; }
-    .DOV { top: 72%; left: 70%; }
-    .LCV { top: 66%; left: 63%; }
-
-    @media (max-width: 768px) {
-      .marker {
-        width: 30px;
-        height: 30px;
-        font-size: 10px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .marker {
-        width: 25px;
-        height: 25px;
-        font-size: 9px;
-      }
-
-      .marker:hover {
-        transform: scale(1.4);
-      }
+      top: 50%;
+      left: 5px;
+      transform: translateY(-50%);
+      width: 8px;
+      height: 8px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: inset 0 0 2px rgba(0,0,0,0.3);
     }
   </style>
 </head>
 <body>
-
-  <div class="map-wrapper">
-    <div class="rotated-map"></div>
-    <div class="marker-layer">
-      <div class="marker CWL" data-name="Cardiff (CWL)">CWL</div>
-      <div class="marker LHR" data-name="London Heathrow (LHR)">LHR</div>
-      <div class="marker LGW" data-name="London Gatwick (LGW)">LGW</div>
-      <div class="marker LTN" data-name="Luton (LTN)">LTN</div>
-      <div class="marker STN" data-name="Stansted (STN)">STN</div>
-      <div class="marker MAN" data-name="Manchester (MAN)">MAN</div>
-      <div class="marker LPL" data-name="Liverpool (LPL)">LPL</div>
-      <div class="marker BHX" data-name="Birmingham (BHX)">BHX</div>
-      <div class="marker BRS" data-name="Bristol (BRS)">BRS</div>
-      <div class="marker SOU" data-name="Southampton (SOU)">SOU</div>
-      <div class="marker DOV" data-name="Dover (DOV)">DOV</div>
-      <div class="marker LCV" data-name="London City (LCV)">LCV</div>
-    </div>
-  </div>
-
+  <div class="price-tag">-£3</div>
 </body>
 </html>

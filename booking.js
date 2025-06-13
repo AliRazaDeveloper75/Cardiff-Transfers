@@ -66,7 +66,6 @@ const bookingData = {
   fullName: "",
   email: "",
   phone: "",
-  flightNumber: "",
   specialRequests: "",
   bookingRef: generateBookingRef(),
   distance: "",
@@ -240,21 +239,21 @@ function initVehicleSelection() {
       <div class="vehicle-type">${vehicle.name}</div>
       <div class="vehicle-type"><strong>Type:</strong> ${vehicle.type}</div>
         <ul class="specs">
-          <li class="spec-item"><i class="fas fa-user"></i> ${
-            vehicle.passengers
-          } passengers</li>
-          <li class="spec-item"><i class="fas fa-glass-whiskey"></i> ${
-            vehicle.bags
-          } Bags</li>
+          <li class="spec-item"><i class="fas fa-user"></i> ${vehicle.passengers} passengers</li>
+          <li class="spec-item"><i class="fas fa-glass-whiskey"></i> ${vehicle.bags} Bags</li>
         </ul>
         <div class="vehicle-actions">
-          <button type="button" class="btn-select" data-trip-type="one-way">
-            One Way 
-          </button>
+        <div style="
+    margin-right: 5%;
+">
+        <button type="button" class="btn-select" data-trip-type="one-way">
+        One Way 
+        </button>
+        </div>
           <div class="round-trip-discount">
             <button type="button" class="btn-select" data-trip-type="round-trip">
               Round Trip
-              <span class="discount-badge">-5% off</span>
+              <span class="discount-badge">-5%</span>
             </button>
           </div>
         </div>
@@ -289,7 +288,8 @@ function initVehicleSelection() {
           if (btn.dataset.tripType === "one-way") {
             btn.innerHTML = `One Way `;
           } else {
-            btn.innerHTML = `Round Trip <strong>`;
+            btn.innerHTML = `Round Trip<span class="discount-badge">-5%</span>`;
+            
           }
         });
       });
@@ -356,8 +356,6 @@ function initVehicleSelection() {
     });
   });
 }
-
-
 
 // Global variables
 let routeMap;
@@ -654,7 +652,7 @@ function showRoute() {
 function updateVehicleCardWithPrice(totalPrice) {
   const selectedCard = document.querySelector(".vehicle-card.selected");
   if (!selectedCard) return;
-  
+
   // Find or create the price display element on the vehicle card
   let priceDisplay = selectedCard.querySelector(".total-price-display");
   if (!priceDisplay) {
@@ -669,16 +667,16 @@ function updateVehicleCardWithPrice(totalPrice) {
     selectedCard.appendChild(priceDisplay);
   }
   priceDisplay.innerHTML = `Total Estimated Price: <span style="color: #3b82f6; font-size: 1.2em;">€${totalPrice}</span>`;
-  
+
   // Update the booking data
   bookingData.totalPrice = parseFloat(totalPrice);
-  
+
   // Update the visible total price display in your HTML
   const totalPriceElement = document.getElementById("totalPriceValue");
   if (totalPriceElement) {
     totalPriceElement.textContent = `€${totalPrice}`;
   }
-  
+
   console.log("Updated bookingData.totalPrice:", bookingData.totalPrice);
 }
 
@@ -897,10 +895,6 @@ function validateStep(step) {
       alert("Please enter your phone number");
       return false;
     }
-    if (!document.getElementById("flightNumber").value) {
-      alert("Please enter your Flight Number number");
-      return false;
-    }
   }
 
   return true;
@@ -925,7 +919,6 @@ function saveStepData(step) {
     bookingData.fullName = document.getElementById("fullName").value;
     bookingData.email = document.getElementById("email").value;
     bookingData.phone = document.getElementById("phone").value;
-    bookingData.flightNumber = document.getElementById("flightNumber").value;
     bookingData.specialRequests =
       document.getElementById("specialRequests").value;
   }
@@ -956,8 +949,6 @@ function restoreFormData() {
   document.getElementById("fullName").value = bookingData.fullName || "";
   document.getElementById("email").value = bookingData.email || "";
   document.getElementById("phone").value = bookingData.phone || "";
-  document.getElementById("flightNumber").value =
-    bookingData.flightNumber || "";
   document.getElementById("specialRequests").value =
     bookingData.specialRequests || "";
 }
@@ -1036,7 +1027,6 @@ function generateBookingPdf() {
           <p><strong>Name:</strong> ${bookingData.fullName}</p>
           <p><strong>Email:</strong> ${bookingData.email}</p>
           <p><strong>Phone:</strong> ${bookingData.phone}</p>
-          <p><strong>Phone:</strong> ${bookingData.flightNumber}</p>
           <p><strong>Requests:</strong> ${
             bookingData.specialRequests || "None"
           }</p>

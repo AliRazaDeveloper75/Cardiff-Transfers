@@ -309,25 +309,6 @@ button:hover {
   letter-spacing: 1.2px;
 }
 
-.btn-select {
-  background: #005aaa;
-  color: white;
-  border: none;
-  padding: 0.75rem;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  width: 100%;
-  text-align: center;
-  font-size: 1rem;
-}
-
-.btn-select:hover {
-  background: #004488;
-  transform: translateY(-2px);
-}
-
 /* Booking Summary Enhancements */
 .booking-summary {
   background: #f8f9fb;
@@ -908,10 +889,13 @@ button:hover {
 
 .btn-select[data-trip-type="round-trip"] {
   background: #005aaa;
+  width: 100%;
+  height: 10vh;
 }
-
-.btn-select[data-trip-type="round-trip"]:hover {
+.btn-select[data-trip-type="one-way"] {
   background: #005aaa;
+  width: 100%;
+  height: 10vh;
 }
 
 /* Responsive adjustments */
@@ -957,6 +941,24 @@ button:hover {
     margin: 0 auto;
     padding: 0;
   }
+  .discount-badge {
+  
+  top: -25px; /* Adjust to position vertically */
+  right: -55px; /* Adjust to position horizontally */
+
+}
+.discount-badge::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background: #3b82f6;
+  border-radius: 50%;
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
+}
 }
 
 /* v-feature */
@@ -1010,36 +1012,38 @@ button:hover {
   display: inline-block; /* Or whatever display you need */
 }
 
-.btn-select {
-  position: relative; /* Needed for proper badge positioning */
-  padding: 10px 20px; /* Adjust as needed */
-  height: 10vh;
-  /* Other button styles... */
-}
-
 .discount-badge {
   position: absolute;
-  top: -30px; /* Adjust to position vertically */
-  right: 5px; /* Adjust to position horizontally */
-  background:  orange; /* Or any color you prefer */
+  top: -25px; /* Adjust to position vertically */
+  right: -11px; /* Adjust to position horizontally */
   padding: 1%;
+  display: inline-block;
+  background-color: orange; /* Dark red */
   color: white;
-  border-radius: 50%;
-  width: 40px; /* Adjust size as needed */
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
+  padding: 5px 20px;
   font-weight: bold;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  font-size: 1rem;
+  border-radius: 5px 2px 2px 5px;
+  transform: rotate(-20deg);
+  clip-path: polygon(0% 50%, 10% 0%, 100% 0%, 100% 100%, 10% 100%);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
-
-
+.discount-badge::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background: #3b82f6;
+  border-radius: 50%;
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
+}
 .total-price-display {
   margin-top: 10px;
   padding: 10px;
-  background-color: #f8f9fa;
+  background-color: #3b82f6;
   border-radius: 5px;
   font-weight: bold;
   text-align: center;
