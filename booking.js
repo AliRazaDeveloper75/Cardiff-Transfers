@@ -823,7 +823,7 @@ function logDistance() {
 
     // Calculate prices
     const oneWayPrice = (basePrice * distanceValue).toFixed(2);
-    const roundTripPrice = (basePrice * distanceValue * 0.95).toFixed(2); // 5% discount
+    const roundTripPrice = (basePrice * distanceValue * 0.95 * 2).toFixed(2); // 5% discount
 
     // Update buttons in the card
     const oneWayBtn = card.querySelector('[data-trip-type="one-way"]');
