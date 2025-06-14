@@ -1,3 +1,4 @@
+
 function showStep(step) {
   // Update progress steps
   document.querySelectorAll(".step").forEach((s) => {
@@ -35,6 +36,8 @@ function showStep(step) {
   // Update summary before payment
   if (step === 3) {
     updateSummary();
+      setTimeout(initPaymentMap, 100);
+
   }
 
   // Scroll to top of the form container
@@ -47,31 +50,6 @@ function showStep(step) {
     document.querySelector(".booking-form-container") || document.body;
   formContainer.scrollIntoView({ behavior: "smooth", block: "", top: 0 });
 }
-
-// Booking data structure
-const bookingData = {
-  step: 1,
-  vehicleType: "",
-  basePrice: 0,
-  price: 0,
-  passengers: 0,
-  bags: 0,
-  transferType: "one-way",
-  pickupDate: "",
-  pickupTime: "",
-  pickupLocation: "",
-  dropoffLocation: "",
-  returnDate: "",
-  returnTime: "",
-  fullName: "",
-  email: "",
-  phone: "",
-  specialRequests: "",
-  bookingRef: generateBookingRef(),
-  distance: "",
-  duration: "",
-  routePolyline: "",
-};
 
 // Initialize the booking form
 document.addEventListener("DOMContentLoaded", function () {
@@ -239,12 +217,18 @@ function initVehicleSelection() {
       <div class="vehicle-type">${vehicle.name}</div>
       <div class="vehicle-type"><strong>Type:</strong> ${vehicle.type}</div>
         <ul class="specs">
-          <li class="spec-item"><i class="fas fa-user"></i> ${vehicle.passengers} passengers</li>
-          <li class="spec-item"><i class="fas fa-glass-whiskey"></i> ${vehicle.bags} Bags</li>
+          <li class="spec-item"><i class="fas fa-user"></i> ${
+            vehicle.passengers
+          } passengers</li>
+          <li class="spec-item"><i class="fas fa-glass-whiskey"></i> ${
+            vehicle.bags
+          } Bags</li>
         </ul>
         <div class="vehicle-actions">
           <div style="margin-right: 5%;">
-            <button type="button" class="btn-select" data-trip-type="one-way">One Way ${oneWayPrice.toFixed(2)}</button>
+            <button type="button" class="btn-select" data-trip-type="one-way">One Way ${oneWayPrice.toFixed(
+              2
+            )}</button>
           </div>
           <div class="round-trip-discount">
             <button type="button" class="btn-select" data-trip-type="round-trip">
@@ -263,55 +247,67 @@ function initVehicleSelection() {
   document.querySelectorAll(".btn-select").forEach((button) => {
     // Modify the vehicle selection part in initVehicleSelection()
     // Modify the vehicle selection code to properly handle trip type switching
-button.addEventListener("click", function() {
-  const vehicleCard = this.closest(".vehicle-card");
-  const tripType = this.dataset.tripType;
-  const basePrice = parseFloat(vehicleCard.dataset.price);
-  
-  // First, clear all selections
-  document.querySelectorAll(".vehicle-card").forEach(card => {
-    card.classList.remove("selected");
-    // Reset all buttons in this card
-    card.querySelectorAll(".btn-select").forEach(btn => {
-      const btnTripType = btn.dataset.tripType;
-      const btnBasePrice = parseFloat(card.dataset.price);
-      const distanceValue = bookingData.distance ? parseFloat(bookingData.distance.replace(/[^\d.]/g, "")) : 1;
-      
-      // Reset button text with correct pricing
-      if (btnTripType === "one-way") {
-        btn.innerHTML = `One Way €${(btnBasePrice * distanceValue).toFixed(2)}`;
-      } else {
-        btn.innerHTML = `Round Trip €${(btnBasePrice * distanceValue * 0.95).toFixed(2)} <span class="discount-badge">-5%</span>`;
+    button.addEventListener("click", function () {
+      const vehicleCard = this.closest(".vehicle-card");
+      const tripType = this.dataset.tripType;
+      const basePrice = parseFloat(vehicleCard.dataset.price);
+
+      // First, clear all selections
+      document.querySelectorAll(".vehicle-card").forEach((card) => {
+        card.classList.remove("selected");
+        // Reset all buttons in this card
+        card.querySelectorAll(".btn-select").forEach((btn) => {
+          const btnTripType = btn.dataset.tripType;
+          const btnBasePrice = parseFloat(card.dataset.price);
+          const distanceValue = bookingData.distance
+            ? parseFloat(bookingData.distance.replace(/[^\d.]/g, ""))
+            : 1;
+
+          // Reset button text with correct pricing
+          if (btnTripType === "one-way") {
+            btn.innerHTML = `One Way €${(btnBasePrice * distanceValue).toFixed(
+              2
+            )}`;
+          } else {
+            btn.innerHTML = `Round Trip €${(
+              btnBasePrice *
+              distanceValue *
+              0.95 * 2
+            ).toFixed(2)} <span class="discount-badge">-5%</span>`;
+          }
+        });
+      });
+
+      // Now select the clicked option
+      vehicleCard.classList.add("selected");
+      this.innerHTML = `<strong><span class="selected-tick">✓</span> Selected</strong>`;
+
+      // Calculate and store the final price
+      let finalPrice = basePrice;
+      if (bookingData.distance) {
+        const distanceValue = parseFloat(
+          bookingData.distance.replace(/[^\d.]/g, "")
+        );
+        finalPrice =
+          tripType === "round-trip"
+            ? basePrice * distanceValue * 0.95
+            : basePrice * distanceValue;
       }
+
+      // Update booking data
+      bookingData.vehicleType =
+        vehicleCard.querySelector(".vehicle-type").textContent;
+      bookingData.basePrice = basePrice;
+      bookingData.passengers = vehicleCard.dataset.passengers;
+      bookingData.bags = vehicleCard.dataset.bags;
+      bookingData.transferType = tripType;
+      bookingData.price = finalPrice;
+
+      // Show the Continue button
+      document.querySelectorAll(".btn-next").forEach((btn) => {
+        btn.classList.add("visible");
+      });
     });
-  });
-
-  // Now select the clicked option
-  vehicleCard.classList.add("selected");
-  this.innerHTML = `<strong><span class="selected-tick">✓</span> Selected</strong>`;
-  
-  // Calculate and store the final price
-  let finalPrice = basePrice;
-  if (bookingData.distance) {
-    const distanceValue = parseFloat(bookingData.distance.replace(/[^\d.]/g, ""));
-    finalPrice = tripType === "round-trip" 
-      ? (basePrice * distanceValue * 0.95)
-      : (basePrice * distanceValue);
-  }
-
-  // Update booking data
-  bookingData.vehicleType = vehicleCard.querySelector(".vehicle-type").textContent;
-  bookingData.basePrice = basePrice;
-  bookingData.passengers = vehicleCard.dataset.passengers;
-  bookingData.bags = vehicleCard.dataset.bags;
-  bookingData.transferType = tripType;
-  bookingData.price = finalPrice;
-  
-  // Show the Continue button
-  document.querySelectorAll(".btn-next").forEach(btn => {
-    btn.classList.add("visible");
-  });
-});
   });
 }
 
@@ -484,12 +480,6 @@ function onPlaceChanged(autocomplete, isPickup) {
 
 // Update map with a new place (pickup or dropoff)
 function updateMapWithPlace(place, isPickup) {
-  // Remove existing marker
-  if (isPickup && pickupMarker) {
-    pickupMarker.setMap(null);
-  } else if (!isPickup && dropoffMarker) {
-    dropoffMarker.setMap(null);
-  }
 
   // Create new marker
   const marker = new google.maps.Marker({
@@ -506,30 +496,24 @@ function updateMapWithPlace(place, isPickup) {
     title: place.name || place.formatted_address,
     zIndex: isPickup ? 1 : 2,
   });
-
-  // Store reference to marker
   if (isPickup) {
     pickupMarker = marker;
-    bookingData.pickupLocation =
-      place.formatted_address ||
-      document.getElementById("pickupLocation").value;
+    bookingData.pickupLocation = {
+      address: place.formatted_address || document.getElementById("pickupLocation").value,
+      coordinates: {
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng()
+      }
+    };
   } else {
     dropoffMarker = marker;
-    bookingData.dropoffLocation =
-      place.formatted_address ||
-      document.getElementById("dropoffLocation").value;
-  }
-
-  // Update map visibility and route
-  updateMapVisibility();
-
-  // If both markers exist, show route
-  if (pickupMarker && dropoffMarker) {
-    showRoute();
-  } else {
-    // Center on the single marker
-    routeMap.setCenter(marker.getPosition());
-    routeMap.setZoom(15);
+    bookingData.dropoffLocation = {
+      address: place.formatted_address || document.getElementById("dropoffLocation").value,
+      coordinates: {
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng()
+      }
+    };
   }
 }
 
@@ -944,6 +928,7 @@ function restoreFormData() {
 }
 
 function updateSummary() {
+  
   document.getElementById("summaryVehicle").textContent =
     bookingData.vehicleType || "Not selected";
   document.getElementById("summaryDistance").textContent =
@@ -964,6 +949,157 @@ function updateSummary() {
   const distance = parseFloat(bookingData.distance) || 0;
   const kmTotal = (price / distance).toFixed(2);
   document.getElementById("summaryKMTotal").textContent = `£${kmTotal}`;
+  initPaymentMap();
+}
+// Update the booking data structure to include coordinates
+const bookingData = {
+  step: 1,
+  vehicleType: "",
+  basePrice: 0,
+  price: 0,
+  passengers: 0,
+  bags: 0,
+  transferType: "one-way",
+  pickupDate: "",
+  pickupTime: "",
+  pickupLocation: {
+    address: "",
+    coordinates: null,
+  },
+  dropoffLocation: {
+    address: "",
+    coordinates: null,
+  },
+  returnDate: "",
+  returnTime: "",
+  fullName: "",
+  email: "",
+  phone: "",
+  specialRequests: "",
+  bookingRef: generateBookingRef(),
+  distance: "",
+  duration: "",
+  routePolyline: "",
+};
+
+
+function initPaymentMap() {
+  const paymentMapContainer = document.getElementById('payment-map');
+  
+  // Check if container exists
+  if (!paymentMapContainer) {
+    console.error('Payment map container not found');
+    return;
+  }
+
+  // Check if we have location data
+  if (!bookingData.pickupLocation || !bookingData.dropoffLocation || 
+      !bookingData.pickupLocation.coordinates || !bookingData.dropoffLocation.coordinates) {
+    console.error('Missing location coordinates in bookingData');
+    paymentMapContainer.innerHTML = '<p class="map-error">Route information not available</p>';
+    return;
+  }
+
+  // Check if Google Maps API is loaded
+  if (!window.google || !window.google.maps) {
+    console.error('Google Maps API not loaded');
+    paymentMapContainer.innerHTML = '<p class="map-error">Map service not available</p>';
+    return;
+  }
+
+  try {
+    // Create the map
+    const paymentMap = new google.maps.Map(paymentMapContainer, {
+      zoom: 10,
+      center: bookingData.pickupLocation.coordinates,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      gestureHandling: 'cooperative'
+    });
+
+    // Add markers
+    new google.maps.Marker({
+      position: bookingData.pickupLocation.coordinates,
+      map: paymentMap,
+      title: "Pickup Location",
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        fillColor: "#4285F4",
+        fillOpacity: 1,
+        strokeColor: "#fff",
+        strokeWeight: 2,
+        scale: 8
+      }
+    });
+
+    new google.maps.Marker({
+      position: bookingData.dropoffLocation.coordinates,
+      map: paymentMap,
+      title: "Dropoff Location",
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        fillColor: "#EA4335",
+        fillOpacity: 1,
+        strokeColor: "#fff",
+        strokeWeight: 2,
+        scale: 8
+      }
+    });
+
+    // Add route polyline if available
+    if (bookingData.routePolyline) {
+      const routePath = google.maps.geometry.encoding.decodePath(bookingData.routePolyline);
+      new google.maps.Polyline({
+        path: routePath,
+        geodesic: true,
+        strokeColor: '#3b82f6',
+        strokeOpacity: 0.8,
+        strokeWeight: 5,
+        map: paymentMap
+      });
+    }
+
+    // Fit bounds
+    const bounds = new google.maps.LatLngBounds();
+    bounds.extend(bookingData.pickupLocation.coordinates);
+    bounds.extend(bookingData.dropoffLocation.coordinates);
+    paymentMap.fitBounds(bounds, { padding: 50 });
+
+    // Update displayed info
+    if (bookingData.distance) {
+      document.getElementById('payment-distance').textContent = bookingData.distance;
+    }
+    if (bookingData.duration) {
+      document.getElementById('payment-duration').textContent = bookingData.duration;
+    }
+
+  } catch (error) {
+    console.error('Error initializing payment map:', error);
+    paymentMapContainer.innerHTML = '<p class="map-error">Could not load map visualization</p>';
+  }
+}
+
+// Add this at the start of your updateSummary function
+function updateSummary() {
+  console.log('Updating summary with bookingData:', bookingData);
+  
+  // Check if required data exists
+  if (!bookingData.pickupLocation || !bookingData.dropoffLocation) {
+    console.warn('Missing location data in bookingData');
+  }
+
+  // Rest of your updateSummary code...
+  initPaymentMap();
+}
+
+// Make sure to update the restoreFormData function
+function restoreFormData() {
+  // ... existing restore code ...
+
+  // Restore location inputs
+  document.getElementById("pickupLocation").value =
+    bookingData.pickupLocation.address || "";
+  document.getElementById("dropoffLocation").value =
+    bookingData.dropoffLocation.address || "";
 }
 
 function formatDate(dateString) {
