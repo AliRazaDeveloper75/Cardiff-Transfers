@@ -290,7 +290,7 @@
 
     <div class="confirmation-header">
       <h1>Booking Confirmed!</h1>
-      <p>Your booking reference: <strong id="bookingRef"></strong></p>
+      <p >Your Flight Number: <strong id="bookingRef"></strong></p>
       <p>Thank you for choosing our service. Below are your booking details.</p>
     </div>
     <div class="container">
@@ -361,10 +361,6 @@
             <p><strong>Name:</strong> <span id="conf-name"></span></p>
             <p><strong>Email:</strong> <span id="conf-email"></span></p>
             <p><strong>Phone:</strong> <span id="conf-phone"></span></p>
-            <p>
-              <strong>Flight Number:</strong>
-              <span id="conf-flightNumber"></span>
-            </p>
             <p>
               <strong>Special Requests:</strong>
               <span id="conf-requests"></span>
@@ -627,8 +623,7 @@
         document.getElementById("conf-name").textContent = bookingData.fullName;
         document.getElementById("conf-email").textContent = bookingData.email;
         document.getElementById("conf-phone").textContent = bookingData.phone;
-        document.getElementById("conf-flightNumber").textContent =
-          bookingData.flightNumber || "N/A";
+        
         document.getElementById("conf-requests").textContent =
           bookingData.specialRequests || "None";
 
@@ -645,7 +640,7 @@
         }
         const price = parseFloat(bookingData.price) || 0;
         const distance = parseFloat(bookingData.distance) || 0;
-        const kmTotal = (price * distance).toFixed(2);
+        const kmTotal = ((bookingData.basePrice || bookingData.price).toFixed(2) * distance).toFixed(2);
 
         document.getElementById(
           "conf-km-base-price"
