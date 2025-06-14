@@ -894,7 +894,7 @@ button:hover {
   
 }
 .btn-select[data-trip-type="one-way"] {
-  background: #4c9ee5;
+  background: #4e89bd;
   width: 100%;
   
 }
@@ -1041,36 +1041,3 @@ button:hover {
 }
 
 
-.payment-section {
-  display: flex;
-  gap: 20px;
-  margin-top: 20px;
-}
-
-.payment-map-container {
-  flex: 1;
-  min-width: 300px;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background: #f8f9fa;
-}
-
-.booking-summary {
-  flex: 1;
-  min-width: 300px;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-}
-
-#payment-map {
-  border-radius: 5px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-}
-
-.route-summary {
-  font-size: 0.9em;
-  padding: 10px 0;
-}
