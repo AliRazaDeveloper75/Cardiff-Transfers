@@ -239,12 +239,18 @@ function initVehicleSelection() {
       <div class="vehicle-type">${vehicle.name}</div>
       <div class="vehicle-type"><strong>Type:</strong> ${vehicle.type}</div>
         <ul class="specs">
-          <li class="spec-item"><i class="fas fa-user"></i> ${vehicle.passengers} passengers</li>
-          <li class="spec-item"><i class="fas fa-glass-whiskey"></i> ${vehicle.bags} Bags</li>
+          <li class="spec-item"><i class="fas fa-user"></i> ${
+            vehicle.passengers
+          } passengers</li>
+          <li class="spec-item"><i class="fas fa-glass-whiskey"></i> ${
+            vehicle.bags
+          } Bags</li>
         </ul>
         <div class="vehicle-actions">
           <div style="margin-right: 5%;">
-            <button type="button" class="btn-select" data-trip-type="one-way">One Way ${oneWayPrice.toFixed(2)}</button>
+            <button type="button" class="btn-select" data-trip-type="one-way">One Way ${oneWayPrice.toFixed(
+              2
+            )}</button>
           </div>
           <div class="round-trip-discount">
             <button type="button" class="btn-select" data-trip-type="round-trip">
@@ -263,55 +269,48 @@ function initVehicleSelection() {
   document.querySelectorAll(".btn-select").forEach((button) => {
     // Modify the vehicle selection part in initVehicleSelection()
     // Modify the vehicle selection code to properly handle trip type switching
-button.addEventListener("click", function() {
-  const vehicleCard = this.closest(".vehicle-card");
-  const tripType = this.dataset.tripType;
-  const basePrice = parseFloat(vehicleCard.dataset.price);
-  
-  // First, clear all selections
-  document.querySelectorAll(".vehicle-card").forEach(card => {
-    card.classList.remove("selected");
-    // Reset all buttons in this card
-    card.querySelectorAll(".btn-select").forEach(btn => {
-      const btnTripType = btn.dataset.tripType;
-      const btnBasePrice = parseFloat(card.dataset.price);
-      const distanceValue = bookingData.distance ? parseFloat(bookingData.distance.replace(/[^\d.]/g, "")) : 1;
-      
-      // Reset button text with correct pricing
-      if (btnTripType === "one-way") {
-        btn.innerHTML = `One Way €${(btnBasePrice * distanceValue).toFixed(2)}`;
+    // Modify the vehicle selection event listener
+    button.addEventListener("click", function () {
+      const vehicleCard = this.closest(".vehicle-card");
+      const tripType = this.dataset.tripType;
+      const basePrice = parseFloat(vehicleCard.dataset.price);
+
+      // Get distance in km (remove any non-numeric characters)
+      const distanceValue = bookingData.distance
+        ? parseFloat(bookingData.distance.replace(/[^\d.]/g, ""))
+        : 1; // Default to 1 if distance not set
+
+      // Calculate final price based on trip type
+      let finalPrice;
+      if (tripType === "round-trip") {
+        // Round trip: 2x distance with 5% discount
+        finalPrice = basePrice * distanceValue * 2 * 0.95;
       } else {
-        btn.innerHTML = `Round Trip €${(btnBasePrice * distanceValue * 0.95 * 2).toFixed(2)} <span class="discount-badge">-5%</span>`;
+        // One way: normal price
+        finalPrice = basePrice * distanceValue;
       }
+
+      // Update booking data
+      bookingData.vehicleType =
+        vehicleCard.querySelector(".vehicle-type").textContent;
+      bookingData.basePrice = basePrice;
+      bookingData.passengers = vehicleCard.dataset.passengers;
+      bookingData.bags = vehicleCard.dataset.bags;
+      bookingData.transferType = tripType;
+      bookingData.price = finalPrice;
+
+      // Update UI to show selection
+      document.querySelectorAll(".vehicle-card").forEach((card) => {
+        card.classList.remove("selected");
+      });
+      vehicleCard.classList.add("selected");
+      this.innerHTML = `<strong><span class="selected-tick">✓</span> Selected</strong>`;
+
+      // Show the Continue button
+      document.querySelectorAll(".btn-next").forEach((btn) => {
+        btn.classList.add("visible");
+      });
     });
-  });
-
-  // Now select the clicked option
-  vehicleCard.classList.add("selected");
-  this.innerHTML = `<strong><span class="selected-tick">✓</span> Selected</strong>`;
-  
-  // Calculate and store the final price
-  let finalPrice = basePrice;
-  if (bookingData.distance) {
-    const distanceValue = parseFloat(bookingData.distance.replace(/[^\d.]/g, ""));
-    finalPrice = tripType === "round-trip" 
-      ? (basePrice * distanceValue * 0.95)
-      : (basePrice * distanceValue);
-  }
-
-  // Update booking data
-  bookingData.vehicleType = vehicleCard.querySelector(".vehicle-type").textContent;
-  bookingData.basePrice = basePrice;
-  bookingData.passengers = vehicleCard.dataset.passengers;
-  bookingData.bags = vehicleCard.dataset.bags;
-  bookingData.transferType = tripType;
-  bookingData.price = finalPrice;
-  
-  // Show the Continue button
-  document.querySelectorAll(".btn-next").forEach(btn => {
-    btn.classList.add("visible");
-  });
-});
   });
 }
 
