@@ -306,6 +306,13 @@ document.querySelectorAll(".btn-select").forEach((button) => {
     vehicleCard.classList.add("selected");
     this.innerHTML = `<strong><span class="selected-tick">✓</span> Vehicle Selected</strong>`;
 
+
+     // Update price display on all continue buttons
+    document.querySelectorAll(".selected-price-display").forEach(display => {
+      display.textContent = `£${finalPrice.toFixed(2)}`;
+      display.style.display = "inline-block";
+    });
+    
     // Show the Continue button
     const continueButtons = document.querySelectorAll(".btn-next");
     continueButtons.forEach((btn) => {
