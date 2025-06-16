@@ -179,7 +179,7 @@ function initVehicleSelection() {
     {
       type: "Executive Saloon",
       name: "Van: Mercedes V-Class",
-      price: 2.5,
+      price: 2.50,
       passengers: 3,
       bags: 3,
       image: "./Assets/108.png",
@@ -187,7 +187,7 @@ function initVehicleSelection() {
     {
       type: "Estate Car",
       name: "Minibus: Mercedes Sprinter",
-      price: 2.1,
+      price: 2.10,
       passengers: 4,
       bags: 4,
       image: "./Assets/car.png",
@@ -195,7 +195,7 @@ function initVehicleSelection() {
     {
       type: "People Carrier",
       name: "Sedan: Octavia (Large)",
-      price: 2.5,
+      price: 2.50,
       passengers: 5,
       bags: 5,
       image: "./Assets/4.png",
@@ -203,7 +203,7 @@ function initVehicleSelection() {
     {
       type: "Executive People Carrier",
       name: "Van: Mercedes V-Class (Large)",
-      price: 3.5,
+      price: 3.50,
       passengers: 5,
       bags: 5,
       image: "./Assets/107.png",
@@ -265,53 +265,68 @@ function initVehicleSelection() {
     vehicleContainer.appendChild(vehicleCard);
   });
 
-  // Vehicle selection with discount handling
-  document.querySelectorAll(".btn-select").forEach((button) => {
-    // Modify the vehicle selection part in initVehicleSelection()
-    // Modify the vehicle selection code to properly handle trip type switching
-    // Modify the vehicle selection event listener
-    button.addEventListener("click", function () {
-      const vehicleCard = this.closest(".vehicle-card");
-      const tripType = this.dataset.tripType;
-      const basePrice = parseFloat(vehicleCard.dataset.price);
+// Vehicle selection with discount handling
+document.querySelectorAll(".btn-select").forEach((button) => {
+  // Modify the vehicle selection event listener
+  button.addEventListener("click", function (e) {
+    e.preventDefault(); // Prevent default behavior
+    
+    const vehicleCard = this.closest(".vehicle-card");
+    const tripType = this.dataset.tripType;
+    const basePrice = parseFloat(vehicleCard.dataset.price);
 
-      // Get distance in km (remove any non-numeric characters)
-      const distanceValue = bookingData.distance
-        ? parseFloat(bookingData.distance.replace(/[^\d.]/g, ""))
-        : 1; // Default to 1 if distance not set
+    // Get distance in km (remove any non-numeric characters)
+    const distanceValue = bookingData.distance
+      ? parseFloat(bookingData.distance.replace(/[^\d.]/g, ""))
+      : 1; // Default to 1 if distance not set
 
-      // Calculate final price based on trip type
-      let finalPrice;
-      if (tripType === "round-trip") {
-        // Round trip: 2x distance with 5% discount
-        finalPrice = basePrice * distanceValue * 2 * 0.95;
-      } else {
-        // One way: normal price
-        finalPrice = basePrice * distanceValue;
-      }
+    // Calculate final price based on trip type
+    let finalPrice;
+    if (tripType === "round-trip") {
+      // Round trip: 2x distance with 5% discount
+      finalPrice = basePrice * distanceValue * 2 * 0.95;
+    } else {
+      // One way: normal price
+      finalPrice = basePrice * distanceValue;
+    }
 
-      // Update booking data
-      bookingData.vehicleType =
-        vehicleCard.querySelector(".vehicle-type").textContent;
-      bookingData.basePrice = basePrice;
-      bookingData.passengers = vehicleCard.dataset.passengers;
-      bookingData.bags = vehicleCard.dataset.bags;
-      bookingData.transferType = tripType;
-      bookingData.price = finalPrice;
+    // Update booking data
+    bookingData.vehicleType =
+      vehicleCard.querySelector(".vehicle-type").textContent;
+    bookingData.basePrice = basePrice;
+    bookingData.passengers = vehicleCard.dataset.passengers;
+    bookingData.bags = vehicleCard.dataset.bags;
+    bookingData.transferType = tripType;
+    bookingData.price = finalPrice;
 
-      // Update UI to show selection
-      document.querySelectorAll(".vehicle-card").forEach((card) => {
-        card.classList.remove("selected");
-      });
-      vehicleCard.classList.add("selected");
-      this.innerHTML = `<strong><span class="selected-tick">✓</span> Selected</strong>`;
+    // Update UI to show selection
+    document.querySelectorAll(".vehicle-card").forEach((card) => {
+      card.classList.remove("selected");
+    });
+    vehicleCard.classList.add("selected");
+    this.innerHTML = `<strong><span class="selected-tick">✓</span> Vehicle Selected</strong>`;
 
-      // Show the Continue button
-      document.querySelectorAll(".btn-next").forEach((btn) => {
-        btn.classList.add("visible");
+    // Show the Continue button
+    const continueButtons = document.querySelectorAll(".btn-next");
+    continueButtons.forEach((btn) => {
+      btn.classList.add("visible");
+      
+      // Scroll to the first visible continue button
+      btn.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "start"
       });
     });
+
+    // Optional: If you have a specific container to scroll within
+    // const formContainer = document.querySelector(".booking-form-container");
+    // formContainer.scrollTo({
+    //   top: btn.offsetTop - formContainer.offsetTop - 20,
+    //   behavior: "smooth"
+    // });
   });
+});
 }
 
 // Global variables
