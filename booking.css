@@ -64,7 +64,7 @@
 .container {
   max-width: 1200px;
   margin: auto;
-  padding: 0.5rem;
+  padding: 8px 20px;
 }
 
 .site-header {
@@ -81,7 +81,7 @@
 .header-inner {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  /* align-items: center; */
   flex-wrap: wrap;
 }
 
@@ -145,7 +145,7 @@ body {
 }
 
 .hero {
-  height: 13vh;
+  height: 12vh;
   position: relative;
   background-color: #005aaa;
 }
