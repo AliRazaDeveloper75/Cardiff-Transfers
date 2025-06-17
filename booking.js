@@ -174,20 +174,22 @@ function initVehicleSelection() {
       price: 1.95,
       passengers: 3,
       bags: 3,
+      Passengers_detail: "(4 Passengers with Hand Luggage only)",
       image: "./Assets/4.png",
     },
     {
       type: "Executive Saloon",
       name: "Van: Mercedes V-Class",
-      price: 2.50,
+      price: 2.5,
       passengers: 3,
       bags: 3,
+      Passengers_detail: "(4 Passengers with Hand Luggage only)",
       image: "./Assets/108.png",
     },
     {
       type: "Estate Car",
       name: "Minibus: Mercedes Sprinter",
-      price: 2.10,
+      price: 2.1,
       passengers: 4,
       bags: 4,
       image: "./Assets/car.png",
@@ -195,17 +197,19 @@ function initVehicleSelection() {
     {
       type: "People Carrier",
       name: "Sedan: Octavia (Large)",
-      price: 2.50,
+      price: 2.5,
       passengers: 5,
       bags: 5,
+      Passengers_detail: "(6 Passengers with Hand Luggage only)",
       image: "./Assets/4.png",
     },
     {
       type: "Executive People Carrier",
       name: "Van: Mercedes V-Class (Large)",
-      price: 3.50,
+      price: 3.5,
       passengers: 5,
       bags: 5,
+      Passengers_detail: "(6 Passengers with Hand Luggage only)",
       image: "./Assets/107.png",
     },
     {
@@ -244,8 +248,13 @@ function initVehicleSelection() {
           } passengers</li>
           <li class="spec-item"><i class="fas fa-glass-whiskey"></i> ${
             vehicle.bags
-          } Bags</li>
+          } Bags (23kg max)</li>
         </ul>
+        <ul class="specs">
+          <li class="spec-item">${vehicle?.Passengers_detail || ''}</li>
+
+        </ul>
+        
         <div class="vehicle-actions">
           <div style="margin-right: 5%;">
             <button type="button" class="btn-select" data-trip-type="one-way">One Way ${oneWayPrice.toFixed(
@@ -265,75 +274,76 @@ function initVehicleSelection() {
     vehicleContainer.appendChild(vehicleCard);
   });
 
-// Vehicle selection with discount handling
-document.querySelectorAll(".btn-select").forEach((button) => {
-  // Modify the vehicle selection event listener
-  button.addEventListener("click", function (e) {
-    e.preventDefault(); // Prevent default behavior
-    
-    const vehicleCard = this.closest(".vehicle-card");
-    const tripType = this.dataset.tripType;
-    const basePrice = parseFloat(vehicleCard.dataset.price);
+  // Vehicle selection with discount handling
+  document.querySelectorAll(".btn-select").forEach((button) => {
+    // Modify the vehicle selection event listener
+    button.addEventListener("click", function (e) {
+      e.preventDefault(); // Prevent default behavior
 
-    // Get distance in km (remove any non-numeric characters)
-    const distanceValue = bookingData.distance
-      ? parseFloat(bookingData.distance.replace(/[^\d.]/g, ""))
-      : 1; // Default to 1 if distance not set
+      const vehicleCard = this.closest(".vehicle-card");
+      const tripType = this.dataset.tripType;
+      const basePrice = parseFloat(vehicleCard.dataset.price);
 
-    // Calculate final price based on trip type
-    let finalPrice;
-    if (tripType === "round-trip") {
-      // Round trip: 2x distance with 5% discount
-      finalPrice = basePrice * distanceValue * 2 * 0.95;
-    } else {
-      // One way: normal price
-      finalPrice = basePrice * distanceValue;
-    }
+      // Get distance in km (remove any non-numeric characters)
+      const distanceValue = bookingData.distance
+        ? parseFloat(bookingData.distance.replace(/[^\d.]/g, ""))
+        : 1; // Default to 1 if distance not set
 
-    // Update booking data
-    bookingData.vehicleType =
-      vehicleCard.querySelector(".vehicle-type").textContent;
-    bookingData.basePrice = basePrice;
-    bookingData.passengers = vehicleCard.dataset.passengers;
-    bookingData.bags = vehicleCard.dataset.bags;
-    bookingData.transferType = tripType;
-    bookingData.price = finalPrice;
+      // Calculate final price based on trip type
+      let finalPrice;
+      if (tripType === "round-trip") {
+        // Round trip: 2x distance with 5% discount
+        finalPrice = basePrice * distanceValue * 2 * 0.95;
+      } else {
+        // One way: normal price
+        finalPrice = basePrice * distanceValue;
+      }
 
-    // Update UI to show selection
-    document.querySelectorAll(".vehicle-card").forEach((card) => {
-      card.classList.remove("selected");
-    });
-    vehicleCard.classList.add("selected");
-    this.innerHTML = `<strong><span class="selected-tick">✓</span> Vehicle Selected</strong>`;
+      // Update booking data
+      bookingData.vehicleType =
+        vehicleCard.querySelector(".vehicle-type").textContent;
+      bookingData.basePrice = basePrice;
+      bookingData.passengers = vehicleCard.dataset.passengers;
+      bookingData.bags = vehicleCard.dataset.bags;
+      bookingData.transferType = tripType;
+      bookingData.price = finalPrice;
 
-
-     // Update price display on all continue buttons
-    document.querySelectorAll(".selected-price-display").forEach(display => {
-      display.textContent = `£${finalPrice.toFixed(2)}`;
-      display.style.display = "inline-block";
-    });
-    
-    // Show the Continue button
-    const continueButtons = document.querySelectorAll(".btn-next");
-    continueButtons.forEach((btn) => {
-      btn.classList.add("visible");
-      
-      // Scroll to the first visible continue button
-      btn.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-        inline: "start"
+      // Update UI to show selection
+      document.querySelectorAll(".vehicle-card").forEach((card) => {
+        card.classList.remove("selected");
       });
-    });
+      vehicleCard.classList.add("selected");
+      this.innerHTML = `<strong><span class="selected-tick">✓</span> Vehicle Selected</strong>`;
 
-    // Optional: If you have a specific container to scroll within
-    // const formContainer = document.querySelector(".booking-form-container");
-    // formContainer.scrollTo({
-    //   top: btn.offsetTop - formContainer.offsetTop - 20,
-    //   behavior: "smooth"
-    // });
+      // Update price display on all continue buttons
+      document
+        .querySelectorAll(".selected-price-display")
+        .forEach((display) => {
+          display.textContent = `£${finalPrice.toFixed(2)}`;
+          display.style.display = "inline-block";
+        });
+
+      // Show the Continue button
+      const continueButtons = document.querySelectorAll(".btn-next");
+      continueButtons.forEach((btn) => {
+        btn.classList.add("visible");
+
+        // Scroll to the first visible continue button
+        btn.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "start",
+        });
+      });
+
+      // Optional: If you have a specific container to scroll within
+      // const formContainer = document.querySelector(".booking-form-container");
+      // formContainer.scrollTo({
+      //   top: btn.offsetTop - formContainer.offsetTop - 20,
+      //   behavior: "smooth"
+      // });
+    });
   });
-});
 }
 
 // Global variables
