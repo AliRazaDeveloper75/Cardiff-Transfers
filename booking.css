@@ -64,7 +64,7 @@
 .container {
   max-width: 1200px;
   margin: auto;
-  padding: 1rem;
+  padding: 0.5rem;
 }
 
 .site-header {
@@ -96,7 +96,7 @@
 .site-header.scrolled {
   background: #005aaa;
   color: white;
-  padding: 5px;
+  
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -145,7 +145,7 @@ body {
 }
 
 .hero {
-  height: 14vh;
+  height: 13vh;
   position: relative;
   background-color: #005aaa;
 }
