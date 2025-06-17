@@ -225,6 +225,7 @@ function initVehicleSelection() {
   const vehicleContainer = document.querySelector(
     "#vehicleSelectionStep1 .vehicle-options"
   );
+  vehicleContainer.innerHTML = ''; // Clear existing options
 
   vehicleOptions.forEach((vehicle) => {
     const vehicleCard = document.createElement("div");
@@ -252,7 +253,6 @@ function initVehicleSelection() {
         </ul>
         <ul class="specs">
           <li class="spec-item">${vehicle?.Passengers_detail || ''}</li>
-
         </ul>
         
         <div class="vehicle-actions">
@@ -276,26 +276,49 @@ function initVehicleSelection() {
 
   // Vehicle selection with discount handling
   document.querySelectorAll(".btn-select").forEach((button) => {
-    // Modify the vehicle selection event listener
     button.addEventListener("click", function (e) {
-      e.preventDefault(); // Prevent default behavior
+      e.preventDefault();
 
+      // First, reset all vehicle cards and buttons to their initial state
+      document.querySelectorAll(".vehicle-card").forEach((card) => {
+        card.classList.remove("selected");
+        // Remove any existing total price displays
+        const existingPriceDisplay = card.querySelector(".total-price-display");
+        if (existingPriceDisplay) {
+          existingPriceDisplay.remove();
+        }
+        // Reset button texts
+        const buttons = card.querySelectorAll(".btn-select");
+        buttons.forEach(btn => {
+          const tripType = btn.dataset.tripType;
+          const basePrice = parseFloat(card.dataset.price);
+          const distanceValue = bookingData.distance
+            ? parseFloat(bookingData.distance.replace(/[^\d.]/g, ""))
+            : 1;
+          
+          if (tripType === "one-way") {
+            btn.textContent = `One Way £${(basePrice * distanceValue).toFixed(2)}`;
+          } else {
+            btn.innerHTML = `Round Trip £${(basePrice * distanceValue * 2 * 0.95).toFixed(2)} <span class="discount-badge">-5%</span>`;
+          }
+        });
+      });
+
+      // Now handle the new selection
       const vehicleCard = this.closest(".vehicle-card");
       const tripType = this.dataset.tripType;
       const basePrice = parseFloat(vehicleCard.dataset.price);
 
-      // Get distance in km (remove any non-numeric characters)
+      // Get distance in km
       const distanceValue = bookingData.distance
         ? parseFloat(bookingData.distance.replace(/[^\d.]/g, ""))
-        : 1; // Default to 1 if distance not set
+        : 1;
 
       // Calculate final price based on trip type
       let finalPrice;
       if (tripType === "round-trip") {
-        // Round trip: 2x distance with 5% discount
         finalPrice = basePrice * distanceValue * 2 * 0.95;
       } else {
-        // One way: normal price
         finalPrice = basePrice * distanceValue;
       }
 
@@ -309,39 +332,25 @@ function initVehicleSelection() {
       bookingData.price = finalPrice;
 
       // Update UI to show selection
-      document.querySelectorAll(".vehicle-card").forEach((card) => {
-        card.classList.remove("selected");
-      });
       vehicleCard.classList.add("selected");
       this.innerHTML = `<strong><span class="selected-tick">✓</span> Vehicle Selected</strong>`;
 
       // Update price display on all continue buttons
-      document
-        .querySelectorAll(".selected-price-display")
-        .forEach((display) => {
-          display.textContent = `£${finalPrice.toFixed(2)}`;
-          display.style.display = "inline-block";
-        });
+      document.querySelectorAll(".selected-price-display").forEach((display) => {
+        display.textContent = `£${finalPrice.toFixed(2)}`;
+        display.style.display = "inline-block";
+      });
 
       // Show the Continue button
       const continueButtons = document.querySelectorAll(".btn-next");
       continueButtons.forEach((btn) => {
         btn.classList.add("visible");
-
-        // Scroll to the first visible continue button
         btn.scrollIntoView({
           behavior: "smooth",
           block: "nearest",
           inline: "start",
         });
       });
-
-      // Optional: If you have a specific container to scroll within
-      // const formContainer = document.querySelector(".booking-form-container");
-      // formContainer.scrollTo({
-      //   top: btn.offsetTop - formContainer.offsetTop - 20,
-      //   behavior: "smooth"
-      // });
     });
   });
 }
@@ -639,23 +648,26 @@ function showRoute() {
 }
 
 function updateVehicleCardWithPrice(totalPrice) {
+  // First remove any existing price displays from all cards
+  document.querySelectorAll(".total-price-display").forEach(display => {
+    display.remove();
+  });
+
+  // Then add to selected card only
   const selectedCard = document.querySelector(".vehicle-card.selected");
   if (!selectedCard) return;
 
-  // Find or create the price display element on the vehicle card
-  let priceDisplay = selectedCard.querySelector(".total-price-display");
-  if (!priceDisplay) {
-    priceDisplay = document.createElement("div");
-    priceDisplay.className = "total-price-display";
-    priceDisplay.style.marginTop = "10px";
-    priceDisplay.style.padding = "10px";
-    priceDisplay.style.backgroundColor = "#f8f9fa";
-    priceDisplay.style.borderRadius = "5px";
-    priceDisplay.style.fontWeight = "bold";
-    priceDisplay.style.textAlign = "center";
-    selectedCard.appendChild(priceDisplay);
-  }
+  const priceDisplay = document.createElement("div");
+  priceDisplay.className = "total-price-display";
+  priceDisplay.style.marginTop = "10px";
+  priceDisplay.style.padding = "10px";
+  priceDisplay.style.backgroundColor = "#f8f9fa";
+  priceDisplay.style.borderRadius = "5px";
+  priceDisplay.style.fontWeight = "bold";
+  priceDisplay.style.textAlign = "center";
   priceDisplay.innerHTML = `Total Estimated Price: <span style="color: #3b82f6; font-size: 1.2em;">£${totalPrice}</span>`;
+  
+  selectedCard.appendChild(priceDisplay);
 
   // Update the booking data
   bookingData.totalPrice = parseFloat(totalPrice);
@@ -665,8 +677,6 @@ function updateVehicleCardWithPrice(totalPrice) {
   if (totalPriceElement) {
     totalPriceElement.textContent = `£${totalPrice}`;
   }
-
-  console.log("Updated bookingData.totalPrice:", bookingData.totalPrice);
 }
 
 // Simple debounce function
