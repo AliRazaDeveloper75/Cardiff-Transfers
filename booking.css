@@ -96,7 +96,7 @@
 .site-header.scrolled {
   background: #005aaa;
   color: white;
-  
+
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -177,10 +177,10 @@ body {
 
 @media (max-width: 768px) {
   .hero {
-  height: 0;
-  position: relative;
-  background-color: #005aaa;
-}
+    height: 0;
+    position: relative;
+    background-color: #005aaa;
+  }
   .overlay {
     flex-direction: column;
     justify-content: center;
@@ -656,7 +656,6 @@ button:hover {
     font-size: 0.9em;
     width: 200%;
   }
-
 }
 
 .route-info {
@@ -896,12 +895,10 @@ button:hover {
 .btn-select[data-trip-type="round-trip"] {
   background: #005aaa;
   width: 100%;
-  
 }
 .btn-select[data-trip-type="one-way"] {
   background: #4e89bd;
   width: 100%;
-  
 }
 
 /* Responsive adjustments */
@@ -947,7 +944,6 @@ button:hover {
     margin: 0 auto;
     padding: 0;
   }
-
 }
 
 /* v-feature */
@@ -1044,5 +1040,3 @@ button:hover {
   color: #3b82f6;
   font-size: 1.2em;
 }
-
-
