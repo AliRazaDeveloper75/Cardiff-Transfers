@@ -176,6 +176,11 @@ body {
 }
 
 @media (max-width: 768px) {
+  .hero {
+  height: 0;
+  position: relative;
+  background-color: #005aaa;
+}
   .overlay {
     flex-direction: column;
     justify-content: center;
