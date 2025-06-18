@@ -50,17 +50,16 @@
         <style>
           .payment-badges {
             display: flex;
-            justify-content: center; /* Center horizontally */
-            gap: 10px; /* spacing between images */
+            justify-content: center;
+            gap: 10px;
             align-items: center;
-            flex-wrap: nowrap; /* Prevent wrapping to multiple lines */
-            margin: 0 auto; /* Center the container */
-            max-width: 100%; /* Ensure it doesn't overflow */
-            overflow-x: auto; /* Allow horizontal scrolling if needed */
+            flex-wrap: wrap; /* Allow items to wrap to multiple lines */
+            margin: 0 auto;
+            max-width: 100%;
           }
 
           .payment-badges img {
-            height: 20px; /* adjust size as needed */
+            height: 20px;
             object-fit: contain;
           }
 
@@ -70,17 +69,19 @@
 
           .list-payment {
             display: flex;
-            flex-wrap: nowrap;
+            flex-wrap: wrap; /* Allow items to wrap */
             justify-content: center;
             list-style: none;
             padding: 0;
             margin: 0;
+            
           }
 
           .list-payment__item {
             display: flex;
             align-items: center;
             padding: 5px;
+            flex: 0 0 calc(20% - 10px); /* 5 items per row on mobile */
           }
 
           .icon {
@@ -98,6 +99,16 @@
             clip: rect(0, 0, 0, 0);
             white-space: nowrap;
             border: 0;
+          }
+
+          /* Adjust for larger screens */
+          @media (min-width: 768px) {
+            .list-payment {
+              flex-wrap: nowrap; /* Single line on larger screens */
+            }
+            .list-payment__item {
+              flex: 0 0 auto; /* Reset flex for larger screens */
+            }
           }
         </style>
         <div class="payment-badges">

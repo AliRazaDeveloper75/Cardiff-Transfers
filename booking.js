@@ -257,13 +257,11 @@ function initVehicleSelection() {
         
         <div class="vehicle-actions">
           <div style="margin-right: 5%;">
-            <button type="button" class="btn-select" data-trip-type="one-way">One Way ${oneWayPrice.toFixed(
-              2
-            )}</button>
+            <button type="button" class="btn-select" data-trip-type="one-way">One Way </button>
           </div>
           <div class="round-trip-discount">
             <button type="button" class="btn-select" data-trip-type="round-trip">
-              Round Trip £${roundTripPrice.toFixed(2)}
+              Round Trip 
               <span class="discount-badge">-5%</span>
             </button>
           </div>
